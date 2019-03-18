@@ -26,6 +26,8 @@ public class TaskInstanceQM extends BaseQM {
 
     private Date logicRunTimeLessEqual;       //逻辑开始时间小于等于
 
+    private Date logicRunTimeGreaterEqual;    //逻辑开始时间大于等于
+
     private Long greaterThanId;               //任务版本号
 
     public final static String COL_LOGIC_RUN_TIME = "logic_run_time";

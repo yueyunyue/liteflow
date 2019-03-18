@@ -134,6 +134,31 @@
         <!-- 为了保证主切换后，阻塞的任务不会触发 -->
         <property name="misfireInstruction" value="2"></property>
     </bean>
+    <!--
+        6.任务延迟报警
+    -->
+    <bean id="instanceRunDelayJob" class="cn.lite.flow.console.kernel.job.InstanceRunDelayJob" />
+    <bean id="instanceRunDelayJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="instanceRunDelayJob" />
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="instanceRunDelayJobTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="instanceRunDelayJobDetail" />
+        </property>
+        <property name="cronExpression">
+            <value>0 */30 * * * ?</value>
+        </property>
+        <!-- 为了保证主切换后，阻塞的任务不会触发 -->
+        <property name="misfireInstruction" value="2"></property>
+    </bean>
 
     <!-- Scheduler -->
     <bean name="consoleScheduler" lazy-init="false" autowire="no"
@@ -145,6 +170,7 @@
                 <ref bean="instanceReady2FireJobTrigger"/>
                 <ref bean="instanceSubmit2FireJobTrigger"/>
                 <ref bean="consumerEventQueueJobTrigger"/>
+                <ref bean="instanceRunDelayJobTrigger"/>
             </list>
         </property>
         <property name="autoStartup" value="false"></property>

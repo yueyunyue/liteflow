@@ -57,6 +57,11 @@
 				   and logic_run_time <= #{logicRunTimeLessEqual}
 					]]>
             </if>
+            <if test="logicRunTimeGreaterEqual != null">
+                <![CDATA[
+				   and logic_run_time >= #{logicRunTimeGreaterEqual}
+					]]>
+            </if>
         </where>
     </sql>
 

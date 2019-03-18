@@ -2,6 +2,8 @@ package cn.lite.flow.common.utils;
 
 import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
+import org.joda.time.Interval;
+import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -243,5 +245,27 @@ public class DateUtils {
     public static Date addMinute(Date date, int minute) {
         DateTime dateTime = new DateTime(date);
         return dateTime.plusMinutes(minute).toDate();
+    }
+    /**
+     * 减少分钟
+     * @param date
+     * @return
+     */
+    public static Date minusMinute(Date date, int minute) {
+        DateTime dateTime = new DateTime(date);
+        return dateTime.minusMinutes(minute).toDate();
+    }
+
+    /**
+     * 相差分钟数
+     * @param start
+     * @param end
+     * @return
+     */
+    public static int betweenMinutes(Date start, Date end){
+        Interval interval = new Interval(start.getTime(), end.getTime());
+        Period period = interval.toPeriod();
+
+        return period.getMinutes();
     }
 }
