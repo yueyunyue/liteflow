@@ -154,7 +154,7 @@
             <ref bean="instanceRunDelayJobDetail" />
         </property>
         <property name="cronExpression">
-            <value>0 */30 * * * ?</value>
+            <value>0 */30 7-23 * * ?</value>
         </property>
         <!-- 为了保证主切换后，阻塞的任务不会触发 -->
         <property name="misfireInstruction" value="2"></property>
