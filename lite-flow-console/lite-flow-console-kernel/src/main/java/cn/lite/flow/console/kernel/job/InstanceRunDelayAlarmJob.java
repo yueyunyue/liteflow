@@ -19,7 +19,7 @@ import java.util.List;
  * @author: yueyunyue
  * @create: 2019-03-18
  **/
-public class InstanceRunDelayJob extends AbstractUnstatefullJob {
+public class InstanceRunDelayAlarmJob extends AbstractUnstatefullJob {
 
     @Autowired
     private TaskInstanceService instanceService;
@@ -43,7 +43,7 @@ public class InstanceRunDelayJob extends AbstractUnstatefullJob {
             TaskInstanceQM instanceQM = new TaskInstanceQM();
             instanceQM.setStatus(TaskVersionStatus.INIT.getValue());
             instanceQM.setPage(Page.getPageByPageNo(pageNo, PAGE_SIZE));
-            instanceQM.setLogicRunTimeGreaterEqual(minutesAgo);
+            instanceQM.setLogicRunTimeLessEqual(minutesAgo);
             instanceQM.addOrderAsc(TaskInstanceQM.COL_LOGIC_RUN_TIME);
 
             instances = instanceService.list(instanceQM);

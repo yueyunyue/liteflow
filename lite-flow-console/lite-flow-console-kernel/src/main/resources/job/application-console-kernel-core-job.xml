@@ -137,21 +137,21 @@
     <!--
         6.任务延迟报警
     -->
-    <bean id="instanceRunDelayJob" class="cn.lite.flow.console.kernel.job.InstanceRunDelayJob" />
-    <bean id="instanceRunDelayJobDetail"
+    <bean id="instanceRunDelayAlarmJob" class="cn.lite.flow.console.kernel.job.InstanceRunDelayAlarmJob" />
+    <bean id="instanceRunDelayAlarmJobDetail"
           class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject">
-            <ref bean="instanceRunDelayJob" />
+            <ref bean="instanceRunDelayAlarmJob" />
         </property>
         <property name="targetMethod">
             <value>execute</value>
         </property>
         <property name="concurrent" value="false" />
     </bean>
-    <bean id="instanceRunDelayJobTrigger"
+    <bean id="instanceRunDelayAlarmJobTrigger"
           class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail">
-            <ref bean="instanceRunDelayJobDetail" />
+            <ref bean="instanceRunDelayAlarmJobDetail" />
         </property>
         <property name="cronExpression">
             <value>0 */30 7-23 * * ?</value>
@@ -170,7 +170,7 @@
                 <ref bean="instanceReady2FireJobTrigger"/>
                 <ref bean="instanceSubmit2FireJobTrigger"/>
                 <ref bean="consumerEventQueueJobTrigger"/>
-                <ref bean="instanceRunDelayJobTrigger"/>
+                <ref bean="instanceRunDelayAlarmJobTrigger"/>
             </list>
         </property>
         <property name="autoStartup" value="false"></property>
