@@ -15,7 +15,7 @@ public class ZKClientConfig {
 
     @Value("${zk.servers}")
     private String servers;
-    @Value("${zk.namespace}")
+    @Value("${zk.console.namespace}")
     private String namespace;
 
     @Bean("curatorZkClient")

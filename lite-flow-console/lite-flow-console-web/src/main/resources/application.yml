@@ -26,11 +26,6 @@ spring:
     active: @mvn.profile.active@
   mvc:
     static-path-pattern: /static/**
-  ###redis配置
-  redis:
-    host: ${redis.host}
-    port: ${redis.port}
-    password: ${redis.password}
   aop:
     # Set true to activate cglib, or it will use default jdk.
     proxy-target-class: true
@@ -49,19 +44,6 @@ spring:
 dubbo:
   application:
     name: console-provider
-  registry:
-    address: ${dubbo.registry.address}
-    file: ${dubbo.registry.cache}
   protocol:
     name: dubbo
     port: 20888
-  qos:
-    port: 33333
-
-zk:
-  servers: ${zk.servers}
-  namespace: lite-flow-console
-  leader:
-    path: /lite/console/server/leader
-
-
