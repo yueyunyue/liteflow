@@ -35,7 +35,6 @@ dubbo:
 zk:
   servers: zk.liteflow.cn:2181
   console:
-    namespace: lite-flow-console
     leader:
       path: /lite/console/server/leader
 

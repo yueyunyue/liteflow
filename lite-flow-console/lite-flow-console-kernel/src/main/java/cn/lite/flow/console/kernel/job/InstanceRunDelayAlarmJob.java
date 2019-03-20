@@ -52,7 +52,7 @@ public class InstanceRunDelayAlarmJob extends AbstractUnstatefullJob {
             }
             instances.forEach(instance -> {
                 Date logicRunTime = instance.getLogicRunTime();
-                int betweenMinutes = DateUtils.betweenMinutes(logicRunTime, now);
+                long betweenMinutes = DateUtils.betweenMinutes(logicRunTime, now);
                 String alarmMsg = String.format("任务版本:%d执行延迟%d分钟,异常信息:%s",
                         instance.getTaskVersionNo(),
                         betweenMinutes,
