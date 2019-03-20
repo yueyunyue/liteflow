@@ -20,9 +20,11 @@ console以及executor都是分布式的
 ![deploy](../img/deploy.png "部署")
 
 ## 2.控制台(CONSOLE) 
-```由于console要负责任务调度，只会有一个主来调度分配任务到executor，其他节点是backup；主备之间只有任务调度相关功能区分主备，页面上的操作不区分```
-### 1.配置文件，以test为例
 ```
+由于console要负责任务调度，只会有一个主来调度分配任务到executor，其他节点是backup；主备之间只有任务调度相关功能区分主备，页面上的操作不区分
+```
+### 1.配置文件，以test为例
+
 ## http端口
 server:
   port: 8080
