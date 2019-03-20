@@ -1,5 +1,7 @@
 package cn.lite.flow.console.service;
 
+import cn.lite.flow.console.model.basic.Task;
+
 import java.util.List;
 
 /**
@@ -15,6 +17,12 @@ public interface AlarmService {
      * @param msg
      */
     void alarmTask(long taskId, String msg);
+    /**
+     * 任务报警，包括电话、邮件
+     * @param taskId
+     * @param msg
+     */
+    void alarmTask(Task task, String msg);
 
     /**
      * 邮件报警

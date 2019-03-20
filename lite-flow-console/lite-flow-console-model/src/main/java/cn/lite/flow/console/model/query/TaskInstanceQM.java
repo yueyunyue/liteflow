@@ -26,7 +26,7 @@ public class TaskInstanceQM extends BaseQM {
 
     private Date logicRunTimeLessEqual;       //逻辑开始时间小于等于
 
-    private Long greaterThanId;               //大于某个id
+    private Long greaterThanId;               //大于某个id,避免深度分页引起性能问题
 
     public final static String COL_LOGIC_RUN_TIME = "logic_run_time";
 

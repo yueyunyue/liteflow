@@ -31,6 +31,13 @@ public class AlarmServiceImpl implements AlarmService {
     public void alarmTask(long taskId, String msg) {
 
         Task task = taskService.getById(taskId);
+        alarmTask(task, msg);
+
+
+    }
+
+    @Override
+    public void alarmTask(Task task, String msg) {
         if(task == null){
             return;
         }
@@ -45,8 +52,6 @@ public class AlarmServiceImpl implements AlarmService {
         String alarmPhone = task.getAlarmPhone();
         List<String> phones = alarmToString(alarmPhone);
         this.alarmPhone(phones, msg);
-
-
     }
 
     private List<String> alarmToString(String alarm){
