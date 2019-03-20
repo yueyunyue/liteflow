@@ -397,7 +397,9 @@ public class TaskVersionServiceImpl implements TaskVersionService {
 
         TimeUnit timeUnit = TimeUnit.getType(task.getPeriod());
         //计算时间区间运行时间
-        List<Date> taskRunTimes = QuartzUtils.getRunDateTimes(QuartzUtils.completeCrontab(task.getCronExpression()), startTime, endTime);
+        String cronExpression = task.getCronExpression();
+        String crontab = QuartzUtils.completeCrontab(cronExpression);
+        List<Date> taskRunTimes = QuartzUtils.getRunDateTimes(crontab, startTime, endTime);
         if (CollectionUtils.isEmpty(taskRunTimes)) {
             return;
         }

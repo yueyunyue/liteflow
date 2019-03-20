@@ -141,11 +141,13 @@ public class TaskInstanceController extends BaseController {
 
                 /**获取依赖的任务版本的状态*/
                 TaskVersion taskVersion = taskVersionService.getTaskVersion(dependency.getUpstreamTaskId(), dependency.getUpstreamTaskVersionNo());
-                JSONObject taskVersionObj = ModelUtils.getTaskVersionObj(taskVersion);
-                TaskInstance taskInstance = taskVersionService.getLatestInstance(taskVersion.getId());
-                taskVersionObj.put("logicRunTime", taskInstance == null ? "" : taskInstance.getLogicRunTime());
-                taskVersionObj.put("msg", taskInstance == null ? "" : taskInstance.getMsg());
-                obj.put("upstreamTaskVersion", taskVersionObj);
+                if(taskVersion != null){
+                    JSONObject taskVersionObj = ModelUtils.getTaskVersionObj(taskVersion);
+                    TaskInstance taskInstance = taskVersionService.getLatestInstance(taskVersion.getId());
+                    taskVersionObj.put("logicRunTime", taskInstance == null ? "" : taskInstance.getLogicRunTime());
+                    taskVersionObj.put("msg", taskInstance == null ? "" : taskInstance.getMsg());
+                    obj.put("upstreamTaskVersion", taskVersionObj);
+                }
 
                 obj.put("status", dependency.getStatus());
                 obj.put("createTime", dependency.getCreateTime());

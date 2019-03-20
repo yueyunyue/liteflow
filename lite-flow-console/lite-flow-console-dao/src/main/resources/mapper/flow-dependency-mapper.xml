@@ -25,6 +25,14 @@
 			<if test="taskDependencyId != null">
 				AND task_dependency_id = #{taskDependencyId}
 			</if>
+			<if test="taskDependencyIds != null">
+				and task_dependency_id in
+				<foreach collection="taskDependencyIds" item="did" open=" (" close=")" separator=",">
+					#{did}
+				</foreach>
+			</if>
+
+
 		</where>
 	</sql>
 

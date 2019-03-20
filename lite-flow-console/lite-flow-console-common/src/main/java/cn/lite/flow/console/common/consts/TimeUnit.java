@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public enum TimeUnit {
 
-//    SECOND(1, "s", "秒", "yyyyMMddHHmmss"),
+    SECOND(1, "s", "秒", "yyyyMMddHHmmss"),
 
     MINUTE(2, "m", "分", "yyyyMMddHHmm"),
 
