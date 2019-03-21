@@ -32,3 +32,6 @@ export async function onTask(id) {
 export async function offTask(id) {
     return requestPost(TaskConfig.urls.offUrl, {id: id});
 }
+export async function runTask(id) {
+    return requestPost(TaskConfig.urls.runTaskUrl, {id: id});
+}

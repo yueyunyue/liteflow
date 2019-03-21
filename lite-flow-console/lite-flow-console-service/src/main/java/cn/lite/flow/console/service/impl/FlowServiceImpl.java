@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -382,12 +383,9 @@ public class FlowServiceImpl implements FlowService {
                             continue;
                         }
                         /**
-                         * 校验是否可以下线
+                         * 可以下线的
                          */
-                        Tuple<Boolean, List<TaskDependency>> tryOfflineResult = taskService.tryOffline(taskId);
-                        if(tryOfflineResult.getA()){
-                            canOfflineTaskIds.add(taskId);
-                        }
+                        canOfflineTaskIds.add(taskId);
                     }catch (Throwable e){
                         LOG.error("task offline error:" + taskId, e);
                         results.add(e.getMessage());

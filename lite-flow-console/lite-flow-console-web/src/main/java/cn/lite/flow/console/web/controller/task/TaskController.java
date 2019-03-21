@@ -1,5 +1,7 @@
 package cn.lite.flow.console.web.controller.task;
 
+import cn.lite.flow.console.common.enums.AuthCheckTypeEnum;
+import cn.lite.flow.console.common.enums.OperateTypeEnum;
 import cn.lite.flow.console.common.model.vo.SessionUser;
 import cn.lite.flow.console.common.enums.TargetTypeEnum;
 import cn.lite.flow.console.common.exception.ConsoleRuntimeException;
@@ -214,6 +216,7 @@ public class TaskController extends BaseController {
      * @param description   任务说明
      * @return
      */
+    @AuthCheck(checkType = AuthCheckTypeEnum.AUTH_CHECK_TASK, operateType = OperateTypeEnum.OPERATE_TYPE_EDIT)
     @RequestMapping(value = "copy")
     public String copy(
             @RequestParam(value = "id") Long id,
@@ -244,7 +247,7 @@ public class TaskController extends BaseController {
      * @param description       说明
      * @return
      */
-    @AuthCheck
+    @AuthCheck(checkType = AuthCheckTypeEnum.AUTH_CHECK_TASK, operateType = OperateTypeEnum.OPERATE_TYPE_EDIT)
     @RequestMapping(value = "edit", method = {RequestMethod.POST})
     public String edit(
             @RequestParam(value = "id") long id,
@@ -291,7 +294,7 @@ public class TaskController extends BaseController {
      * @param id    任务id
      * @return
      */
-    @AuthCheck
+    @AuthCheck(checkType = AuthCheckTypeEnum.AUTH_CHECK_TASK, operateType = OperateTypeEnum.OPERATE_TYPE_EXECUTE)
     @RequestMapping(value = "online")
     public String online(@RequestParam(value = "id") Long id) {
         boolean result = taskService.online(id);
@@ -306,7 +309,7 @@ public class TaskController extends BaseController {
      * @param id    任务id
      * @return
      */
-    @AuthCheck
+    @AuthCheck(checkType = AuthCheckTypeEnum.AUTH_CHECK_TASK, operateType = OperateTypeEnum.OPERATE_TYPE_EXECUTE)
     @RequestMapping(value = "offline")
     public String offline(@RequestParam(value = "id") Long id) {
         boolean result = taskService.offline(id);
@@ -373,10 +376,13 @@ public class TaskController extends BaseController {
      * @param id
      * @return
      */
+    @AuthCheck(checkType = AuthCheckTypeEnum.AUTH_CHECK_TASK, operateType = OperateTypeEnum.OPERATE_TYPE_EXECUTE)
     @RequestMapping(value = "run")
     public String run(@RequestParam(value = "id") long id) {
 
-        return ResponseUtils.success("");
+        taskService.run(id);
+
+        return ResponseUtils.success("操作成功");
     }
 
 

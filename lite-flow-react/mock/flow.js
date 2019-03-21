@@ -41,6 +41,10 @@ module.exports = {
         status: 0,
         data: 101
     },
+    'POST /console/flow/editLinks': {
+        status: 0,
+        data: 101
+    },
     'POST /console/flow/delete': {
         status: 0
     }

@@ -450,6 +450,7 @@ class DagShow extends Component<DagProps, any> {
             links.push({
                 taskId: task.id,
                 upstreamTaskId: tk.id,
+                type: 0,
                 config: ""
             });
         }
@@ -541,8 +542,8 @@ class DagShow extends Component<DagProps, any> {
         let that = this;
         return {
             link: that.linkData,
-            onOk(config) {
-                that.editLinkConfig(config);
+            onOk(type, config) {
+                that.editLinkConfig(type, config);
                 that.hideLinkConfigModal()
             },
             onCancel() {
@@ -563,12 +564,12 @@ class DagShow extends Component<DagProps, any> {
      * 编辑link config
      * @param config
      */
-    editLinkConfig = (config) => {
+    editLinkConfig = (type, config) => {
         let dagData = this.dagData;
         let linkData = this.linkData;
         const lk = this.getLink(linkData.taskId, linkData.upstreamTaskId);
         lk["config"] = config;
-        lk["type"] = EnumUtils.taskDependencyTypeTimeRange;
+        lk["type"] = type;
         let dagDataNew = this.shuffleAndArrange(dagData);
         this.renderDag(dagDataNew);
     }
@@ -649,6 +650,7 @@ class DagShow extends Component<DagProps, any> {
             return {
                 taskId: d.taskId,
                 upstreamTaskId: d.upstreamTaskId,
+                type: d.type,
                 config: d.config
             }
         });
@@ -773,7 +775,7 @@ class DagShow extends Component<DagProps, any> {
                     <div className={"menu-container"} key={"menu2Container"}
                          style={{top: this.state.labelTop, left: this.state.labelLeft}}>
                         <div>
-                            <Button onClick={this.showLinkConfModal}>编辑依赖关系</Button>
+                            <Button onClick={this.showLinkConfModal}>编辑时间区间</Button>
                         </div>
                         <div>
                             <Popconfirm title={"是否删除关联？"} onConfirm={this.onDeleteLink}>

@@ -3,10 +3,12 @@ package cn.lite.flow.console.service.impl;
 import cn.lite.flow.common.model.Tuple;
 import cn.lite.flow.common.model.consts.BooleanType;
 import cn.lite.flow.common.model.consts.CommonConstants;
+import cn.lite.flow.console.common.consts.TimeUnit;
 import cn.lite.flow.console.common.enums.AuthCheckTypeEnum;
 import cn.lite.flow.console.common.enums.SourceTypeEnum;
 import cn.lite.flow.console.common.exception.ConsoleRuntimeException;
 import cn.lite.flow.common.utils.DateUtils;
+import cn.lite.flow.console.common.utils.TaskVersionUtils;
 import cn.lite.flow.console.dao.mapper.TaskMapper;
 import cn.lite.flow.console.model.basic.Task;
 import cn.lite.flow.console.model.basic.TaskDependency;
@@ -254,5 +256,27 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public int statisByStatus(Integer status) {
         return Optional.ofNullable(taskMapper.statisByStatus(status)).orElse(0);
+    }
+
+    @Override
+    @Transactional("consoleTxManager")
+    public void run(long taskId) {
+        Date now = DateUtils.getNow();
+        Task task = taskMapper.getById(taskId);
+        if(task.getStatus() == TaskStatus.ONLINE.getValue()){
+            throw new ConsoleRuntimeException("为避免任务运行重复，上线状态的任务不能运行");
+        }
+        /**
+         * 以当前时间为基准，生成任务版本
+         */
+        TimeUnit period = TimeUnit.MINUTE;
+        Long runTaskVersionNo = TaskVersionUtils.getTaskVersion(now, period);
+        TaskVersion runTaskVersion = TaskVersion.newInstance(taskId, runTaskVersionNo);
+        taskVersionService.add(runTaskVersion);
+        /**
+         * 生成实例
+         */
+        taskVersionService.addVersionInstance(runTaskVersion.getId(), task.getPluginId(), task.getPluginConf(), now);
+
     }
 }
