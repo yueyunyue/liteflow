@@ -8,6 +8,7 @@ import cn.lite.flow.console.common.enums.AuthCheckTypeEnum;
 import cn.lite.flow.console.common.enums.SourceTypeEnum;
 import cn.lite.flow.console.common.exception.ConsoleRuntimeException;
 import cn.lite.flow.common.utils.DateUtils;
+import cn.lite.flow.console.common.utils.ParamExpressionUtils;
 import cn.lite.flow.console.common.utils.TaskVersionUtils;
 import cn.lite.flow.console.dao.mapper.TaskMapper;
 import cn.lite.flow.console.model.basic.Task;
@@ -274,9 +275,11 @@ public class TaskServiceImpl implements TaskService {
         TaskVersion runTaskVersion = TaskVersion.newInstance(taskId, runTaskVersionNo);
         taskVersionService.add(runTaskVersion);
         /**
-         * 生成实例
+         * 1.处理插件配置中的时间参数
+         * 2.生成实例
          */
-        taskVersionService.addVersionInstance(runTaskVersion.getId(), task.getPluginId(), task.getPluginConf(), now);
+        String pluginConfig = ParamExpressionUtils.handleTimeExpression(task.getPluginConf(), String.valueOf(runTaskVersionNo));
+        taskVersionService.addVersionInstance(runTaskVersion.getId(), task.getPluginId(), pluginConfig, now);
 
     }
 }
