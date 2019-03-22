@@ -19,5 +19,10 @@ public class DateTest {
         long betweenMinutes = DateUtils.betweenMinutes(date, now);
         System.out.println(betweenMinutes);
     }
+    @Test
+    public void testEndDate(){
+        Date now = DateUtils.getNow();
+        System.out.println(DateUtils.getEndTimeOfDay(now));
+    }
 
 }
