@@ -79,11 +79,9 @@ public class VersionDailyInit2FireJob extends AbstractUnstatefullJob {
                              * 生成数据版本
                              */
                             Date tomorrow = DateUtils.longToDate(dailyInit.getDay());
-                            TimeUnit timeUnit = TimeUnit.getType(task.getPeriod());
-                            TimeCalculator calculator = TimeCalculatorFactory.getCalculator(timeUnit);
-                            calculator.setTime(tomorrow);
-                            TimeRange range = calculator.getRange();
-                            versionService.calVersionAndInstanceWithDependency(taskId, range.getStartTime(), range.getEndTime());
+                            Date startTime = DateUtils.getStartTimeOfDay(tomorrow);
+                            Date endTime = DateUtils.getEndTimeOfDay(tomorrow);
+                            versionService.calVersionAndInstanceWithDependency(taskId, startTime, endTime);
                             dailyInitService.successDailyInit(dailyInit.getId());
                             LOG.info("daily init of task:{}", taskId);
                         }catch (Throwable e){
