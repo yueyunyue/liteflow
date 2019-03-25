@@ -45,8 +45,6 @@ public class VersionDailyInit2FireJob extends AbstractUnstatefullJob {
 
     private final static int CONCURRENT_COUNT = 10;
 
-    private final static long MAX_WAIT_TINE = 10000L;
-
     @Override
     public void executeInternal() {
 
@@ -57,7 +55,7 @@ public class VersionDailyInit2FireJob extends AbstractUnstatefullJob {
         dailyInitQM.addOrderAsc(TaskVersionDailyInitQM.COL_ID);
 
         List<TaskVersionDailyInit> dailyInits = null;
-        int pageNo = 1;
+        final int pageNo = 1;
         do{
             try {
                 dailyInitQM.setPage(Page.getPageByPageNo(pageNo, PAGE_SIZE));
@@ -76,11 +74,11 @@ public class VersionDailyInit2FireJob extends AbstractUnstatefullJob {
                                 return;
                             }
                             /**
-                             * 生成数据版本
+                             * 生成任务版本
                              */
-                            Date tomorrow = DateUtils.longToDate(dailyInit.getDay());
-                            Date startTime = DateUtils.getStartTimeOfDay(tomorrow);
-                            Date endTime = DateUtils.getEndTimeOfDay(tomorrow);
+                            Date day = DateUtils.longToDate(dailyInit.getDay());
+                            Date startTime = DateUtils.getStartTimeOfDay(day);
+                            Date endTime = DateUtils.getEndTimeOfDay(day);
                             versionService.calVersionAndInstanceWithDependency(taskId, startTime, endTime);
                             dailyInitService.successDailyInit(dailyInit.getId());
                             LOG.info("daily init of task:{}", taskId);
@@ -93,12 +91,10 @@ public class VersionDailyInit2FireJob extends AbstractUnstatefullJob {
                         }
                     });
                 }
-                countDownLatch.await(MAX_WAIT_TINE, java.util.concurrent.TimeUnit.MILLISECONDS);
+                countDownLatch.await();
             }catch (Throwable e){
                 LOG.error("daily init error", e);
             }
-
-            pageNo ++;
 
         }while (CollectionUtils.isNotEmpty(dailyInits));
     }
