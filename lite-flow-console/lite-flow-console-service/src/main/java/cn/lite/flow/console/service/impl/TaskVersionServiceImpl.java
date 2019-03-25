@@ -317,6 +317,7 @@ public class TaskVersionServiceImpl implements TaskVersionService {
     @Transactional("consoleTxManager")
     public void addInstanceDependencies(long instanceId) {
         TaskInstance taskInstance = taskInstanceService.getById(instanceId);
+        LOG.info("add instance dependency, instance:{}", instanceId);
         Long taskId = taskInstance.getTaskId();
         Long versionNo = taskInstance.getTaskVersionNo();
         Task task = taskService.getById(taskId);
@@ -338,12 +339,13 @@ public class TaskVersionServiceImpl implements TaskVersionService {
                             upstreamTaskVersions.forEach(upstreamTaskVersion -> {
                                 TaskInstanceDependency instanceDependency = TaskInstanceDependency.newInstance(instanceId, upstreamTaskId, upstreamTaskVersion);
                                 instanceDependency.setStatus(StatusType.ON.getValue());
+                                LOG.info("add instance dependency,info:{}", instanceDependency);
                                 instanceDependencies.add(instanceDependency);
                             });
                         }
                     }
                 }else {
-                    LOG.error("dependency:{} is offline,msg:{}", dependency.getId(), dependency.toString());
+                    LOG.error("dependency:{} is offline, instance:{} ,msg:{}", dependency.getId(), instanceId, dependency.toString());
                 }
             });
             if(CollectionUtils.isNotEmpty(instanceDependencies)){
