@@ -396,6 +396,7 @@ public class TaskVersionServiceImpl implements TaskVersionService {
         Long pluginId = task.getPluginId();
 
         TimeUnit timeUnit = TimeUnit.getType(task.getPeriod());
+        LOG.info("calculate task version, taskId:{}, startTime:{}, endTime:{}", taskId, DateUtils.formatToDateTimeStr(startTime), DateUtils.formatToDateTimeStr(endTime));
         //计算时间区间运行时间
         String cronExpression = task.getCronExpression();
         String crontab = QuartzUtils.completeCrontab(cronExpression);
@@ -407,9 +408,11 @@ public class TaskVersionServiceImpl implements TaskVersionService {
             Long taskVersionNo = TaskVersionUtils.getTaskVersion(runTime, timeUnit);
             TaskVersion taskVersion = this.getTaskVersion(taskId, taskVersionNo);
             if (taskVersion == null) {
+                LOG.info("init task version, taskId:{}, versionNo:{}", taskId, taskVersionNo);
                 taskVersion = TaskVersion.newInstance(taskId, taskVersionNo);
                 this.add(taskVersion);
             } else {
+                LOG.info("task version is already exists, taskId:{}, versionNo:{}", taskId, taskVersionNo);
                 /**
                  * 如果实例依旧在执行中
                  * 先kill掉，再重新生成新的实例
