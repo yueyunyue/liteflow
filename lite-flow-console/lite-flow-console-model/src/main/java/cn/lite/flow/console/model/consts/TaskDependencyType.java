@@ -11,12 +11,15 @@ public enum TaskDependencyType {
 
     DEFAULT(0, "无"),
 
-    TIME_RANGE(1, "时间表达式");
+    OFFSET(1, "偏移量"),
+
+    TIME_RANGE(2, "时间表达式")
+
+    ;
 
     private int value;
 
     private String desc;
-
 
     TaskDependencyType(int value, String desc) {
         this.value = value;

@@ -242,17 +242,25 @@ public class TaskFlowController extends BaseController {
             /**
              * 校验config配置
              */
-            if (type != null && type == TaskDependencyType.TIME_RANGE.getValue()) {
-                boolean checkPass = true;
-                if (StringUtils.isBlank(conf)) {
-                    checkPass = false;
-                }
-                String expression = ParamExpressionUtils.handleTimeExpression(conf, testTaskVersionStr);
-                if (StringUtils.equals(expression, conf)) {
-                    checkPass = false;
-                }
-                if (!checkPass) {
-                    return ResponseUtils.error("依赖{}->{}关系配置有误");
+            if (type != null) {
+                if (type == TaskDependencyType.TIME_RANGE.getValue()) {
+                    boolean checkPass = true;
+                    if (StringUtils.isBlank(conf)) {
+                        checkPass = false;
+                    }
+                    String expression = ParamExpressionUtils.handleTimeExpression(conf, testTaskVersionStr);
+                    if (StringUtils.equals(expression, conf)) {
+                        checkPass = false;
+                    }
+                    if (!checkPass) {
+                        return ResponseUtils.error("依赖{}->{}关系配置有误");
+                    }
+                }else if (type == TaskDependencyType.OFFSET.getValue()) {
+                    try {
+                        Integer.parseInt(conf);
+                    }catch (Throwable e){
+                        return ResponseUtils.error("依赖{}->{}关系偏移量配置有误");
+                    }
                 }
             }
 

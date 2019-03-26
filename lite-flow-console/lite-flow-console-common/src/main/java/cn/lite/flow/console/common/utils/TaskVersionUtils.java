@@ -3,7 +3,13 @@ package cn.lite.flow.console.common.utils;
 import cn.lite.flow.console.common.consts.Constants;
 import cn.lite.flow.console.common.consts.TimeUnit;
 import cn.lite.flow.console.common.time.TimeCalculatorFactory;
+import cn.lite.flow.console.common.time.calculator.DayTimeCalculator;
+import cn.lite.flow.console.common.time.calculator.HourTimeCalculator;
+import cn.lite.flow.console.common.time.calculator.MinuteTimeCalculator;
+import cn.lite.flow.console.common.time.calculator.MonthTimeCalculator;
 import cn.lite.flow.console.common.time.calculator.TimeCalculator;
+import cn.lite.flow.console.common.time.calculator.WeekTimeCalculator;
+import cn.lite.flow.console.common.time.calculator.YearTimeCalculator;
 import cn.lite.flow.console.model.basic.Task;
 import cn.lite.flow.console.model.basic.TaskDependency;
 import cn.lite.flow.console.model.consts.TaskDependencyType;
@@ -155,6 +161,58 @@ public class TaskVersionUtils {
             startTime = timeCalculator.getStartTime();
             endTime = timeCalculator.getEndTime();
         /**
+         * 偏移量
+         */
+        }else if(dependency.getType() == TaskDependencyType.OFFSET.getValue()){
+
+            /**
+             * 取两个周期中比较大的
+             */
+            int maxPeriod = Math.max(task.getPeriod(), upstreamTask.getPeriod());
+            TimeUnit timeUnit = TimeUnit.getType(maxPeriod);
+            /**
+             * 获取偏移量
+             */
+            String config = dependency.getConfig();
+            int offset = Integer.parseInt(config);
+            Date offsetDate = null;
+
+            /**
+             * 计算offsetDate
+             */
+            DateTime offsetDateTime = new DateTime(taskVersionDate);
+            switch (timeUnit){
+                case SECOND:
+                    offsetDate = offsetDateTime.plusSeconds(offset).toDate();
+                    break;
+                case MINUTE:
+                    offsetDate = offsetDateTime.plusMinutes(offset).toDate();
+                    break;
+                case HOUR:
+                    offsetDate = offsetDateTime.plusHours(offset).toDate();
+                    break;
+                case DAY:
+                    offsetDate = offsetDateTime.plusDays(offset).toDate();
+                    break;
+                case WEEK:
+                    offsetDate = offsetDateTime.plusWeeks(offset).toDate();
+                    break;
+                case MONTH:
+                    offsetDate = offsetDateTime.plusMonths(offset).toDate();
+                    break;
+                case YEAR:
+                    offsetDate = offsetDateTime.plusYears(offset).toDate();
+                    break;
+            }
+            /**
+             * 计算时间区间
+             */
+            TimeCalculator timeCalculator = TimeCalculatorFactory.getCalculator(timeUnit);
+            timeCalculator.setTime(offsetDate);
+
+            startTime = timeCalculator.getStartTime();
+            endTime = timeCalculator.getEndTime();
+        /**
          * 时间表达式区间
          */
         }else if(dependency.getType() == TaskDependencyType.TIME_RANGE.getValue()){
@@ -175,6 +233,8 @@ public class TaskVersionUtils {
         return getTaskVersions(upstreamTask, startTime, endTime);
 
     }
+
+
 
 
 

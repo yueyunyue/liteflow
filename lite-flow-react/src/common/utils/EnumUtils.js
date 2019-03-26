@@ -44,6 +44,7 @@ taskVersionFinalStatusMap[taskVersionFinalStatusKilled] = "KILLED";
  * 依赖相关
  */
 const taskDependencyTypeDefault = 0;
+const taskDependencyTypeOffset = 1;
 const taskDependencyTypeTimeRange = 1;
 
 /**
@@ -89,6 +90,8 @@ module.exports = {
      * 任务依赖
      */
   taskDependencyTypeDefault: taskDependencyTypeDefault,
+
+  taskDependencyTypeOffset: taskDependencyTypeOffset,
 
   taskDependencyTypeTimeRange: taskDependencyTypeTimeRange,
 

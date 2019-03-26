@@ -39,13 +39,22 @@ class LinkConfModal extends Component<ModalProps, any> {
                 onOk: handleOk,
                 onCancel: this.props.onCancel
             };
-
+        const {link} = this.props;
+        const linkConfig = link["config"];
+        let config = null;
+        if(linkConfig){
+            try{
+                config = JSON.parse(linkConfig);
+            }catch (e) {
+                console.log(e);
+            }
+        }
 
         return (<Modal {...modalOpts}>
             <Form layout={'horizontal'} >
                 <Form.Item label='开始时间' hasFeedback {...formItemLayout}>
                     {this.props.form.getFieldDecorator('startTime', {
-                        initialValue: CommonUtils.getStringValueFromModel("config.startTime", this.props.link, "${time: yyyy-MM-dd,-1d}"),
+                        initialValue: CommonUtils.getStringValueFromModel("startTime", config, "${time: yyyy-MM-dd,-1d}"),
                         rules: [
                             {
                                 required: true,
@@ -56,7 +65,7 @@ class LinkConfModal extends Component<ModalProps, any> {
                 </Form.Item>
                 <Form.Item label='结束时间' hasFeedback {...formItemLayout}>
                     {this.props.form.getFieldDecorator('endTime', {
-                        initialValue: CommonUtils.getStringValueFromModel("config.endTime", this.props.link, "${time: yyyy-MM-dd,-1d}"),
+                        initialValue: CommonUtils.getStringValueFromModel("endTime", config, "${time: yyyy-MM-dd,-1d}"),
                         rules: [
                             {
                                 required: true,
