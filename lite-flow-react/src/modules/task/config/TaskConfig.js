@@ -9,6 +9,7 @@ module.exports = {
         getRelationUrl: "/console/task/getRelation",
         getRelatedFlowUrl: "/console/task/getRelatedFlow",
         getAllAuthTaskUrl: "/console/common/getAllAuthTask",
+        runTaskUrl: "/console/task/run"
 
     }
 }

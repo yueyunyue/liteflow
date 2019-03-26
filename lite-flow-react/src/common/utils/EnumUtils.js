@@ -85,6 +85,13 @@ module.exports = {
   exeJobStatusMap: exeJobStatusMap,
 
   exeJobCallbackStatusMap: exeJobCallbackStatusMap,
+    /**
+     * 任务依赖
+     */
+  taskDependencyTypeDefault: taskDependencyTypeDefault,
+
+  taskDependencyTypeTimeRange: taskDependencyTypeTimeRange,
+
 
   booleanMap: {
     0: "否",

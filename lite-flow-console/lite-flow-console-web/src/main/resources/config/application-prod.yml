@@ -1,0 +1,40 @@
+server:
+  port: 8080
+## 数据源配置
+db:
+  host: db.liteflow.cn
+  port: 3306
+  name: lite_flow
+  user: lite
+  pwd: lite
+###redis配置
+spring:
+  redis:
+    host: redis.liteflow.cn
+    port: 6379
+    password:
+    timeout: 100000
+    pool:
+      maxIdle: 20
+      maxActive: 20
+      maxWaitMillis: 1000
+      testOnBorrow: true
+
+logging:
+    config: classpath:config/log4j2-prod.xml
+
+dubbo:
+  protocol:
+    name: dubbo
+    port: 20888
+  registry:
+    file: /tmp/dubbo.console.cache
+  qos:
+    port: 33333
+
+zk:
+  servers: zk.liteflow.cn:2181
+  console:
+    leader:
+      path: /lite/console/server/leader
+

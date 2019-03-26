@@ -8,6 +8,7 @@ import cn.lite.flow.console.model.query.TaskQM;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by ly on 2018/7/23.
@@ -52,5 +53,11 @@ public interface TaskService extends BaseService<Task, TaskQM> {
      * @return
      */
     int statisByStatus(Integer status);
+
+    /**
+     * 运行当前任务
+     * @param taskId
+     */
+    void run(long taskId);
 
 }

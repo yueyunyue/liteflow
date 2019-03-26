@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -382,12 +383,9 @@ public class FlowServiceImpl implements FlowService {
                             continue;
                         }
                         /**
-                         * 校验是否可以下线
+                         * 可以下线的
                          */
-                        Tuple<Boolean, List<TaskDependency>> tryOfflineResult = taskService.tryOffline(taskId);
-                        if(tryOfflineResult.getA()){
-                            canOfflineTaskIds.add(taskId);
-                        }
+                        canOfflineTaskIds.add(taskId);
                     }catch (Throwable e){
                         LOG.error("task offline error:" + taskId, e);
                         results.add(e.getMessage());
@@ -442,7 +440,7 @@ public class FlowServiceImpl implements FlowService {
      * @param taskIds
      * @param sharedDependency
      */
-    private Set<Long> getFlowSharedTask(Long collectionId, List<Long> taskIds, Set<Long> sharedDependency) {
+    private Set<Long> getFlowSharedTask(Long flowId, List<Long> taskIds, Set<Long> sharedDependency) {
         Set<Long> sharedTaskSet = Sets.newHashSet();
         /**
          * 1.通过共享依赖获取部分共享任务
@@ -471,7 +469,7 @@ public class FlowServiceImpl implements FlowService {
                 if (CollectionUtils.isNotEmpty(flowIdSet)) {
                     if (flowIdSet.size() > 1) {
                         sharedTaskSet.add(taskId);
-                    } else if (flowIdSet.size() == 1 && !flowIdSet.contains(collectionId)) {
+                    } else if (flowIdSet.size() == 1 && !flowIdSet.contains(flowId)) {
                         sharedTaskSet.add(taskId);
                     }
                 }
@@ -561,7 +559,7 @@ public class FlowServiceImpl implements FlowService {
             }
         }
         //任务流所有的依赖关系
-        List<FlowDependency> collectionDependencies = Lists.newArrayList();
+        List<FlowDependency> flowDependencies = Lists.newArrayList();
         //用来记录需要删除的链接
         List<Long> toDeleteDependencies = Lists.newArrayList();
         //记录新提交的依赖在任务任务流中已经存在的id
@@ -609,10 +607,10 @@ public class FlowServiceImpl implements FlowService {
                      * 虽然当前依赖已经添加到另外一个任务流，
                      * 当前任务流可以添加一个与依赖之间的关联，即多个任务流共享一个依赖
                      */
-                    FlowDependency collectionDependency = new FlowDependency();
-                    collectionDependency.setFlowId(flowId);
-                    collectionDependency.setTaskDependencyId(td.getId());
-                    collectionDependencies.add(collectionDependency);
+                    FlowDependency flowDependency = new FlowDependency();
+                    flowDependency.setFlowId(flowId);
+                    flowDependency.setTaskDependencyId(td.getId());
+                    flowDependencies.add(flowDependency);
                 } else {
                     //任务流已经存在的依赖id
                     alreadyExitFlowDepenIdSet.add(td.getId());
@@ -669,14 +667,14 @@ public class FlowServiceImpl implements FlowService {
                 FlowDependency flowDependency = new FlowDependency();
                 flowDependency.setFlowId(flowId);
                 flowDependency.setTaskDependencyId(dependency.getId());
-                collectionDependencies.add(flowDependency);
+                flowDependencies.add(flowDependency);
             }
         }
         /**
          * 建立任务流与依赖直接的联系
          */
-        if (CollectionUtils.isNotEmpty(collectionDependencies)) {
-            flowDependencyService.addBatch(collectionDependencies);
+        if (CollectionUtils.isNotEmpty(flowDependencies)) {
+            flowDependencyService.addBatch(flowDependencies);
         }
 
     }

@@ -68,10 +68,10 @@ public class TaskFlowController extends BaseController {
     /**
      * 获取任务流列表
      *
-     * @param nameLike      名称模糊查询
-     * @param status        状态
-     * @param pageNum       页码
-     * @param pageSize      每页数量
+     * @param nameLike 名称模糊查询
+     * @param status   状态
+     * @param pageNum  页码
+     * @param pageSize 每页数量
      * @return
      */
     @RequestMapping(value = "list")
@@ -130,8 +130,8 @@ public class TaskFlowController extends BaseController {
     /**
      * 添加任务流
      *
-     * @param name          名称
-     * @param description   说明
+     * @param name        名称
+     * @param description 说明
      * @return
      */
     @RequestMapping(value = "add")
@@ -157,9 +157,9 @@ public class TaskFlowController extends BaseController {
     /**
      * 编辑
      *
-     * @param id                id
-     * @param name              名称
-     * @param description       说明
+     * @param id          id
+     * @param name        名称
+     * @param description 说明
      * @return
      */
     @RequestMapping(value = "edit")
@@ -205,8 +205,8 @@ public class TaskFlowController extends BaseController {
     /**
      * 编辑任务流的依赖
      *
-     * @param id            任务流id
-     * @param links         任务依赖
+     * @param id    任务流id
+     * @param links 任务依赖
      * @return
      */
     @AuthCheck(checkType = AuthCheckTypeEnum.AUTH_CHECK_FLOW)
@@ -229,12 +229,12 @@ public class TaskFlowController extends BaseController {
         Long testTaskVersion = TaskVersionUtils.getTaskVersion(DateUtils.getNow(), TimeUnit.DAY);
         String testTaskVersionStr = String.valueOf(testTaskVersion);
 
-        for(int i = 0; i < datas.size(); i ++){
+        for (int i = 0; i < datas.size(); i++) {
             JSONObject data = datas.getJSONObject(i);
             Long taskId = data.getLong("taskId");
             Long upstreamId = data.getLong("upstreamTaskId");
             Integer type = data.getInteger("type");
-            if(type == null){
+            if (type == null) {
                 type = 0;
             }
             String conf = data.getString("config");
@@ -242,16 +242,16 @@ public class TaskFlowController extends BaseController {
             /**
              * 校验config配置
              */
-            if(type != null && type == TaskDependencyType.TIME_RANGE.getValue()){
+            if (type != null && type == TaskDependencyType.TIME_RANGE.getValue()) {
                 boolean checkPass = true;
-                if(StringUtils.isBlank(conf)){
+                if (StringUtils.isBlank(conf)) {
                     checkPass = false;
                 }
                 String expression = ParamExpressionUtils.handleTimeExpression(conf, testTaskVersionStr);
-                if(StringUtils.equals(expression, conf)){
+                if (StringUtils.equals(expression, conf)) {
                     checkPass = false;
                 }
-                if(!checkPass){
+                if (!checkPass) {
                     return ResponseUtils.error("依赖{}->{}关系配置有误");
                 }
             }
@@ -282,7 +282,7 @@ public class TaskFlowController extends BaseController {
     /**
      * 发布任务流
      *
-     * @param id    任务流id
+     * @param id 任务流id
      * @return
      */
     @AuthCheck(checkType = AuthCheckTypeEnum.AUTH_CHECK_FLOW)
@@ -290,18 +290,19 @@ public class TaskFlowController extends BaseController {
     public String online(@RequestParam(value = "id") Long id) {
         Tuple<Boolean, List<String>> result = flowService.online(id);
         if (result.getA()) {
-            if(CollectionUtils.isNotEmpty(result.getB())){
+            if (CollectionUtils.isNotEmpty(result.getB())) {
                 return ResponseUtils.success(Joiner.on(",").join(result.getB()));
-            }else{
+            } else {
                 return ResponseUtils.success("上线成功");
-            }        }
+            }
+        }
         return ResponseUtils.error(Joiner.on(",").join(result.getB()));
     }
 
     /**
      * 下线任务流
      *
-     * @param id    任务流id
+     * @param id 任务流id
      * @return
      */
     @AuthCheck(checkType = AuthCheckTypeEnum.AUTH_CHECK_FLOW)
@@ -309,9 +310,9 @@ public class TaskFlowController extends BaseController {
     public String offline(Long id) {
         Tuple<Boolean, List<String>> result = flowService.offline(id);
         if (result.getA()) {
-            if(CollectionUtils.isNotEmpty(result.getB())){
+            if (CollectionUtils.isNotEmpty(result.getB())) {
                 return ResponseUtils.success(Joiner.on(",").join(result.getB()));
-            }else{
+            } else {
                 return ResponseUtils.success("下线成功");
             }
         }

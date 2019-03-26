@@ -8,19 +8,17 @@ db:
   user: lite
   pwd: lite
 
-###redis配置
-redis:
-  host: redis.liteflow.cn
-  port: 6379
-  password:
-
 logging:
-    config: classpath:log4j2-test.xml
+    config: classpath:config/log4j2-test.xml
 
 dubbo:
   registry:
-    address: zookeeper://zk.liteflow.cn:2181
-    file: /tmp/dubbo.console.cache
+    file:  /tmp/dubbo.executor.cache
+  protocol:
+    name: dubbo
+    port: 20880
+  qos:
+    port: 22222
 
 zk:
   servers: zk.liteflow.cn:2181
@@ -30,3 +28,4 @@ lite:
   flow:
     executor:
       workspace: /tmp/lite/executor
+      isAutoRegisterToDB: true

@@ -105,6 +105,7 @@ public class FlowDependencyServiceImpl implements FlowDependencyService {
     @Override
     public boolean isFlowUnique(long dependencyId, long flowId) {
         FlowDependencyQM qm = new FlowDependencyQM();
+        qm.setFlowId(flowId);
         qm.setTaskDependencyId(dependencyId);
         List<FlowDependency> flowDependencies = flowDependencyMapper.findList(qm);
         if(CollectionUtils.isNotEmpty(flowDependencies)

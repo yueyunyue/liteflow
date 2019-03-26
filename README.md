@@ -1,5 +1,6 @@
 # 一、LiteFlow是做什么的
-liteflow是一个基于任务版本来实现的分布式任务调度系统
+
+liteflow是一个基于任务版本来实现的分布式任务流调度系统
 
 1.实现任务在任务流间共享
 
@@ -8,6 +9,8 @@ liteflow是一个基于任务版本来实现的分布式任务调度系统
 3.一键修复任务/任务流修复提高数据修复效率
 
 4.动态表单+容器机制，提供一个可扩展性比较强的执行引擎
+
+5.执行者可以运行任何类型的任务，shell、python
 
 # 二、LiteFlow项目介绍
 ![module-struct](./docs/img/module-struct.png "模块图")
@@ -28,6 +31,7 @@ liteflow是一个基于任务版本来实现的分布式任务调度系统
 
 
 # 三、相关知识
+
  1.[控制台页面](docs/md/console.md)
 
  2.[项目运行原理](docs/md/developer.md)
@@ -35,6 +39,8 @@ liteflow是一个基于任务版本来实现的分布式任务调度系统
  3.[任务版本&时间计算器](docs/md/task-version.md)
  
  4.[容器&插件&动态表单](docs/md/container-dynamic-form.md)
+ 
+ 5.[项目部署相关](docs/md/deploy.md)
 
 > 静态页面:[http://101.200.43.196:8000/#/login](http://101.200.43.196:8000/#/login)
 > 用户名:lite 密码：123456  

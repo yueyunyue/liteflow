@@ -126,6 +126,10 @@ export class TaskList extends Component<TaskListProps, { showModal, showVersionM
     handleOff(rowData, e) {
         this.props.taskModel.off(rowData.id);
     }
+    //上线
+    run(rowData, e) {
+        this.props.taskModel.run(rowData.id);
+    }
     /**
      * 权限
      */
@@ -219,6 +223,7 @@ export class TaskList extends Component<TaskListProps, { showModal, showVersionM
                 render: (text, record, index) => {
 
                     const {status} = record;
+                    let runBtn = [];
                     let onlineOrOfflineBtn = ( <Popconfirm title='确定下线吗？' onConfirm={e => this.handleOff(record, e)}>
                         <Button  size={'small'}  type='ghost'>
                             下线
@@ -231,6 +236,13 @@ export class TaskList extends Component<TaskListProps, { showModal, showVersionM
                                 上线
                             </Button>
                         </Popconfirm>);
+
+                        runBtn.push(<Popconfirm title='确定运行吗？'  onConfirm={e => this.run(record, e)}>
+                            <Button className={"margin-right5"} size={'small'} type='ghost'>
+                                运行
+                            </Button>
+                        </Popconfirm>);
+
                     }
 
                     return <div className={"list-btn-container"}>
@@ -247,6 +259,7 @@ export class TaskList extends Component<TaskListProps, { showModal, showVersionM
                             <Button type='ghost' className={"margin-right5"}  size={'small'}  onClick={e => this.showVersionModal(record, e)}>
                                 记录
                             </Button>
+                            {runBtn}
                             <Button type='ghost' className={"margin-right5"}  size={'small'}  onClick={e => this.showAuthModal(record, e)}>
                                 权限
                             </Button>

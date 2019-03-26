@@ -213,10 +213,14 @@ class TaskModal extends Component<ModalProps, { retry, concurrency, pluginId, pl
                 let pluginConf = data["pluginConf"];
                 if(pluginConf){
                     data["pluginConf"] = JSON.stringify(pluginConf);
+                }else{
+                    data["pluginConf"] = "";
                 }
                 let retryConf = data["retryConf"];
                 if(retryConf){
                     data["retryConf"] = JSON.stringify(retryConf);
+                }else{
+                    data["retryConf"] = "";
                 }
                 this.props.onOk(data)
             })

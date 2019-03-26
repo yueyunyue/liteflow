@@ -1,0 +1,31 @@
+server:
+  port: 8081
+## 数据源配置
+db:
+  host: db.liteflow.cn
+  port: 3306
+  name: lite_flow
+  user: lite
+  pwd: lite
+
+logging:
+    config: classpath:config/log4j2-test.xml
+
+dubbo:
+  registry:
+    file:  /tmp/dubbo.executor.cache
+  protocol:
+    name: dubbo
+    port: 20880
+  qos:
+    port: 22222
+
+zk:
+  servers: zk.liteflow.cn:2181
+
+#运行空间
+lite:
+  flow:
+    executor:
+      workspace: /tmp/lite/executor
+      isAutoRegisterToDB: true

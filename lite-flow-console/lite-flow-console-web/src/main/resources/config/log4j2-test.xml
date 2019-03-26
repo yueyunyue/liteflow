@@ -57,7 +57,7 @@
 
     </Appenders>
     <Loggers>
-        <Logger name="cn.lite.flow.console.kernel.job" level="ERROR" additivity="false">
+        <Logger name="cn.lite.flow.console.kernel.job" level="INFO" additivity="false">
             <appenderRef ref="console" />
         </Logger>
         <!-- cn.lite INFO ERROR -->

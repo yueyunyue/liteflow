@@ -20,36 +20,17 @@ executor:
     logAbandoned: true
     filters: mergeStat
     poolPreparedStatements: false
-
 spring:
   profiles:
-    active: test
+    active: @mvn.profile.active@
   aop:
     # Set true to activate cglib, or it will use default jdk.
     proxy-target-class: true
     auto:
-
 dubbo:
   application:
     name: lite-executor-provider
-  registry:
-    address: ${dubbo.registry.address}
-    file: ${dubbo.registry.file}
-  protocol:
-    name: dubbo
-    port: 20880
-  qos:
-    port: 22222
 
-zk:
-  servers: ${zk.servers}
-  namespace: lite-flow-executor
-#运行空间
-lite:
-  flow:
-    executor:
-      workspace: ${lite.flow.executor.workspace}
-      isAutoRegisterToDB: true
 
 
 

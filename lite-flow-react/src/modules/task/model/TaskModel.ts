@@ -11,6 +11,7 @@ import {
     offTask,
     getTaskRelation,
     getTaskRelatedFlow,
+    runTask,
     getAllAuthTask} from "../service/TaskService"
 import {notification} from 'antd';
 
@@ -161,6 +162,22 @@ export class TaskModel extends BaseListModel{
     * getAllAuth(): any {
         const result = yield getAllAuthTask();
         return result.data;
+    }
+
+    /**
+     * 运行任务
+     * @returns {any}
+     */
+    @asyncAction
+    * run(id): any {
+        const result = yield runTask(id);
+        if (result.status == 0) {
+            notification["success"]({
+                message: '成功',
+                description: '操作成功',
+            });
+        }
+        return result;
     }
 
 

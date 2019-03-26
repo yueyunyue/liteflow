@@ -1,6 +1,7 @@
 package cn.lite.flow.console.common.utils;
 
 import cn.lite.flow.console.common.consts.Constants;
+import cn.lite.flow.console.common.consts.TimeUnit;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
@@ -20,6 +21,12 @@ public class QuartzUtils {
      * 判断crontab是否是个有效的表达式
      */
     public static boolean isCrontabValid(String crontab) {
+        return CronExpression.isValidExpression(crontab);
+    }
+    /**
+     * 判断crontab是否是个有效的表达式
+     */
+    public static boolean isCrontabPeriodValid(String crontab, TimeUnit unit) {
         return CronExpression.isValidExpression(crontab);
     }
 

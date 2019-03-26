@@ -39,6 +39,24 @@ CREATE TABLE lf_console_user_group_mid (
   UNIQUE KEY idx_uniq_user_id_group_id (user_id,group_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户和用户组对应关系表';
 
+
+-- 用户和用户组对应的任务-任务组权限表
+DROP TABLE if EXISTS lf_console_user_group_auth_mid;
+CREATE TABLE lf_console_user_group_auth_mid (
+  id int NOT NULL AUTO_INCREMENT COMMENT '主键id',
+	source_id INT NOT NULL DEFAULT '0' COMMENT '源id，对应用户id or 用户组id',
+	source_type TINYINT NOT NULL DEFAULT '1' COMMENT '源类型',
+	target_id INT NOT NULL DEFAULT '0' COMMENT '目标id，对应任务id or 任务流id',
+	target_type TINYINT NOT NULL DEFAULT '1' COMMENT '目的类型',
+	has_edit_auth TINYINT NOT NULL DEFAULT '0' COMMENT '是否有编辑权限 1-是 0-否',
+	has_execute_auth TINYINT NOT NULL DEFAULT '0' COMMENT '是否有执行权限 1-是 0-否',
+	user_id INT NOT NULL DEFAULT '0' COMMENT '创建者id',
+	create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+	update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (id),
+  UNIQUE KEY uniq_sourceId_sourceType_targetId_targetType (source_id, source_type, target_id, target_type)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户和用户组对应的任务-任务组权限表';
+
 -- 菜单表
 DROP TABLE if EXISTS lf_console_menu;
 CREATE TABLE lf_console_menu (
@@ -79,9 +97,9 @@ CREATE TABLE lf_console_role (
 -- 角色和权限对应关系表
 DROP TABLE if EXISTS lf_console_role_auth_mid;
 CREATE TABLE lf_console_role_auth_mid (
-  id int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
-  role_id int(11) NOT NULL DEFAULT '0' COMMENT '角色id',
-  menu_item_id int(11) NOT NULL DEFAULT '0' COMMENT '子菜单id',
+  id int NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  role_id int NOT NULL DEFAULT '0' COMMENT '角色id',
+  menu_item_id int NOT NULL DEFAULT '0' COMMENT '子菜单id',
   create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (id),
   UNIQUE KEY idx_uniq_role_id_auth_url_id (role_id,menu_item_id)
@@ -98,10 +116,13 @@ CREATE TABLE lf_console_user_role_mid (
   UNIQUE KEY idx_uniq_user_id_role_id (user_id,role_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色对应关系表';
 
+
+
+
 -- 任务信息表
 DROP TABLE if EXISTS lf_console_task;
 CREATE TABLE lf_console_task (
-  id int NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  id bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
   name varchar(32) NOT NULL DEFAULT '' COMMENT '名称',
   cron_expression varchar(32) NOT NULL DEFAULT '' COMMENT 'crontab表达式',
   period tinyint NOT NULL DEFAULT '1' COMMENT '周期',
@@ -129,9 +150,9 @@ CREATE TABLE lf_console_task (
 -- 任务依赖关系表
 DROP TABLE if EXISTS lf_console_task_dependency;
 CREATE TABLE lf_console_task_dependency (
-  id int NOT NULL AUTO_INCREMENT COMMENT '主键id',
-  task_id int NOT NULL DEFAULT '0' COMMENT '任务id',
-  upstream_task_id int NOT NULL DEFAULT '0' COMMENT '上游任务id',
+  id bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  task_id bigint NOT NULL DEFAULT '0' COMMENT '任务id',
+  upstream_task_id bigint NOT NULL DEFAULT '0' COMMENT '上游任务id',
   type tinyint NOT NULL DEFAULT '0' COMMENT '类型',
   config varchar(500) DEFAULT NULL COMMENT '依赖配置信息',
   status tinyint NOT NULL DEFAULT '0' COMMENT '状态',
@@ -145,8 +166,8 @@ CREATE TABLE lf_console_task_dependency (
 -- 任务版本每天生成信息表
 DROP TABLE if EXISTS lf_console_task_version_daily_init;
 CREATE TABLE lf_console_task_version_daily_init (
-  id int NOT NULL AUTO_INCREMENT COMMENT '主键id',
-  task_id int NOT NULL DEFAULT '0' COMMENT '实例id',
+  id bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  task_id bigint NOT NULL DEFAULT '0' COMMENT '实例id',
   day int NOT NULL DEFAULT '0' COMMENT '日期yyyyMMdd格式',
   status tinyint NOT NULL DEFAULT '0' COMMENT '状态',
   msg text DEFAULT NULL COMMENT '信息',
@@ -160,9 +181,9 @@ CREATE TABLE lf_console_task_version_daily_init (
 -- 任务版本信息表
 DROP TABLE if EXISTS lf_console_task_version;
 CREATE TABLE lf_console_task_version (
-  id int NOT NULL AUTO_INCREMENT COMMENT '主键id',
-  version_no int NOT NULL DEFAULT '0' COMMENT '版本号',
-  task_id int NOT NULL DEFAULT '0' COMMENT '任务id',
+  id bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  version_no bigint NOT NULL DEFAULT '0' COMMENT '版本号',
+  task_id bigint NOT NULL DEFAULT '0' COMMENT '任务id',
   status tinyint NOT NULL DEFAULT '0' COMMENT '状态',
   final_status tinyint DEFAULT NULL COMMENT '最终状态',
   retry_num int DEFAULT '0' COMMENT '尝试次数',
@@ -177,10 +198,10 @@ CREATE TABLE lf_console_task_version (
 -- 任务实例信息表
 DROP TABLE if EXISTS lf_console_task_instance;
 CREATE TABLE lf_console_task_instance (
-  id int NOT NULL AUTO_INCREMENT COMMENT '主键id',
-  task_id int NOT NULL DEFAULT '0' COMMENT '任务id',
-  task_version_id int NOT NULL DEFAULT '0' COMMENT '任务版本id',
-  task_version_no int NOT NULL DEFAULT '0' COMMENT '任务版本(冗余字段)',
+  id bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  task_id bigint NOT NULL DEFAULT '0' COMMENT '任务id',
+  task_version_id bigint NOT NULL DEFAULT '0' COMMENT '任务版本id',
+  task_version_no bigint NOT NULL DEFAULT '0' COMMENT '任务版本(冗余字段)',
   logic_run_time datetime NOT NULL COMMENT '逻辑运行时间',
   plugin_id int NOT NULL DEFAULT '0' COMMENT '插件id',
   plugin_conf varchar(500) DEFAULT NULL COMMENT '插件配置',
@@ -200,10 +221,10 @@ CREATE TABLE lf_console_task_instance (
 -- 任务实例依赖关系表
 DROP TABLE if EXISTS lf_console_task_instance_dependency;
 CREATE TABLE lf_console_task_instance_dependency (
-  id int NOT NULL AUTO_INCREMENT COMMENT '主键id',
-  instance_id int NOT NULL DEFAULT '0' COMMENT '任务实例id',
-  upstream_task_id int NOT NULL DEFAULT '0' COMMENT '上游任务id',
-  upstream_task_version_no int DEFAULT NULL COMMENT '依赖上游任务版本',
+  id bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  instance_id bigint NOT NULL DEFAULT '0' COMMENT '任务实例id',
+  upstream_task_id bigint NOT NULL DEFAULT '0' COMMENT '上游任务id',
+  upstream_task_version_no bigint DEFAULT NULL COMMENT '依赖上游任务版本',
   status tinyint NOT NULL DEFAULT '0' COMMENT '状态',
   create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -215,7 +236,7 @@ CREATE TABLE lf_console_task_instance_dependency (
 -- 任务流信息表
 DROP TABLE if EXISTS lf_console_flow;
 CREATE TABLE lf_console_flow (
-  id int NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  id bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
   name varchar(32) NOT NULL DEFAULT '' COMMENT '名称',
   description varchar(64) NOT NULL DEFAULT '' COMMENT '说明',
   user_id int NOT NULL DEFAULT '0' COMMENT '创建者id',
@@ -229,10 +250,10 @@ CREATE TABLE lf_console_flow (
 -- 任务依赖快照信息表
 DROP TABLE if EXISTS lf_console_flow_dependency_snapshot;
 CREATE TABLE lf_console_flow_dependency_snapshot (
-  id int NOT NULL AUTO_INCREMENT COMMENT '主键id',
-	flow_id INT NOT NULL DEFAULT '0' COMMENT '集合id',
-	task_id INT NOT NULL DEFAULT '0' COMMENT '任务id',
-	upstream_task_id INT NOT NULL DEFAULT '0' COMMENT '上游任务id',
+  id bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
+	flow_id bigint NOT NULL DEFAULT '0' COMMENT '集合id',
+	task_id bigint NOT NULL DEFAULT '0' COMMENT '任务id',
+	upstream_task_id bigint NOT NULL DEFAULT '0' COMMENT '上游任务id',
 	type INT NOT NULL DEFAULT '0' COMMENT '依赖类型',
 	conf VARCHAR(500) DEFAULT NULL COMMENT '依赖配置信息',
   create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -245,32 +266,15 @@ CREATE TABLE lf_console_flow_dependency_snapshot (
 -- 任务流中依赖任务信息表
 DROP TABLE if EXISTS lf_console_flow_dependency;
 CREATE TABLE lf_console_flow_dependency (
-  id int NOT NULL AUTO_INCREMENT COMMENT '主键id',
-  flow_id int NOT NULL DEFAULT '0' COMMENT '任务流id',
-  task_dependency_id int NOT NULL DEFAULT '0' COMMENT '依赖任务id',
+  id bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  flow_id bigint NOT NULL DEFAULT '0' COMMENT '任务流id',
+  task_dependency_id bigint NOT NULL DEFAULT '0' COMMENT '依赖任务id',
   create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (id),
   UNIQUE KEY idx_uniq_flow_id_dependency_id (flow_id,task_dependency_id),
   KEY idx_dependency_id (task_dependency_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务流中任务依赖信息表';
 
-
--- 用户和用户组对应的任务-任务组权限表
-DROP TABLE if EXISTS lf_console_user_group_auth_mid;
-CREATE TABLE lf_console_user_group_auth_mid (
-  id int NOT NULL AUTO_INCREMENT COMMENT '主键id',
-	source_id INT NOT NULL DEFAULT '0' COMMENT '源id，对应用户id or 用户组id',
-	source_type TINYINT NOT NULL DEFAULT '1' COMMENT '源类型',
-	target_id INT NOT NULL DEFAULT '0' COMMENT '目标id，对应任务id or 任务流id',
-	target_type TINYINT NOT NULL DEFAULT '1' COMMENT '目的类型',
-	has_edit_auth TINYINT NOT NULL DEFAULT '0' COMMENT '是否有编辑权限 1-是 0-否',
-	has_execute_auth TINYINT NOT NULL DEFAULT '0' COMMENT '是否有执行权限 1-是 0-否',
-	user_id INT NOT NULL DEFAULT '0' COMMENT '创建者id',
-	create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-	update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (id),
-  UNIQUE KEY uniq_sourceId_sourceType_targetId_targetType (source_id, source_type, target_id, target_type)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户和用户组对应的任务-任务组权限表';
 
 -- 执行者信息表
 DROP TABLE if EXISTS lf_executor_server;
@@ -306,14 +310,14 @@ CREATE TABLE lf_executor_container (
 
 -- 执行任务信息表
 DROP TABLE if EXISTS lf_executor_job;
-CREATE TABLE lf_executor_job
-  id int NOT NULL AUTO_INCREMENT COMMENT '主键id',
+CREATE TABLE lf_executor_job(
+  id bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
   application_id varchar(64) DEFAULT NULL COMMENT '应用id',
   executor_server_id int NOT NULL DEFAULT '0' COMMENT '执行者id',
   plugin_id int DEFAULT NULL COMMENT '插件id',
   container_id int NOT NULL DEFAULT '0' COMMENT '容器id',
   status tinyint NOT NULL DEFAULT '0' COMMENT '状态',
-  source_id int NOT NULL DEFAULT '0' COMMENT '来源id',
+  source_id bigint NOT NULL DEFAULT '0' COMMENT '来源id',
   config text COMMENT '任务配置',
   msg text COMMENT '任务信息',
   start_time datetime COMMENT '开始时间',
@@ -328,10 +332,10 @@ CREATE TABLE lf_executor_job
 -- 执行任务回调表
 DROP TABLE if EXISTS lf_executor_callback;
 CREATE TABLE lf_executor_callback (
-  id int NOT NULL AUTO_INCREMENT COMMENT '主键id',
-  job_id int DEFAULT NULL COMMENT '任务id',
+  id bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  job_id bigint DEFAULT NULL COMMENT '任务id',
   job_status tinyint NOT NULL DEFAULT '0' COMMENT '状态',
-  job_source_id int NOT NULL DEFAULT '0' COMMENT '来源id',
+  job_source_id bigint NOT NULL DEFAULT '0' COMMENT '来源id',
   executor_server_id int NOT NULL DEFAULT '0' COMMENT '执行者id',
   job_msg text COMMENT '任务信息',
   status tinyint NOT NULL DEFAULT '0' COMMENT '状态',

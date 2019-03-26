@@ -75,7 +75,7 @@ public class TaskVersionController extends BaseController {
         qm.setStatus(status);
         qm.setFinalStatus(finalStatus);
         qm.setPage(pageNum, pageSize);
-        qm.addOrderDesc(TaskVersionQM.COL_VERSION_NO);
+        qm.addOrderDesc(TaskVersionQM.COL_ID);
 
         List<TaskVersion> taskVersionList = taskVersionService.list(qm);
 

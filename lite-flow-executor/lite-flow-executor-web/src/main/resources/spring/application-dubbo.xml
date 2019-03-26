@@ -11,9 +11,12 @@
     <dubbo:application name="${dubbo.application.name}">
         <dubbo:parameter key="qos.port" value="${dubbo.qos.port}"/>
     </dubbo:application>
-    <dubbo:registry address="${dubbo.registry.address}" file="${dubbo.registry.file}"/>
+
     <dubbo:protocol name="${dubbo.protocol.name}" port="${dubbo.protocol.port}"/>
+
+    <dubbo:registry protocol="zookeeper" address="${zk.servers}" file="${dubbo.registry.file}"/>
 
     <import resource="application-dubbo-provider.xml"/>
     <import resource="application-dubbo-consumer.xml"/>
+
 </beans>

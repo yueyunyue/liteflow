@@ -10,34 +10,35 @@ module.exports = {
                     "id": null,
                     "taskId": 2,
                     "upstreamTaskId": 1,
-                    "config": 0,
+                    "type": 0,
                     "status": 0
                 },
                 {
                     "id": null,
                     "taskId": 3,
                     "upstreamTaskId": 1,
-                    "config": 0,
+                    "type": 0,
                     "status": 0
                 },
                 {
                     "id": null,
                     "taskId": 4,
                     "upstreamTaskId": 2,
-                    "config": 0,
+                    "type": 0,
                     "status": 0
                 },
                 {
                     "id": null,
                     "taskId": 4,
                     "upstreamTaskId": 3,
-                    "config": 0,
+                    "type": 0,
                     "status": 0
                 },
                 {
                     "id": null,
                     "taskId": 4,
                     "upstreamTaskId": 5,
+                    "type": 1,
                     "config": {
                         "startTime": "${yesterday}",
                         "endTime": "${today}",

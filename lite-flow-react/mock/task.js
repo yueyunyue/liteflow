@@ -49,6 +49,9 @@ module.exports = {
     'POST /console/task/delete': {
         status: 0
     },
+    'POST /console/task/run': {
+        status: 0
+    },
 
     'POST /console/task/edit': {
         status: 0

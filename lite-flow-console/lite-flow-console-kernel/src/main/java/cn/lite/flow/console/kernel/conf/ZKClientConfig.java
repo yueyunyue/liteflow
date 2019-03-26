@@ -15,8 +15,6 @@ public class ZKClientConfig {
 
     @Value("${zk.servers}")
     private String servers;
-    @Value("${zk.namespace}")
-    private String namespace;
 
     @Bean("curatorZkClient")
     public CuratorFramework zkClient() {
@@ -27,7 +25,6 @@ public class ZKClientConfig {
                 .connectionTimeoutMs(5000)
                 .canBeReadOnly(false)
                 .retryPolicy(new ExponentialBackoffRetry(2000, Integer.MAX_VALUE))
-                .namespace(namespace)
                 .defaultData(null)
                 .build();
         zkClient.start();

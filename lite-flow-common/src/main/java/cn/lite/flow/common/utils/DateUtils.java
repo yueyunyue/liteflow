@@ -2,6 +2,8 @@ package cn.lite.flow.common.utils;
 
 import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
+import org.joda.time.Interval;
+import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -17,6 +19,8 @@ public class DateUtils {
     public final static String COMMON_DATE_FORMAT = "yyyy-MM-dd";
 
     public final static String COMMON_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    private final static long MINUTE_MS_COUNT = 1000 * 60;    //每分钟的毫秒数
 
     /**
      * 获取当前时间
@@ -243,5 +247,25 @@ public class DateUtils {
     public static Date addMinute(Date date, int minute) {
         DateTime dateTime = new DateTime(date);
         return dateTime.plusMinutes(minute).toDate();
+    }
+    /**
+     * 减少分钟
+     * @param date
+     * @return
+     */
+    public static Date minusMinute(Date date, int minute) {
+        DateTime dateTime = new DateTime(date);
+        return dateTime.minusMinutes(minute).toDate();
+    }
+
+    /**
+     * 相差分钟数
+     * @param start
+     * @param end
+     * @return
+     */
+    public static long betweenMinutes(Date start, Date end){
+        long diff = Math.abs(start.getTime() - end.getTime());
+        return diff / MINUTE_MS_COUNT;
     }
 }

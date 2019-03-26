@@ -317,6 +317,7 @@ public class TaskVersionServiceImpl implements TaskVersionService {
     @Transactional("consoleTxManager")
     public void addInstanceDependencies(long instanceId) {
         TaskInstance taskInstance = taskInstanceService.getById(instanceId);
+        LOG.info("add instance dependency, instance:{}", instanceId);
         Long taskId = taskInstance.getTaskId();
         Long versionNo = taskInstance.getTaskVersionNo();
         Task task = taskService.getById(taskId);
@@ -338,12 +339,13 @@ public class TaskVersionServiceImpl implements TaskVersionService {
                             upstreamTaskVersions.forEach(upstreamTaskVersion -> {
                                 TaskInstanceDependency instanceDependency = TaskInstanceDependency.newInstance(instanceId, upstreamTaskId, upstreamTaskVersion);
                                 instanceDependency.setStatus(StatusType.ON.getValue());
+                                LOG.info("add instance dependency,info:{}", instanceDependency);
                                 instanceDependencies.add(instanceDependency);
                             });
                         }
                     }
                 }else {
-                    LOG.error("dependency:{} is offline,msg:{}", dependency.getId(), dependency.toString());
+                    LOG.error("dependency:{} is offline, instance:{} ,msg:{}", dependency.getId(), instanceId, dependency.toString());
                 }
             });
             if(CollectionUtils.isNotEmpty(instanceDependencies)){
@@ -396,8 +398,11 @@ public class TaskVersionServiceImpl implements TaskVersionService {
         Long pluginId = task.getPluginId();
 
         TimeUnit timeUnit = TimeUnit.getType(task.getPeriod());
+        LOG.info("calculate task version, taskId:{}, startTime:{}, endTime:{}", taskId, DateUtils.formatToDateTimeStr(startTime), DateUtils.formatToDateTimeStr(endTime));
         //计算时间区间运行时间
-        List<Date> taskRunTimes = QuartzUtils.getRunDateTimes(QuartzUtils.completeCrontab(task.getCronExpression()), startTime, endTime);
+        String cronExpression = task.getCronExpression();
+        String crontab = QuartzUtils.completeCrontab(cronExpression);
+        List<Date> taskRunTimes = QuartzUtils.getRunDateTimes(crontab, startTime, endTime);
         if (CollectionUtils.isEmpty(taskRunTimes)) {
             return;
         }
@@ -405,9 +410,11 @@ public class TaskVersionServiceImpl implements TaskVersionService {
             Long taskVersionNo = TaskVersionUtils.getTaskVersion(runTime, timeUnit);
             TaskVersion taskVersion = this.getTaskVersion(taskId, taskVersionNo);
             if (taskVersion == null) {
+                LOG.info("init task version, taskId:{}, versionNo:{}", taskId, taskVersionNo);
                 taskVersion = TaskVersion.newInstance(taskId, taskVersionNo);
                 this.add(taskVersion);
             } else {
+                LOG.info("task version is already exists, taskId:{}, versionNo:{}", taskId, taskVersionNo);
                 /**
                  * 如果实例依旧在执行中
                  * 先kill掉，再重新生成新的实例

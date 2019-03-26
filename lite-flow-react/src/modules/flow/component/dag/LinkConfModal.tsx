@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Form, Input, Modal} from 'antd'
 import {FormComponentProps} from "antd/lib/form/Form";
 import CommonUtils from "../../../../common/utils/CommonUtils";
+import EnumUtils from "../../../../common/utils/EnumUtils";
 
 const formItemLayout = {
     labelCol: {
@@ -29,7 +30,7 @@ class LinkConfModal extends Component<ModalProps, any> {
                     return
                 }
                 const data = this.props.form.getFieldsValue();
-                this.props.onOk(data);
+                this.props.onOk(EnumUtils.taskDependencyTypeTimeRange, data);
             })
         };
         const modalOpts = {

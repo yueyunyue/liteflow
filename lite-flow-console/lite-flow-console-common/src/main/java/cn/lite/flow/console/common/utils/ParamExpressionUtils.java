@@ -54,10 +54,10 @@ public class ParamExpressionUtils {
         if(StringUtils.isNotBlank(dateStr)){
             StringBuilder dateNumSb = new StringBuilder();
             for(int i = 0; i < dateStr.length(); i ++){
-                char number = dateStr.charAt(i);
+                char charItem = dateStr.charAt(i);
                 //只要数字
-                if(number > 47 && number < 57){
-                    dateNumSb.append(number);
+                if(Character.isDigit(charItem)){
+                    dateNumSb.append(Character.getNumericValue(charItem));
                 }
             }
             String dateNumStr = dateNumSb.toString();

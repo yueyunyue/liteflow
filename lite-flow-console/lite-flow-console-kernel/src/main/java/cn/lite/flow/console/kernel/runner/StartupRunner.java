@@ -26,7 +26,7 @@ public class StartupRunner implements CommandLineRunner {
     @Autowired
     private CuratorFramework client;
 
-    @Value("${zk.leader.path}")
+    @Value("${zk.console.leader.path}")
     private String path;
 
     @Override

@@ -51,7 +51,7 @@
             <ref bean="versionDailyInitTriggerJobDetail" />
         </property>
         <property name="cronExpression">
-            <value>0 0/10 * * * ?</value>
+            <value>0 0/10 0-23 * * ?</value>
         </property>
         <!-- 为了保证主切换后，阻塞的任务不会触发 -->
         <property name="misfireInstruction" value="2"></property>
@@ -134,6 +134,56 @@
         <!-- 为了保证主切换后，阻塞的任务不会触发 -->
         <property name="misfireInstruction" value="2"></property>
     </bean>
+    <!--
+        6.任务延迟报警
+    -->
+    <bean id="instanceRunDelayAlarmJob" class="cn.lite.flow.console.kernel.job.InstanceRunDelayAlarmJob" />
+    <bean id="instanceRunDelayAlarmJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="instanceRunDelayAlarmJob" />
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="instanceRunDelayAlarmJobTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="instanceRunDelayAlarmJobDetail" />
+        </property>
+        <property name="cronExpression">
+            <value>0 */30 7-23 * * ?</value>
+        </property>
+        <!-- 为了保证主切换后，阻塞的任务不会触发 -->
+        <property name="misfireInstruction" value="2"></property>
+    </bean>
+    <!--
+        7.任务超时报警
+    -->
+    <bean id="instanceRunOvertimeAlarmJob" class="cn.lite.flow.console.kernel.job.InstanceRunOvertimeAlarmJob" />
+    <bean id="instanceRunOvertimeAlarmJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="instanceRunOvertimeAlarmJob" />
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="instanceRunOvertimeAlarmJobTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="instanceRunOvertimeAlarmJobDetail" />
+        </property>
+        <property name="cronExpression">
+            <value>30 */30 7-23 * * ?</value>
+        </property>
+        <!-- 为了保证主切换后，阻塞的任务不会触发 -->
+        <property name="misfireInstruction" value="2"></property>
+    </bean>
 
     <!-- Scheduler -->
     <bean name="consoleScheduler" lazy-init="false" autowire="no"
@@ -145,6 +195,8 @@
                 <ref bean="instanceReady2FireJobTrigger"/>
                 <ref bean="instanceSubmit2FireJobTrigger"/>
                 <ref bean="consumerEventQueueJobTrigger"/>
+                <ref bean="instanceRunDelayAlarmJobTrigger"/>
+                <ref bean="instanceRunOvertimeAlarmJobTrigger"/>
             </list>
         </property>
         <property name="autoStartup" value="false"></property>
