@@ -115,7 +115,7 @@ public class FlowOperateServiceImpl implements FlowOperateService {
         List<Long> downstreamVersionIds = taskVersionService.getDownstreamVersionIds(taskVersion.getId());
         //下游任务版本没有找到
         if(CollectionUtils.isEmpty(downstreamVersionIds)){
-            throw new ConsoleRuntimeException("任务%d下游缺失任务版本");
+            throw new ConsoleRuntimeException("任务" + taskId + "下游缺失任务版本");
         }
         List<TaskVersion> taskVersions = taskVersionService.getByIds(downstreamVersionIds);
         List<TaskVersion> resultVersions = Lists.newArrayList();

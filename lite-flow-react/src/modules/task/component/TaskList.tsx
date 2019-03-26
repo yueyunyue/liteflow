@@ -237,13 +237,12 @@ export class TaskList extends Component<TaskListProps, { showModal, showVersionM
                             </Button>
                         </Popconfirm>);
 
-                        runBtn.push(<Popconfirm title='确定运行吗？'  onConfirm={e => this.run(record, e)}>
-                            <Button className={"margin-right5"} size={'small'} type='ghost'>
-                                运行
-                            </Button>
-                        </Popconfirm>);
-
                     }
+                    runBtn.push(<Popconfirm title='确定运行吗？'  onConfirm={e => this.run(record, e)}>
+                        <Button className={"margin-right5"} size={'small'} type='ghost'>
+                            运行
+                        </Button>
+                    </Popconfirm>);
 
                     return <div className={"list-btn-container"}>
                         <p>

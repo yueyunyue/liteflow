@@ -265,7 +265,10 @@ public class TaskServiceImpl implements TaskService {
         Date now = DateUtils.getNow();
         Task task = taskMapper.getById(taskId);
         if(task.getStatus() == TaskStatus.ONLINE.getValue()){
-            throw new ConsoleRuntimeException("为避免任务运行重复，上线状态的任务不能运行");
+            List<TaskVersion> validVersions = taskVersionService.getValidVersion(taskId);
+            if(CollectionUtils.isNotEmpty(validVersions)){
+                throw new ConsoleRuntimeException("当前任务仍有任务版本在运行，不能运行任务");
+            }
         }
         /**
          * 以当前时间为基准，生成任务版本
