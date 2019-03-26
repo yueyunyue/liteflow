@@ -10,7 +10,7 @@ import cn.lite.flow.console.model.query.FlowDependencyQM;
 import java.util.List;
 
 /**
- * Created by luya on 2018/7/23.
+ * Created by ly on 2018/7/23.
  */
 public interface FlowDependencyService extends BaseService<FlowDependency, FlowDependencyQM> {
 

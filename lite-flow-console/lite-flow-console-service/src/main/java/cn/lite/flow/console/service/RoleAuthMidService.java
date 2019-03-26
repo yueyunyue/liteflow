@@ -7,7 +7,7 @@ import cn.lite.flow.console.model.query.RoleAuthMidQM;
 import java.util.List;
 
 /**
- * Created by luya on 2018/10/31.
+ * Created by ly on 2018/10/31.
  */
 public interface RoleAuthMidService extends BaseService<RoleAuthMid, RoleAuthMidQM> {
 

@@ -7,7 +7,7 @@ import cn.lite.flow.console.model.query.RoleQM;
 import java.util.List;
 
 /**
- * Created by luya on 2018/10/24.
+ * Created by ly on 2018/10/24.
  */
 public interface RoleService extends BaseService<Role, RoleQM> {
 

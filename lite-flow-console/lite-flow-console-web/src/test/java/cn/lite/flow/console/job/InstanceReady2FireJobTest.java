@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Created by luya on 2019/1/4.
+ * Created by ly on 2019/1/4.
  */
 public class InstanceReady2FireJobTest extends BaseTest {
 

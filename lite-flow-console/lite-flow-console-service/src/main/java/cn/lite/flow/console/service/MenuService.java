@@ -6,7 +6,7 @@ import cn.lite.flow.console.model.query.MenuQM;
 import java.util.List;
 
 /**
- * Created by luya on 2018/12/24.
+ * Created by ly on 2018/12/24.
  */
 public interface MenuService {
 

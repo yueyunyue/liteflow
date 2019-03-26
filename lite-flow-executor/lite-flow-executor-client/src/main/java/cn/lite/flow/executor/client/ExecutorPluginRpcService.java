@@ -6,7 +6,7 @@ import cn.lite.flow.executor.model.basic.ExecutorPlugin;
 import java.util.List;
 
 /**
- * Created by luya on 2018/11/14.
+ * Created by ly on 2018/11/14.
  */
 public interface ExecutorPluginRpcService {
 

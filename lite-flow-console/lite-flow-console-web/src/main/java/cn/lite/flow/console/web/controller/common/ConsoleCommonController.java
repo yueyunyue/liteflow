@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Created by luya on 2018/12/14.
+ * Created by ly on 2018/12/14.
  */
 @RestController("consoleCommonController")
 @RequestMapping("console/common")

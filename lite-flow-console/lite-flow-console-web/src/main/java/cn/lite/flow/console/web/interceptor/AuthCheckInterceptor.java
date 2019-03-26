@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by luya on 2018/11/5.
+ * Created by ly on 2018/11/5.
  */
 public class AuthCheckInterceptor implements HandlerInterceptor {
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by luya on 2018/12/14.
+ * Created by ly on 2018/12/14.
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {

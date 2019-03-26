@@ -14,7 +14,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 /**
- * Created by luya on 2019/1/4.
+ * Created by ly on 2019/1/4.
  */
 public class StartupRunner implements CommandLineRunner {
 

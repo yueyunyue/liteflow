@@ -12,7 +12,7 @@ import java.security.MessageDigest;
 import java.security.Security;
 
 /**
- * Created by luya on 2017/2/15.
+ * Created by ly on 2017/2/15.
  */
 public class AESUtils {
 

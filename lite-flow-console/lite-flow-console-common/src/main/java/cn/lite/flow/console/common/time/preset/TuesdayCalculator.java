@@ -4,7 +4,7 @@ import cn.lite.flow.common.utils.DateUtils;
 import org.joda.time.DateTime;
 
 /**
- * Created by luya on 2018/9/19.
+ * Created by ly on 2018/9/19.
  */
 public class TuesdayCalculator implements TimeParamCalculator {
 
