@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by luya on 2018/11/9.
+ * Created by ly on 2018/11/9.
  */
 @Service
 public class AuthCheckManager extends InstantiationAwareBeanPostProcessorAdapter {

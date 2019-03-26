@@ -7,7 +7,7 @@ import cn.lite.flow.console.model.query.UserGroupAuthMidQM;
 import java.util.List;
 
 /**
- * Created by luya on 2018/10/18.
+ * Created by ly on 2018/10/18.
  */
 public interface UserGroupAuthMidService extends BaseService<UserGroupAuthMid, UserGroupAuthMidQM> {
 

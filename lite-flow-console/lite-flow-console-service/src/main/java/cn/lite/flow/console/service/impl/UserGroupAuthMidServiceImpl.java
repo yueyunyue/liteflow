@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by luya on 2018/10/18.
+ * Created by ly on 2018/10/18.
  */
 @Service
 public class UserGroupAuthMidServiceImpl implements UserGroupAuthMidService {

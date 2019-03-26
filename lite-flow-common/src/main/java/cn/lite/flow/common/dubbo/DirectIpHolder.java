@@ -1,7 +1,7 @@
 package cn.lite.flow.common.dubbo;
 
 /**
- * Created by luya on 2018/12/17.
+ * Created by ly on 2018/12/17.
  */
 public class DirectIpHolder {
 

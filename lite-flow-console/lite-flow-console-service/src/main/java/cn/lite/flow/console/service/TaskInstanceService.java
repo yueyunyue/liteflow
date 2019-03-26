@@ -8,7 +8,7 @@ import cn.lite.flow.console.model.query.TaskInstanceQM;
 import java.util.List;
 
 /**
- * Created by luya on 2018/7/23.
+ * Created by ly on 2018/7/23.
  */
 public interface TaskInstanceService extends BaseService<TaskInstance, TaskInstanceQM> {
 

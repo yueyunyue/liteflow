@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Created by luya on 2019/1/3.
+ * Created by ly on 2019/1/3.
  */
 @Configuration
 public class ZKClientConfig {

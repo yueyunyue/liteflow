@@ -6,7 +6,7 @@ import cn.lite.flow.console.common.enums.OperateTypeEnum;
 import java.util.List;
 
 /**
- * Created by luya on 2018/11/9.
+ * Created by ly on 2018/11/9.
  */
 public interface AuthCheckService {
 

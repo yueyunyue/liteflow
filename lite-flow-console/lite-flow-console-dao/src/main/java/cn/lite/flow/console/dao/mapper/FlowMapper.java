@@ -6,7 +6,7 @@ import cn.lite.flow.console.model.query.FlowQM;
 import org.apache.ibatis.annotations.Param;
 
 /**
- * Created by luya on 2018/7/23.
+ * Created by ly on 2018/7/23.
  */
 public interface FlowMapper extends BaseMapper<Flow, FlowQM> {
 

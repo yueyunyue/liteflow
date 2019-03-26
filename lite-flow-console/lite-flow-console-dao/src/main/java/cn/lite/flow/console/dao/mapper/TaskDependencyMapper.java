@@ -5,7 +5,7 @@ import cn.lite.flow.console.model.basic.TaskDependency;
 import cn.lite.flow.console.model.query.TaskDependencyQM;
 
 /**
- * Created by luya on 2018/7/23.
+ * Created by ly on 2018/7/23.
  */
 public interface TaskDependencyMapper extends BaseMapper<TaskDependency, TaskDependencyQM> {
 

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * Created by luya on 2018/12/14.
+ * Created by ly on 2018/12/14.
  */
 @RestController("executorCommonController")
 @RequestMapping("executor/common")

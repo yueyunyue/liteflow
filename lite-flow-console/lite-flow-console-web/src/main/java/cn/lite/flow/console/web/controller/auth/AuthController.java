@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by luya on 2018/12/27.
+ * Created by ly on 2018/12/27.
  */
 @RestController("authController")
 @RequestMapping("console/auth")
