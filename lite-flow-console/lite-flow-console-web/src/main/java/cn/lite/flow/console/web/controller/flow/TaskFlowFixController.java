@@ -3,6 +3,7 @@ package cn.lite.flow.console.web.controller.flow;
 import cn.lite.flow.common.model.Tuple;
 import cn.lite.flow.common.model.query.Page;
 import cn.lite.flow.common.utils.DateUtils;
+import cn.lite.flow.console.common.consts.Constants;
 import cn.lite.flow.console.common.consts.TimeUnit;
 import cn.lite.flow.console.common.enums.AuthCheckTypeEnum;
 import cn.lite.flow.console.common.model.vo.DependencyVo;
@@ -10,7 +11,9 @@ import cn.lite.flow.console.common.utils.QuartzUtils;
 import cn.lite.flow.console.common.utils.ResponseUtils;
 import cn.lite.flow.console.common.utils.TaskVersionUtils;
 import cn.lite.flow.console.model.basic.Task;
+import cn.lite.flow.console.model.basic.TaskInstance;
 import cn.lite.flow.console.model.basic.TaskVersion;
+import cn.lite.flow.console.model.consts.TaskVersionFinalStatus;
 import cn.lite.flow.console.model.query.TaskVersionQM;
 import cn.lite.flow.console.service.FlowOperateService;
 import cn.lite.flow.console.service.FlowService;
@@ -101,6 +104,15 @@ public class TaskFlowFixController extends BaseController {
             Long taskId = taskVersion.getTaskId();
             Task task = taskInfoMap.get(taskId);
             JSONObject taskVersionObj = ModelUtils.getTaskVersionWithTaskObj(taskVersion, task);
+            /**
+             * 异常或被kill时，获取异常信息
+             */
+            if(taskVersion.getFinalStatus() == TaskVersionFinalStatus.FAIL.getValue()
+                    || taskVersion.getFinalStatus() == TaskVersionFinalStatus.KILLED.getValue()){
+                TaskInstance latestInstance = taskVersionService.getLatestInstance(taskVersion.getId());
+                taskVersionObj.put(Constants.PARAM_MSG, latestInstance.getMsg());
+            }
+
             versionDatas.add(taskVersionObj);
         });
 

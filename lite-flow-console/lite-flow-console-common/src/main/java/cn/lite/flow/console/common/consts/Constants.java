@@ -43,6 +43,8 @@ public class Constants {
 
     public final static String PARAM_NAME = "name";                                    //名字
 
+    public final static String PARAM_MSG = "msg";                                      //信息
+
 
 
 }

@@ -439,10 +439,12 @@ class DagVersionFixShow extends Component<DagFixProps, any> {
                         <p><strong>id:&nbsp;</strong>{currentVersion.id}</p>
                         <p><strong>任务id:&nbsp;</strong>{currentVersion.taskId}</p>
                         <p><strong>任务名称:&nbsp;</strong>{currentVersion.taskName}</p>
+                        <p><strong>任务版本:&nbsp;</strong>{currentVersion.versionNo}</p>
                         <p><strong>状态:&nbsp;</strong>{EnumUtils.getTaskVersionStatusName(currentVersion.status)}</p>
                         <p><strong>时间粒度:&nbsp;</strong>{EnumUtils.getPeriodName(currentVersion.taskPeriod)}</p>
                         <p><strong>时间规则:&nbsp;</strong>{currentVersion.taskCronExpression}</p>
                         <p><strong>描述:&nbsp;</strong>{currentVersion.taskDescription}</p>
+                        <p><strong>信息:&nbsp;</strong>{currentVersion.msg}</p>
                         <p><strong>创建时间:&nbsp;</strong>{CommonUtils.dateFormat(currentVersion.createTime)}</p>
                         <p><strong>更新时间:&nbsp;</strong>{CommonUtils.dateFormat(currentVersion.updateTime)}</p>
                     </div> : ""}
