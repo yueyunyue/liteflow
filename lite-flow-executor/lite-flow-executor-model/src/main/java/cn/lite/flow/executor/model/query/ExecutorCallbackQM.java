@@ -15,4 +15,6 @@ public class ExecutorCallbackQM extends BaseQM {
 
     private Long executorServerId;      //执行者id
 
+    private Long jobId;                 //任务id
+
 }

@@ -96,6 +96,7 @@ public class TaskInstanceServiceImpl implements TaskInstanceService {
         TaskInstance updateInstance = new TaskInstance();
         updateInstance.setId(instanceId);
         updateInstance.setStatus(TaskVersionStatus.KILLED.getValue());
+        updateInstance.setMsg("KILL");
         taskInstanceMapper.updateWithStatus(updateInstance, taskInstance.getStatus());
         /**
          * kill executorJob

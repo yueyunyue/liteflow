@@ -4,6 +4,8 @@ import cn.lite.flow.common.service.basic.BaseService;
 import cn.lite.flow.executor.model.basic.ExecutorCallback;
 import cn.lite.flow.executor.model.query.ExecutorCallbackQM;
 
+import java.util.List;
+
 /**
  * @description: 回调
  * @author: yueyunyue
@@ -33,5 +35,23 @@ public interface ExecutorCallbackService extends BaseService<ExecutorCallback, E
      * @return
      */
     int callbackSuccess(long id);
+
+    /**
+     * 忽略
+     * @param id
+     */
+    void ignore(long id);
+
+    /**
+     * 批量忽略
+     * @param ids
+     */
+    void batchIgnore(List<Long> ids);
+
+    /**
+     * 停止job的callback
+     * @param jobId
+     */
+    void ignoreCallbackStatusOfJob(long jobId);
 
 }

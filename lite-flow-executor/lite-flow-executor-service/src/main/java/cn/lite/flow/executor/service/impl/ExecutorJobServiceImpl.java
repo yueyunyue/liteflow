@@ -119,6 +119,7 @@ public class ExecutorJobServiceImpl implements ExecutorJobService {
     }
 
     @Override
+    @Transactional("executorTxManager")
     public void kill(long id, boolean isCallback) {
         ExecutorJob executorJob = executorJobMapper.getById(id);
         if (executorJob == null) {
@@ -145,6 +146,12 @@ public class ExecutorJobServiceImpl implements ExecutorJobService {
         executorJobMapper.update(executorJob);
         //移除相关容器
         ContainerMetadata.removeContainer(id);
+
+        /**
+         * kill掉后，之前的回调全部忽略
+         */
+        executorCallbackService.ignoreCallbackStatusOfJob(id);
+
         /**
          * 回调console
          */
