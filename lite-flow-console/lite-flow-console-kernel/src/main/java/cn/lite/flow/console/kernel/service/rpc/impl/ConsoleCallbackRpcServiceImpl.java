@@ -72,7 +72,7 @@ public class ConsoleCallbackRpcServiceImpl implements ConsoleCallbackRpcService 
                 updateVersion.setFinalStatus(TaskVersionFinalStatus.SUCCESS.getValue());
                 taskVersionService.updateWithStatus(updateVersion, currentStatus);
             } else {
-                throw new ConsoleRuntimeException("更新实例状态失败");
+                throw new ConsoleRuntimeException("更新实例状态失败,当前任务版本状态非运行状态");
             }
         }
     }
@@ -110,7 +110,7 @@ public class ConsoleCallbackRpcServiceImpl implements ConsoleCallbackRpcService 
                 updateVersion.setStatus(targetStatus);
                 taskVersionService.updateWithStatus(updateVersion, currentStatus);
             } else {
-                throw new ConsoleRuntimeException("更新实例状态失败");
+                throw new ConsoleRuntimeException("更新实例状态失败,当前任务版本状态非运行或提交状态");
             }
         }
     }
@@ -223,6 +223,8 @@ public class ConsoleCallbackRpcServiceImpl implements ConsoleCallbackRpcService 
             updateVersion.setStatus(targetStatus);
             updateVersion.setFinalStatus(TaskVersionFinalStatus.KILLED.getValue());
             taskVersionService.updateWithStatus(updateVersion, currentStatus);
+        } else {
+            throw new ConsoleRuntimeException("更新状态失败，当前任务版本状态非运行状态");
         }
 
     }
