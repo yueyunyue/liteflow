@@ -22,6 +22,9 @@
 			<if test="status != null">
 				and status = #{status}
 			</if>
+			<if test="jobId != null">
+				and job_id = #{jobId}
+			</if>
 			<if test="executorServerId != null">
 				and executor_server_id = #{executorServerId}
 			</if>
@@ -96,4 +99,18 @@
 		<include refid="table"/>
 		where source_id=#{sourceId}
 	</select>
+
+	<update id="batchUpdateStatus">
+		update
+		<include refid="table"/>
+		<set>
+			<if test="status != null">
+				status=#{status},
+			</if>
+		</set>
+		where id in
+		<foreach collection="ids" item="id" separator="," open=" (" close=" )">
+			#{id}
+		</foreach>
+	</update>
 </mapper>

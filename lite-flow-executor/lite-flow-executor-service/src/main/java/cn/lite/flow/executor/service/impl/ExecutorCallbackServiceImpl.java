@@ -7,6 +7,8 @@ import cn.lite.flow.executor.model.consts.ExecutorJobStatus;
 import cn.lite.flow.executor.model.consts.JobCallbackStatus;
 import cn.lite.flow.executor.model.query.ExecutorCallbackQM;
 import cn.lite.flow.executor.service.ExecutorCallbackService;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @description:
@@ -100,4 +103,29 @@ public class ExecutorCallbackServiceImpl implements ExecutorCallbackService {
         executorCallback.setStatus(JobCallbackStatus.DONE.getValue());
         return executorCallbackMapper.update(executorCallback);
     }
+
+    @Override
+    public void ignore(long id) {
+        this.batchIgnore(Lists.newArrayList(id));
+    }
+
+    @Override
+    public void batchIgnore(List<Long> ids) {
+        executorCallbackMapper.batchUpdateStatus(ids, JobCallbackStatus.NO_NEED.getValue());
+    }
+
+    @Override
+    public void ignoreCallbackStatusOfJob(long jobId) {
+
+        ExecutorCallbackQM qm = new ExecutorCallbackQM();
+        qm.setJobId(jobId);
+        qm.setStatus(JobCallbackStatus.WAITING.getValue());
+        List<ExecutorCallback> callbacks = executorCallbackMapper.findList(qm);
+        if(CollectionUtils.isNotEmpty(callbacks)){
+            List<Long> ids = callbacks.stream().map(ExecutorCallback::getId).collect(Collectors.toList());
+            this.batchIgnore(ids);
+        }
+
+    }
+
 }
