@@ -22,6 +22,12 @@
 			<if test="taskId != null">
 				task_id = #{taskId}
 			</if>
+			<if test="inTaskIds != null and !inTaskIds.isEmpty()">
+				AND task_id IN
+				<foreach collection="inTaskIds" item="item" separator="," open="(" close=")">
+					#{item}
+				</foreach>
+			</if>
 			<if test="day != null">
 				AND day = #{day}
 			</if>
