@@ -82,7 +82,7 @@ public class TaskVersionDailyInitController extends BaseController {
         queryModel.setTaskId(taskId);
         queryModel.setDay(day);
         queryModel.setStatus(status);
-        queryModel.addOrderDesc(TaskVersionDailyInitQM.COL_DAY);
+        queryModel.addOrderDesc(TaskVersionDailyInitQM.COL_ID);
         queryModel.setPage(pageNum, pageSize);
 
         List<TaskVersionDailyInit> taskVersionDailyInitList = taskVersionDailyInitService.list(queryModel);

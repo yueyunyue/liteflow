@@ -13,6 +13,7 @@ VALUES
 (2, '任务流', '/console/flow', 1),
 (2, '任务', '/console/task', 2),
 (2, '任务版本', '/console/version', 3),
+(2, '任务初始化', '/console/dailyInit', 4),
 (3, '执行者', '/executor/server', 1),
 (3, '执行容器', '/executor/container', 2),
 (3, '执行插件', '/executor/plugin', 3),

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {observer} from "mobx-react";
 import {inject} from '../../../common/utils/IOC';
-import {ExecuteJobModel, ExecuteJobSearchParam, ExecuteJob} from "../model/ExecuteJobModel";
+import {ExecuteJobModel, ExecuteJob} from "../model/ExecuteJobModel";
 import Search, {ExecuteJobSearchProps} from "../component/ExecuteJobSearch";
 import {Row} from 'antd'
 import {ExecuteJobList, ExecuteJobListProps} from "../component/ExecuteJobList";

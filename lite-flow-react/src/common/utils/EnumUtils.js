@@ -71,6 +71,21 @@ const exeJobCallbackStatusCallbacked = 1;
 exeJobCallbackStatusMap[exeJobCallbackStatusNoNeed] = "不需要回调";
 exeJobCallbackStatusMap[exeJobCallbackStatusWaiting] = "等待回调";
 exeJobCallbackStatusMap[exeJobCallbackStatusCallbacked] = "回调完成";
+/**
+ * dailyInit状态
+ * @type {{}}
+ */
+const dailyInitStatusMap = {};
+const dailyInitStatusNew = 0;
+const dailyInitStatusSuccess = 1;
+const dailyInitStatusFail = -1;
+const dailyInitStatusDisable = -2;
+dailyInitStatusMap[dailyInitStatusNew] = "新建";
+dailyInitStatusMap[dailyInitStatusSuccess] = "成功";
+dailyInitStatusMap[dailyInitStatusFail] = "失败";
+dailyInitStatusMap[dailyInitStatusDisable] = "无效";
+
+
 
 
 module.exports = {
@@ -86,6 +101,8 @@ module.exports = {
   exeJobStatusMap: exeJobStatusMap,
 
   exeJobCallbackStatusMap: exeJobCallbackStatusMap,
+
+  dailyInitStatusMap: dailyInitStatusMap,
     /**
      * 任务依赖
      */
@@ -241,5 +258,11 @@ module.exports = {
    getExeJobCallbackStatusName(status) {
         return this.exeJobCallbackStatusMap[status];
     },
+    /**
+     * 获取dailyInit类型名称
+     */
+   getDailyInitStatusName(status) {
+        return this.dailyInitStatusMap[status];
+    }
 
 };

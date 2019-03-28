@@ -50,6 +50,16 @@ codesData = Mock.mock({
                     "children": [
 
                     ]
+                },
+                {
+                    "key": "lite-menu-02-04",
+                    "name": "任务初始化",
+                    "url": "/console/dailyInit",
+                    "icon": null,
+                    "order": 1,
+                    "children": [
+
+                    ]
                 }
             ]
         },

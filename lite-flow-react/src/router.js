@@ -68,6 +68,14 @@ export default function ({history, sysUserModel}) {
                 }
             },
             {
+                path: 'console/dailyInit',
+                getComponent(nextState, cb) {
+                    require.ensure([], require => {
+                        cb(null, require('./modules/dailyInit/view/DailyInitView'))
+                    })
+                }
+            },
+            {
                 path: 'executor/container',
                 getComponent(nextState, cb) {
                     require.ensure([], require => {

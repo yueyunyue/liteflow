@@ -122,57 +122,59 @@ public class UserServiceImpl implements UserService {
             }
 
             /**查询用户角色*/
-            List<Role> roleList;
-            if (user.getIsSuper() == 1) {
-                roleList = roleService.list(new RoleQM());
-            } else {
-                roleList = roleService.getByUserId(user.getId());
-            }
-            if (CollectionUtils.isNotEmpty(roleList)) {
-                List<Long> roleIds = new ArrayList<>();
-                roleList.forEach(role -> {
-                    roleIds.add(role.getId());
-                });
+            Set<Long> menuItemIdSet = null;
+            boolean isSuper = sessionUser.getIsSuper();
+            if (!isSuper) {
+                List<Role> roleList = roleService.getByUserId(user.getId());
+                if (CollectionUtils.isNotEmpty(roleList)) {
+                    List<Long> roleIds = roleList.stream().map(Role::getId).collect(Collectors.toList());
 
-                /**获取角色下的菜单权限*/
-                RoleAuthMidQM roleAuthMidQM = new RoleAuthMidQM();
-                roleAuthMidQM.setRoleIds(roleIds);
-                List<RoleAuthMid> roleAuthMidList = roleAuthMidService.list(roleAuthMidQM);
-                if (CollectionUtils.isNotEmpty(roleAuthMidList)) {
-                    List<Long> menuItemIdSet = roleAuthMidList.stream()
-                            .map(RoleAuthMid::getMenuItemId)
-                            .distinct()
-                            .collect(Collectors.toList());
-
-
-                    /**查询菜单*/
-                    MenuQM menuQM = new MenuQM();
-                    menuQM.addOrderAsc(MenuQM.COL_ORDER_NUM);
-                    List<Menu> menuAndItems = menuService.listMenuAndItems(menuQM);
-                    List<Menu> menus = new ArrayList<>();
-                    List<String> roleUrlList = new ArrayList<>();
-                    if (CollectionUtils.isNotEmpty(menuAndItems)) {
-                        menuAndItems.forEach(o -> {
-                            List<MenuItem> menuItems = o.getMenuItemList();
-                            if (CollectionUtils.isNotEmpty(menuItems)) {
-                                List<MenuItem> items = new ArrayList<>();
-                                menuItems.forEach(item -> {
-                                    if (menuItemIdSet.contains(item.getId())) {
-                                        items.add(item);
-                                        roleUrlList.add(item.getUrl());
-                                    }
-                                });
-                                if (CollectionUtils.isNotEmpty(items)) {
-                                    o.setMenuItemList(items);
-                                    menus.add(o);
-                                }
-                            }
-                        });
+                    /**获取角色下的菜单权限*/
+                    RoleAuthMidQM roleAuthMidQM = new RoleAuthMidQM();
+                    roleAuthMidQM.setRoleIds(roleIds);
+                    List<RoleAuthMid> roleAuthMidList = roleAuthMidService.list(roleAuthMidQM);
+                    if (CollectionUtils.isNotEmpty(roleAuthMidList)) {
+                        menuItemIdSet = roleAuthMidList.stream()
+                                .map(RoleAuthMid::getMenuItemId)
+                                .distinct()
+                                .collect(Collectors.toSet());
                     }
-                    sessionUser.setMenus(menus);
-                    sessionUser.setRoleUrls(roleUrlList);
+
                 }
             }
+            /**查询菜单*/
+            MenuQM menuQM = new MenuQM();
+            menuQM.addOrderAsc(MenuQM.COL_ORDER_NUM);
+            List<Menu> menuAndItems = menuService.listMenuAndItems(menuQM);
+            List<Menu> menus = new ArrayList<>();
+            List<String> roleUrlList = new ArrayList<>();
+            if (CollectionUtils.isNotEmpty(menuAndItems)) {
+                for(Menu menu :menuAndItems) {
+                    List<MenuItem> menuItems = menu.getMenuItemList();
+                    if (CollectionUtils.isNotEmpty(menuItems)) {
+                        List<MenuItem> items = new ArrayList<>();
+                        for(MenuItem item : menuItems){
+                            boolean isAddData = false;
+                            if(isSuper){
+                                isAddData = true;
+                            }else if (CollectionUtils.isNotEmpty(menuItemIdSet) && menuItemIdSet.contains(item.getId())) {
+                                isAddData = true;
+
+                            }
+                            if(isAddData){
+                                items.add(item);
+                                roleUrlList.add(item.getUrl());
+                            }
+                        }
+                        if (CollectionUtils.isNotEmpty(items)) {
+                            menu.setMenuItemList(items);
+                            menus.add(menu);
+                        }
+                    }
+                }
+            }
+            sessionUser.setMenus(menus);
+            sessionUser.setRoleUrls(roleUrlList);
 
             return sessionUser;
 
