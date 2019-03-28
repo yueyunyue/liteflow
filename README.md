@@ -12,6 +12,11 @@ liteflow是一个基于任务版本来实现的分布式任务流调度系统
 
 5.执行者可以运行任何类型的任务，shell、python
 
+[码云](https://gitee.com/yueyunyue/liteflow)
+
+[GitHub](https://github.com/yueyunyue/liteflow)
+
+
 # 二、LiteFlow项目介绍
 ![module-struct](./docs/img/module-struct.png "模块图")
 
