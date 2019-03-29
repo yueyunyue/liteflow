@@ -24,7 +24,7 @@ module.exports = {
          * 为null时返回null
          */
         if(!model){
-            return null;
+            return defaultValue;
         }
         if (key.indexOf(".") < 0) {
             if (model && model[key] != null) {

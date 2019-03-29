@@ -72,7 +72,7 @@ class ExecutorModal extends Component<ModalProps> {
                                 message: '不能为空'
                             }
                         ]
-                    })(<Input/>)}
+                    })(<Input disabled={isUpdate}/>)}
                 </Form.Item>
                 <Form.Item label='描述' hasFeedback {...formItemLayout}>
                     {this.props.form.getFieldDecorator('description', {

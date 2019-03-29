@@ -71,6 +71,7 @@ public class VersionDailyInit2FireJob extends AbstractUnstatefullJob {
                         try {
                             Task task = taskService.getById(taskId);
                             if(task.getStatus() != TaskStatus.ONLINE.getValue()){
+                                dailyInitService.failDailyInit(dailyInit.getId(), "task is not online,info:" + task.toString());
                                 return;
                             }
                             /**
