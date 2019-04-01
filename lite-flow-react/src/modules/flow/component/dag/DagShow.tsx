@@ -240,7 +240,7 @@ class DagShow extends Component<DagProps, any> {
         if (links && links.length > 0) {
             for (let link of links) {
                 g.setEdge(link.upstreamTaskId, link.taskId, {
-                    label: link.config ? "range" : "none",
+                    label: link.config ? EnumUtils.getTaskDependencyTypeName(link.type) : "无",
                     labelStyle: 'width: 25px;height: 25px;text-align: center;line-height: 25px;'
                 });
 
