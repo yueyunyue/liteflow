@@ -72,7 +72,7 @@ class TaskModal extends Component<ModalProps, { retry, concurrency, pluginId, pl
      */
     getPeriodOptions() {
         const periods = EnumUtils.getPeriodOptionArray();
-        let options = DomUtils.getSelectOptionsWithNoAll(periods);
+        let options = DomUtils.getSelectOptionsWithoutAll(periods);
         return options;
     }
     /**
@@ -140,7 +140,7 @@ class TaskModal extends Component<ModalProps, { retry, concurrency, pluginId, pl
         const taskObj = this.getTaskObj();
         let doms = [];
         const concurrencyArray = EnumUtils.getConcurrencyOptionArray();
-        let options = DomUtils.getSelectOptionsWithNoAll(concurrencyArray);
+        let options = DomUtils.getSelectOptionsWithoutAll(concurrencyArray);
         doms.push(<Form.Item label={"运行策略"} hasFeedback {...formItemLayout}>
             {this.props.form.getFieldDecorator("concurrentStrategy", {
                 initialValue: CommonUtils.getStringValueFromModel("concurrentStrategy", taskObj, "1"),
@@ -275,7 +275,7 @@ class TaskModal extends Component<ModalProps, { retry, concurrency, pluginId, pl
                 plugins.push(pluginMap[pluginId]);
             }
         }
-        let pluginOptions = DomUtils.getSelectOptionsWithNoAll(plugins);
+        let pluginOptions = DomUtils.getSelectOptionsWithoutAll(plugins);
         let pluginDoms = this.getPluginDoms(pluginId, isUpdate, taskObj);
 
         return (<Modal {...taskModalOpts}>

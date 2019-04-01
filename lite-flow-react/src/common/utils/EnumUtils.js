@@ -43,9 +43,15 @@ taskVersionFinalStatusMap[taskVersionFinalStatusKilled] = "KILLED";
 /**
  * 依赖相关
  */
+const taskDependencyTypeMap = {};
+
 const taskDependencyTypeDefault = 0;
 const taskDependencyTypeOffset = 1;
-const taskDependencyTypeTimeRange = 1;
+const taskDependencyTypeTimeRange = 2;
+taskDependencyTypeMap[taskDependencyTypeDefault] = "无";
+taskDependencyTypeMap[taskDependencyTypeOffset] = "偏移量";
+taskDependencyTypeMap[taskDependencyTypeTimeRange] = "时间区间";
+
 
 /**
  * 执行者任务状态
@@ -112,6 +118,7 @@ module.exports = {
 
   taskDependencyTypeTimeRange: taskDependencyTypeTimeRange,
 
+   taskDependencyTypeMap: taskDependencyTypeMap,
 
   booleanMap: {
     0: "否",
@@ -142,10 +149,13 @@ module.exports = {
 
   taskVersionStatusMap: taskVersionStatusMap,
 
-    taskVersionFinalStatusUndefined: taskVersionFinalStatusUndefined,
-    taskVersionFinalStatusSuccess : taskVersionFinalStatusSuccess,
-    taskVersionFinalStatusFail : taskVersionFinalStatusFail,
-    taskVersionFinalStatusKilled: taskVersionFinalStatusKilled,
+  taskVersionFinalStatusUndefined: taskVersionFinalStatusUndefined,
+
+  taskVersionFinalStatusSuccess : taskVersionFinalStatusSuccess,
+
+  taskVersionFinalStatusFail : taskVersionFinalStatusFail,
+
+  taskVersionFinalStatusKilled: taskVersionFinalStatusKilled,
 
   taskVersionFinalStatusMap: taskVersionFinalStatusMap,
   /**
@@ -246,6 +256,23 @@ module.exports = {
         }
         return options;
   },
+  /**
+   * 获取任务依赖的数据
+   * @returns {Array}
+   */
+  getTaskDependencyTypeOptionArray(){
+        const options = [];
+        for(let key in this.taskDependencyTypeMap){
+            options.push({id: key, name: this.taskDependencyTypeMap[key]})
+        }
+        return options;
+  },
+    /**
+     * 获取类型名称
+     */
+   getTaskDependencyTypeName(type) {
+        return this.taskDependencyTypeMap[type];
+    },
     /**
      * 获取类型名称
      */

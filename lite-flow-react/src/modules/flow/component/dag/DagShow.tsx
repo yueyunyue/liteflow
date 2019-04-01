@@ -58,6 +58,9 @@ const getEvent = (isPreventDefault) => {
 
 };
 
+const CONFIG = "config";
+const TYPE = "type";
+
 class DagShow extends Component<DagProps, any> {
 
     private dagData: any = {};
@@ -568,11 +571,12 @@ class DagShow extends Component<DagProps, any> {
         let dagData = this.dagData;
         let linkData = this.linkData;
         const lk = this.getLink(linkData.taskId, linkData.upstreamTaskId);
-        lk["config"] = config;
-        lk["type"] = type;
+        lk[CONFIG] = config;
+        lk[TYPE] = type;
         let dagDataNew = this.shuffleAndArrange(dagData);
         this.renderDag(dagDataNew);
     }
+
 
 
     /**
@@ -594,6 +598,19 @@ class DagShow extends Component<DagProps, any> {
             }
         }
         dagData["links"] = linksNew;
+        this.hideAllWindow();
+        let dagDataNew = this.shuffleAndArrange(dagData);
+        this.renderDag(dagDataNew);
+    }
+    /**
+     * 删除link
+     */
+    onRemoveLinkConf = () => {
+        let dagData = this.dagData;
+        let linkData = this.linkData;
+        const lk = this.getLink(linkData.taskId, linkData.upstreamTaskId);
+        lk[CONFIG] = "";
+        lk[TYPE] = EnumUtils.taskDependencyTypeDefault;
         this.hideAllWindow();
         let dagDataNew = this.shuffleAndArrange(dagData);
         this.renderDag(dagDataNew);
@@ -775,7 +792,12 @@ class DagShow extends Component<DagProps, any> {
                     <div className={"menu-container"} key={"menu2Container"}
                          style={{top: this.state.labelTop, left: this.state.labelLeft}}>
                         <div>
-                            <Button onClick={this.showLinkConfModal}>编辑时间区间</Button>
+                            <Button onClick={this.showLinkConfModal}>编辑关联配置</Button>
+                        </div>
+                        <div>
+                            <Popconfirm title={"是否去除关联配置关联？"} onConfirm={this.onRemoveLinkConf}>
+                                <Button>去除关联配置</Button>
+                            </Popconfirm>
                         </div>
                         <div>
                             <Popconfirm title={"是否删除关联？"} onConfirm={this.onDeleteLink}>

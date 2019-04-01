@@ -22,7 +22,7 @@ export class CommonDomUtils {
         return options;
     }
 
-    getSelectOptionsWithNoAll(params){
+    getSelectOptionsWithoutAll(params){
        return this.getSelectOptions(params, false);
     }
 
