@@ -31,14 +31,15 @@ module.exports = {
                     "id": null,
                     "taskId": 4,
                     "upstreamTaskId": 3,
-                    "type": 0,
+                    "type": 1,
+                    "config": -1,
                     "status": 0
                 },
                 {
                     "id": null,
                     "taskId": 4,
                     "upstreamTaskId": 5,
-                    "type": 1,
+                    "type": 2,
                     "config": {
                         "startTime": "${yesterday}",
                         "endTime": "${today}",

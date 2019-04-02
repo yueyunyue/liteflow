@@ -78,6 +78,7 @@ class DagShow extends Component<DagProps, any> {
             //lable右键菜单
             showLinkConfigModal: false,
             showLabelMenu: false,
+            showLabelDetail: false,
             labelTop: 0,
             labelLeft: 0,
             //node右键菜单
@@ -131,7 +132,7 @@ class DagShow extends Component<DagProps, any> {
      * 隐藏窗口
      */
     hideAllWindow = () => {
-        this.setState({showMenu: false, showDetail: false, showLabelMenu: false})
+        this.setState({showMenu: false, showDetail: false, showLabelMenu: false, showLabelDetail: false});
     }
 
     /**
@@ -267,6 +268,13 @@ class DagShow extends Component<DagProps, any> {
         svg.call(zoom);
 
 
+        svg.on("click", function () {
+            let e = window.event;
+            let btnCode = e["button"];
+            if (btnCode == 0) {
+                that.hideAllWindow();
+            }
+        });
         /**
          * 右键处理
          */
@@ -311,13 +319,34 @@ class DagShow extends Component<DagProps, any> {
                 showDetail: false
             });
         });
-        svg.on("click", function () {
-            let e = window.event;
-            let btnCode = e["button"];
-            if (btnCode == 0) {
-                that.hideAllWindow();
-            }
+        /**
+         * 鼠标移动到label节点时
+         */
+        svg.selectAll("g.edgeLabel").on("mouseenter", function (data) {
+
+            const position = getMousePosition();
+
+            const taskId = Number(data["w"]);
+            const upstreamTaskId = Number(data["v"]);
+            that.linkData = that.getLink(taskId, upstreamTaskId);
+
+            that.setState({
+                showLabelDetail: true,
+                labelTop: position["y"],
+                labelLeft: position["x"]
+            });
+
         });
+
+        /**
+         * 鼠标移出label
+         */
+        svg.selectAll("g.edgeLabel").on("mouseleave", function (id) {
+            that.setState({
+                showLabelDetail: false
+            });
+        });
+
         /**
          * 右键label
          */
@@ -763,6 +792,16 @@ class DagShow extends Component<DagProps, any> {
             </div>);
         }
 
+        let linkConfStr = "";
+        if(this.linkData){
+            const linkType = this.linkData.type;
+            if(linkType == EnumUtils.taskDependencyTypeTimeRange){
+                linkConfStr = `开始时间${this.linkData.config.startTime}-${this.linkData.config.endTime}`;
+            }else{
+                linkConfStr = this.linkData.config;
+            }
+        }
+
         return (
             <div className={"dag-container"} key={"dagContainer"}
                  style={{width: "100%", height: this.props.height, margin: "0 auto"}}>
@@ -808,7 +847,7 @@ class DagShow extends Component<DagProps, any> {
                 {this.state.showDetail ?
                     <div className={"detail-container"}
                          style={{top: this.state.detailTop, left: this.state.detailLeft}}>
-                        <p><strong>id:&nbsp;</strong>{currentTask.id}</p>
+                        <p><strong>类型:&nbsp;</strong>{currentTask.id}</p>
                         <p><strong>名称:&nbsp;</strong>{currentTask.name}</p>
                         <p><strong>状态:&nbsp;</strong>{EnumUtils.getStatusName(currentTask.status)}</p>
                         <p><strong>时间粒度:&nbsp;</strong>{EnumUtils.getPeriodName(currentTask.period)}</p>
@@ -817,6 +856,11 @@ class DagShow extends Component<DagProps, any> {
                         <p><strong>描述:&nbsp;</strong>{currentTask.description}</p>
                         <p><strong>创建时间:&nbsp;</strong>{CommonUtils.dateFormat(currentTask.createTime)}</p>
                         <p><strong>更新时间:&nbsp;</strong>{CommonUtils.dateFormat(currentTask.updateTime)}</p>
+                    </div> : ""}
+                {this.state.showLabelDetail ?
+                    <div className={"detail-container"}
+                         style={{top: this.state.labelTop, left: this.state.labelLeft}}>
+                        <p><strong>{EnumUtils.getTaskDependencyTypeName(this.linkData.type)}:&nbsp;</strong>{linkConfStr}</p>
                     </div> : ""}
                 {this.state.showTaskChooseModal && isFlow ?
                     <TaskChooseModal {...this.chooseTaskProps()}></TaskChooseModal> : ""}
