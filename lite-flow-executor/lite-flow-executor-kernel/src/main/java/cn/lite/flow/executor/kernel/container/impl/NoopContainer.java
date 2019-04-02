@@ -48,7 +48,7 @@ public class NoopContainer extends SyncContainer {
     }
 
     @Override
-    public boolean isCanceled() {
+    public boolean isFailed() {
         return true;
     }
 

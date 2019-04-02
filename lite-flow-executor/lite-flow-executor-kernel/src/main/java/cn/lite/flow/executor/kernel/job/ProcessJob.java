@@ -1,6 +1,7 @@
 package cn.lite.flow.executor.kernel.job;
 
 import cn.lite.flow.executor.common.consts.Constants;
+import cn.lite.flow.executor.common.exception.ExecutorRuntimeException;
 import cn.lite.flow.executor.common.utils.CommandUtils;
 import cn.lite.flow.executor.common.utils.LiteThreadPool;
 import cn.lite.flow.executor.common.utils.ProcessorUtils;
@@ -140,6 +141,7 @@ public class ProcessJob extends AbstractJob {
                     }
                 }catch (Throwable e){
                     logger.error("kill process error", e);
+                    throw new ExecutorRuntimeException(e.getMessage());
                 }
             }
         }

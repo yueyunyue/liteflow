@@ -21,7 +21,7 @@ public interface Container {
    * 任务是否已经取消
    * @return
    */
-  boolean isCanceled();
+  boolean isFailed();
 
   /**
    * 是否已经成功
@@ -34,6 +34,12 @@ public interface Container {
    * @return
    */
   boolean isRunning();
+
+  /**
+   * 是否最终状态
+   * @return
+   */
+  boolean isFinish();
 
 
 }
