@@ -23,15 +23,21 @@ public class AsyncContainerCheckJob extends AbstractUnstatefullJob {
         List<AsyncContainer> asyncContainers = ContainerMetadata.getAsyncContainers();
         if(CollectionUtils.isNotEmpty(asyncContainers)){
             for(AsyncContainer container : asyncContainers){
-                if (container.isRunning() && !container.isSuccess()) {
+                if (container.isRunning()) {
                     try {
-                        boolean success = container.isSuccess();
-                        if(success){
+                        /**
+                         * 校验状态
+                         */
+                        container.checkStatus();
+                        /**
+                         * 如果是最终状态,success 或 fail
+                         */
+                        boolean isFinish = container.isFinish();
+                        if(isFinish){
                             ExecutorJob executorJob = container.getExecutorJob();
                             ContainerMetadata.removeContainer(executorJob.getId());
                             LOG.info("execute job is success,id:{}, applicationId:{}", executorJob.getId(), executorJob.getApplicationId());
                         }
-
                     } catch (Throwable e) {
                         String errorMsg = "check async container success status error,errMsg:" + e.getMessage();
                         LOG.error(errorMsg, e);

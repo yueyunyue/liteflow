@@ -131,7 +131,7 @@ public class ExecutorJobServiceImpl implements ExecutorJobService {
             if (container != null) {
                 container.kill();
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             LOG.error("job kill error, id:{}", id, e);
             throw new ExecutorRuntimeException("操作失败");
         }

@@ -30,7 +30,7 @@ public class ContainerCompensateJob extends AbstractUnstatefullJob {
         if(CollectionUtils.isNotEmpty(containers)){
             containers.stream().forEach(container -> {
                 AbstractContainer abstractContainer = (AbstractContainer)container;
-                if(abstractContainer.isCanceled() || abstractContainer.isSuccess()){
+                if(abstractContainer.isFailed() || abstractContainer.isSuccess()){
                     ExecutorJob executorJob = abstractContainer.getExecutorJob();
                     if(executorJob != null){
                         Long executorJobId = executorJob.getId();

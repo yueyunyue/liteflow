@@ -1,8 +1,7 @@
 package cn.lite.flow.executor.model.kernel;
 
 import cn.lite.flow.executor.model.basic.ExecutorJob;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.lite.flow.executor.model.consts.ContainerStatus;
 
 /**
  * @description: 抽象container
@@ -13,28 +12,33 @@ public abstract class AbstractContainer implements Container {
 
     protected final ExecutorJob executorJob;
 
-    protected volatile boolean isRunning = false;
+    protected volatile int status = ContainerStatus.NEW.getValue();
 
     public AbstractContainer(ExecutorJob executorJob) {
         this.executorJob = executorJob;
     }
 
-    public abstract void runInternal() throws Exception;
+    public ExecutorJob getExecutorJob() {
+        return executorJob;
+    }
 
-    public void run() throws Exception {
-        if(this.isRunning()){
-            return;
-        }
-        this.isRunning = true;
-
-        runInternal();
+    protected void setStatus(ContainerStatus containerStatus){
+        this.status = containerStatus.getValue();
     }
 
     public boolean isRunning() {
-        return isRunning;
+        return this.status == ContainerStatus.RUNNING.getValue();
     }
 
-    public ExecutorJob getExecutorJob() {
-        return executorJob;
+    public boolean isFailed() {
+        return this.status == ContainerStatus.FAIL.getValue();
+    }
+
+    public boolean isSuccess() {
+        return this.status == ContainerStatus.SUCCESS.getValue();
+    }
+
+    public boolean isFinish() {
+        return isSuccess() || isFailed();
     }
 }

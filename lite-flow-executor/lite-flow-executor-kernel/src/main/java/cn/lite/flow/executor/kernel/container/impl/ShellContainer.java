@@ -1,5 +1,6 @@
 package cn.lite.flow.executor.kernel.container.impl;
 
+import cn.lite.flow.executor.common.exception.ExecutorRuntimeException;
 import cn.lite.flow.executor.common.utils.ExecutorLoggerFactory;
 import cn.lite.flow.executor.common.utils.Props;
 import cn.lite.flow.executor.kernel.conf.ExecutorMetadata;
@@ -50,11 +51,12 @@ public class ShellContainer extends SyncContainer {
             LOG.info("kill shell container executorJobId:{} get applicationId:{}", executorJob.getId(), executorJob.getApplicationId());
         } catch (Throwable e) {
             LOG.error("kill shell container, jobId:" + executorJob.getId(), e);
+            throw new ExecutorRuntimeException(e.getMessage());
         }
     }
 
     @Override
-    public boolean isCanceled() {
+    public boolean isFailed() {
         return shellProcessJob.isCanceled();
     }
 

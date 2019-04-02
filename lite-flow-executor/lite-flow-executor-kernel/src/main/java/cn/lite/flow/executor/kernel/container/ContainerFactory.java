@@ -72,7 +72,6 @@ public class ContainerFactory {
         if(container != null && container instanceof AsyncContainer){
             return true;
         }
-
         return false;
     }
     /**

@@ -65,6 +65,8 @@ public class Constants {
      */
     public static final String CONFIG_FILE_SUFFIX = "_config.json";
 
+    public static final String JOB_CONFIG_PATH = "jobConfigPath";
+
     /**
      * 查询相关
      */
