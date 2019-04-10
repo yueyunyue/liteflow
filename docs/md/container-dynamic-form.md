@@ -58,5 +58,5 @@ form参数| 作用 | 说明
  required|是否必填选项|
  help|表单参数说明（会显示在表单项下方）|
  children|表达选项（主要使用于Select）| [{"id":"1", "name": "fieldName"}]
+ componentConfig|对应dom的配置| 例如TextArea: {"rows": 10 }
  
-

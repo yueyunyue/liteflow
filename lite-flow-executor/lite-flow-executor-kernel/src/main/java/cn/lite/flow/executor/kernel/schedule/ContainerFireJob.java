@@ -37,8 +37,8 @@ public class ContainerFireJob extends AbstractUnstatefullJob {
                 if (!container.isRunning()) {
                     LiteThreadPool.getInstance().execute(() -> {
                         try {
-                            container.run();
                             LOG.info("container start run, container:{}", container.toString());
+                            container.run();
                         } catch (Throwable e) {
                             String errorMsg = "run container error,errMsg:" + e.getMessage();
                             LOG.error(errorMsg, e);
