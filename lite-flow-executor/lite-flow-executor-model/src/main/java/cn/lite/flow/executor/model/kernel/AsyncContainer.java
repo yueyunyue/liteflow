@@ -19,6 +19,9 @@ public abstract class AsyncContainer extends AbstractContainer{
     }
   }
 
+  /**
+   * 验证任务状态
+   */
   public abstract void checkStatus();
 
 }
