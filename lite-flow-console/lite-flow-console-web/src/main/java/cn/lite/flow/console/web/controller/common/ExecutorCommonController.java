@@ -79,21 +79,28 @@ public class ExecutorCommonController extends BaseController {
                                 JSONObject containerField = containerFieldArray.getJSONObject(i);
                                 String name = containerField.getString(CommonConstants.PARAM_NAME);
                                 if(pluginConfObj == null || pluginConfObj.getString(name) == null){
-                                    /**
-                                     * 名称设置为pluginConf，保证前端自动封装数据
-                                     */
-                                    containerField.put(CommonConstants.PARAM_NAME, Constants.PARAM_PLUGIN_CONF_FIELD_PREFIX + name);
                                     containerFields.add(containerField);
                                 }
                             }
                         }
-                        /**
-                         * 校验参数合法性
-                         */
-                        ModelUtils.checkFieldName(containerFields);
-
                         combineFieldConfigs.addAll(containerFields);
                     }
+                }
+
+                if(CollectionUtils.isNotEmpty(combineFieldConfigs)){
+                    for(int i = 0; i < combineFieldConfigs.size(); i ++){
+                        JSONObject pluginField = combineFieldConfigs.getJSONObject(i);
+                        /**
+                         * 名称设置为pluginConf，保证前端自动封装数据
+                         */
+                        String name = pluginField.getString(CommonConstants.PARAM_NAME);
+                        pluginField.put(CommonConstants.PARAM_NAME, Constants.PARAM_PLUGIN_CONF_FIELD_PREFIX + name);
+
+                    }
+                    /**
+                     * 校验参数合法性
+                     */
+                    ModelUtils.checkFieldName(combineFieldConfigs);
                 }
                 pluginObj.put(CommonConstants.PARAM_FIELD_CONFIG, combineFieldConfigs);
                 datas.add(pluginObj);
