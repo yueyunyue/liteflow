@@ -19,6 +19,13 @@ public interface ExecutorJobService extends BaseService<ExecutorJob, ExecutorJob
     void bindApplicationId(long jobId, String applicationId);
 
     /**
+     * 添加应用id，并且状态改为运行中
+     * @param jobId
+     * @param applicationId
+     */
+    void bindApplicationIdAndRun(long jobId, String applicationId);
+
+    /**
      * 设置成功
      * @param jobId
      */

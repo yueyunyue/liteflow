@@ -49,6 +49,11 @@ public class ExecutorJobServiceImpl implements ExecutorJobService {
         executorJobMapper.bindApplicationId(jobId, applicationId);
     }
 
+    @Override
+    public void bindApplicationIdAndRun(long jobId, String applicationId) {
+        executorJobMapper.bindApplicationIdWithStatus(jobId, applicationId, ExecutorJobStatus.SUCCESS.getValue());
+    }
+
     @Transactional("executorTxManager")
     @Override
     public void success(long jobId) {
