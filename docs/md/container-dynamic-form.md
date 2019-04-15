@@ -60,3 +60,12 @@ form参数| 作用 | 说明
  children|表达选项（主要使用于Select）| [{"id":"1", "name": "fieldName"}]
  componentConfig|对应dom的配置| 例如TextArea: {"rows": 10 }
  
+ ### 已支持表单
+ 
+ 组件| 说明 | 备注
+ -----| ------------- | ------------
+  Input|普通输入框| 
+  InputPassword|密码输入框| 
+  InputNumber|文字输入框| 
+  Select|选择器| 
+  TextArea|文本区| 
