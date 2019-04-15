@@ -60,17 +60,17 @@ public class SubmitEventHandler implements EventHandler{
         /**
          * 添加任务名
          */
-        JSONObject pluginObj = new JSONObject();
+        JSONObject pluginObj;
         String pluginConf = taskInstance.getPluginConf();
-        if(StringUtils.isNotBlank(pluginConf)){
+        if(StringUtils.isNotBlank(pluginConf)) {
             pluginObj = JSONObject.parseObject(pluginConf)
+        }else {
+            pluginObj = new JSONObject();
         }
         Long taskId = taskInstance.getTaskId();
         Task task = taskService.getById(taskId);
         pluginObj.put(CommonConstants.PARAM_EXECUTOR_JOB_NAME, task.getName());
-        pluginConf = JSONUtils.toJSONStringWithoutCircleDetect(pluginObj);
-        submitExecuteJob.setPluginConf(pluginConf);
-
+        submitExecuteJob.setPluginConf(JSONUtils.toJSONStringWithoutCircleDetect(pluginObj));
 
         Long executorId = jobRpcService.submitJob(submitExecuteJob);
 
