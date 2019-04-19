@@ -5,9 +5,9 @@ import cn.lite.flow.console.model.basic.TaskInstance;
 import cn.lite.flow.console.model.basic.TaskInstanceDependency;
 import cn.lite.flow.console.model.basic.TaskVersion;
 import cn.lite.flow.console.model.consts.TaskVersionFinalStatus;
+import cn.lite.flow.console.model.event.model.ScheduleEvent;
 import cn.lite.flow.console.service.TaskInstanceDependencyService;
 import cn.lite.flow.console.service.TaskVersionService;
-import cn.lite.flow.console.service.impl.FlowServiceImpl;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public class InstanceDependencyChecker implements Checker<TaskInstance> {
     private TaskVersionService versionService;
 
     @Override
-    public Tuple<Boolean, String> check(TaskInstance taskInstance) {
+    public Tuple<Boolean, String> check(ScheduleEvent event, TaskInstance taskInstance) {
         List<TaskInstanceDependency> instanceDependencies = dependencyService.listValidInstanceDependency(taskInstance.getId());
         if(CollectionUtils.isEmpty(instanceDependencies)){
             LOG.info("instance has no dependency " + taskInstance.getId());
