@@ -157,7 +157,6 @@ public class TaskController extends BaseController {
                     JSONObject pluginObj = ModelUtils.getPluginObj(executorPlugin);
                     obj.put(CommonConstants.PARAM_PLUGIN, pluginObj);
                 }
-
                 setUserInfo(obj, task.getUserId(), userInfo);
                 datas.add(obj);
             }
