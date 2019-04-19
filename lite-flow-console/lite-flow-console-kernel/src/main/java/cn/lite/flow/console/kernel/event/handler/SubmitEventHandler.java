@@ -1,13 +1,19 @@
 package cn.lite.flow.console.kernel.event.handler;
 
+import cn.lite.flow.common.model.consts.CommonConstants;
+import cn.lite.flow.common.utils.JSONUtils;
+import cn.lite.flow.console.model.basic.Task;
 import cn.lite.flow.console.model.event.model.ScheduleEvent;
 import cn.lite.flow.console.model.basic.TaskInstance;
 import cn.lite.flow.console.model.basic.TaskVersion;
 import cn.lite.flow.console.model.consts.TaskVersionStatus;
 import cn.lite.flow.console.service.TaskInstanceService;
+import cn.lite.flow.console.service.TaskService;
 import cn.lite.flow.console.service.TaskVersionService;
 import cn.lite.flow.executor.client.ExecutorJobRpcService;
 import cn.lite.flow.executor.client.model.SubmitExecuteJob;
+import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +37,8 @@ public class SubmitEventHandler implements EventHandler{
     @Autowired
     private ExecutorJobRpcService jobRpcService;
 
+    @Autowired
+    private TaskService taskService;
     @Override
     @Transactional("consoleTxManager")
     public boolean handle(ScheduleEvent event) {
@@ -49,7 +57,21 @@ public class SubmitEventHandler implements EventHandler{
         SubmitExecuteJob submitExecuteJob = new SubmitExecuteJob();
         submitExecuteJob.setInstanceId(taskInstance.getId());
         submitExecuteJob.setPluginId(taskInstance.getPluginId());
-        submitExecuteJob.setPluginConf(taskInstance.getPluginConf());
+        /**
+         * 添加任务名
+         */
+        JSONObject pluginObj;
+        String pluginConf = taskInstance.getPluginConf();
+        if(StringUtils.isNotBlank(pluginConf)) {
+            pluginObj = JSONObject.parseObject(pluginConf);
+        }else {
+            pluginObj = new JSONObject();
+        }
+        Long taskId = taskInstance.getTaskId();
+        Task task = taskService.getById(taskId);
+        pluginObj.put(CommonConstants.PARAM_EXECUTOR_JOB_NAME, task.getName());
+        submitExecuteJob.setPluginConf(JSONUtils.toJSONStringWithoutCircleDetect(pluginObj));
+
         Long executorId = jobRpcService.submitJob(submitExecuteJob);
 
         /**

@@ -54,6 +54,8 @@ public class CommonConstants {
 
     public final static String PARAM_FIELD_CONFIG = "fieldConfig";                           //字段配置
 
+    public final static String PARAM_EXECUTOR_JOB_NAME = "executorJobName";                  //执行者任务名
+
 
 
 }

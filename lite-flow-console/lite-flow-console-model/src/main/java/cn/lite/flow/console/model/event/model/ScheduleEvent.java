@@ -21,7 +21,7 @@ public class ScheduleEvent implements Serializable {
 
     private Long eventTargetId;            //事件目标id
 
-    private Map<String, Object> data;      //额外的数据
+    private Map<String, Object> paramMap;   //额外的数据
 
     /**
      * 获取一个实例
