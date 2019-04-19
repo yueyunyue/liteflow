@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {Button, Popconfirm,Table, Row, Col} from 'antd';
+import {Button, Popconfirm,Table, Row, Col, Modal} from 'antd';
 import {TaskVersion,TaskVersionModel} from "../model/TaskVersionModel";
 import EnumUtils from "../../../common/utils/EnumUtils";
 import CommonUtils from "../../../common/utils/CommonUtils";
 import ShowInstanceModal from "./ShowInstanceModal";
 import ShowLogModal from './ShowLogModal';
+import ReactJson from 'react-json-view';
 
 export interface TaskVersionListProps {
     dataSource: Array<TaskVersion>;
@@ -93,6 +94,26 @@ export class TaskVersionList extends Component<TaskVersionListProps, {showLogMod
     //编辑事件
     handleEdit (rowData, e){
         this.setState({taskVersion : rowData})
+    }
+
+    /**
+     * 显示运行参数
+     */
+    showPluginParamModal(data, e) {
+        let {latestInstance} = data;
+        const {pluginConf} = latestInstance;
+        let content = <span></span>;
+        if(pluginConf){
+            let pluginJson = JSON.parse(pluginConf);
+            content = <ReactJson src={pluginJson} displayDataTypes={false} style={{wordBreak: "break-all"}}/>;
+        }
+        Modal.info({
+            title: "插件参数",
+            width: 600,
+            cancelText: "关闭",
+            okText: "关闭",
+            content:  content
+        });
     }
 
     render(){
@@ -212,6 +233,9 @@ export class TaskVersionList extends Component<TaskVersionListProps, {showLogMod
                                     </Button>
                                 </Popconfirm>  : ""
                         }
+                        <Button type='ghost' size={"small"} className={"margin-right5"} onClick={e => this.showPluginParamModal(record, e)}>
+                            运行参数
+                        </Button>
                     </p>
                 </div>;
             }
