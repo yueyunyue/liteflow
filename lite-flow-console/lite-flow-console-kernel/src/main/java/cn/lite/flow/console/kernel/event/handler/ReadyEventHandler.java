@@ -51,7 +51,7 @@ public class ReadyEventHandler implements EventHandler{
 
         boolean isPassed = true;
         for(Checker<TaskInstance> checker : checkers){
-            Tuple<Boolean, String> checkResult = checker.check(taskInstance);
+            Tuple<Boolean, String> checkResult = checker.check(event, taskInstance);
             /**
              * 验证没有通过，更新消息然后退出
              */
