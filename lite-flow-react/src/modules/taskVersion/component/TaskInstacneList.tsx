@@ -151,7 +151,7 @@ export class TaskInstanceList extends Component<TaskInstanceListProps, { showDep
                             日志
                         </Button>
                         <Button type='ghost' size={"small"} className={"margin-right5"} onClick={e => this.showPluginParamModal(record, e)}>
-                            插件参数
+                            运行参数
                         </Button>
                     </div>;
                 }
