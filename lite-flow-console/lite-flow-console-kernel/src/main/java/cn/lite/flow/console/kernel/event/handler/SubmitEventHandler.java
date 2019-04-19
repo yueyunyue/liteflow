@@ -63,7 +63,7 @@ public class SubmitEventHandler implements EventHandler{
         JSONObject pluginObj;
         String pluginConf = taskInstance.getPluginConf();
         if(StringUtils.isNotBlank(pluginConf)) {
-            pluginObj = JSONObject.parseObject(pluginConf)
+            pluginObj = JSONObject.parseObject(pluginConf);
         }else {
             pluginObj = new JSONObject();
         }
