@@ -16,16 +16,12 @@ import org.apache.hadoop.yarn.api.records.ApplicationId;
 import org.apache.hadoop.yarn.api.records.ApplicationReport;
 import org.apache.hadoop.yarn.api.records.YarnApplicationState;
 import org.apache.hadoop.yarn.client.api.YarnClient;
-import org.apache.hadoop.yarn.exceptions.YarnException;
-import org.apache.hadoop.yarn.util.ConverterUtils;
 import org.apache.spark.SparkConf;
 import org.apache.spark.deploy.yarn.Client;
 import org.apache.spark.deploy.yarn.ClientArguments;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,6 +43,8 @@ public class SparkOnYarnContainer extends AsyncContainer {
     }
 
     public static void initSparkBaseEnvs() {
+        String sparkJar = "hdfs://hadoop2yarn/user/lite/spark-assembly/spark-assembly-2.0.2-hadoop2.6.0.jar";
+
         System.setProperty("spark.default.parallelism", "200");
         System.setProperty("spark.driver.maxResultSize", "16g");
         System.setProperty(
@@ -67,8 +65,8 @@ public class SparkOnYarnContainer extends AsyncContainer {
         System.setProperty("spark.shuffle.io.numConnectionsPerPeer", "2");
         System.setProperty("spark.serializer", "org.apache.spark.serializer.KryoSerializer");
         System.setProperty("spark.yarn.executor.memoryOverhead", "3000");
-//        System.setProperty("spark.yarn.jars", getSparkJar());
-//        System.setProperty("spark.jars", getSparkJar());
+        System.setProperty("spark.yarn.jars", sparkJar);
+        System.setProperty("spark.jars",sparkJar);
         System.setProperty("HADOOP_USER_NAME", "hadoop");
         System.setProperty("SPARK_YARN_MODE", "true");
         System.setProperty("SPARK_SUBMIT", "true");
@@ -121,6 +119,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
         String jobName = configObj.getString(CommonConstants.PARAM_EXECUTOR_JOB_NAME);
         SparkConf sparkConf = new SparkConf();
         sparkConf.setAppName(jobName);
+
         sparkConf.set("spark.app.name", jobName);
         sparkConf.set("spark.yarn.queue", "default");
 //        sparkConf.set("spark.yarn.maxAppAttempts", String.valueOf(MAX_APP_ATTEMPTS));
@@ -130,7 +129,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
         sparkConf.set("spark.executor.memory","100m");
         sparkConf.set("spark.executor.cores", "1");
         // 设置并发实例数
-        int instanceNum = 2;
+        int instanceNum = 1;
         if (false) {
             sparkConf.set("spark.shuffle.service.enabled", "true");
             sparkConf.set("spark.dynamicAllocation.enabled", "true");
@@ -203,7 +202,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
         Client client = new Client(clientArgs, this.sparkConf);
         ApplicationId applicationId = client.submitApplication();
         String appId = applicationId.toString();
-
+        LOG.info("{} get yarn applicationId:{}", executorJob.getId(), appId);
 //        ExecutorJobService executorJobService = ExecutorUtils.getExecutorJobService();
         /**
          * 这只运行状态
@@ -228,12 +227,13 @@ public class SparkOnYarnContainer extends AsyncContainer {
     }
 
     private String getHadoopFiles(){
-        String rootPath = "hdfs://hadoop2yarn/user/lite/conf/";
+        String rootPath = "hdfs://hadoop2yarn/user/lite/config/";
         StringBuilder filesBuilder = new StringBuilder(rootPath)
                 .append("core-site.xml,").append(rootPath)
                 .append("hive-site.xml,").append(rootPath)
                 .append("hdfs-site.xml,").append(rootPath)
                 .append("yarn-site.xml,");
+
         return filesBuilder.toString();
     }
 
