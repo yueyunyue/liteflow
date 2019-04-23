@@ -96,7 +96,17 @@ public class Constants {
     /**
      * 进程
      */
-    public static final String PRCESS_JOB_PREFIX = "p";    //空
+    public static final String PROCESS_JOB_PREFIX = "p";          //进程类型job前缀
+
+
+    /**
+     * yarn相关
+     */
+    public static final String YARN_PARAM_JAR = CommonConstants.DOUBLE_LINE + "jar";            //--jar
+
+    public static final String YARN_PARAM_CLASS = CommonConstants.DOUBLE_LINE + "class";        //--class
+
+    public static final String YARN_PARAM_ARG = CommonConstants.DOUBLE_LINE + "arg";            //--class
 
 
 

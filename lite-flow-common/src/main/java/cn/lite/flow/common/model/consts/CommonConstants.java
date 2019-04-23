@@ -23,6 +23,8 @@ public class CommonConstants {
 
     public static final String LINE = "-";                                                    //横线
 
+    public static final String DOUBLE_LINE = "--";                                            //双横线
+
     public static final String UNDERLINE = "_";                                               //下划线
 
     public static final String FILE_SPLIT = "/";                                              //文件分隔符
