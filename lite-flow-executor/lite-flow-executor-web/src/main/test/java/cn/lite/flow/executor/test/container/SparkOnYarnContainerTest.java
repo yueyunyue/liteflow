@@ -4,6 +4,7 @@ import cn.lite.flow.common.model.consts.CommonConstants;
 import cn.lite.flow.executor.kernel.container.impl.SparkOnYarnContainer;
 import cn.lite.flow.executor.model.basic.ExecutorJob;
 import cn.lite.flow.executor.model.consts.ExecutorJobStatus;
+import cn.lite.flow.executor.test.base.BaseTest;
 import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 
@@ -12,37 +13,27 @@ import org.junit.Test;
  * @author: yueyunyue
  * @create: 2019-01-27
  **/
-public class SparkOnYarnContainerTest {
-
-
+public class SparkOnYarnContainerTest extends BaseTest {
 
     @Test
     public void testSpark() throws Exception {
 
-
-        System.out.println("SPARK_YARN_MODE:" + System.getenv("SPARK_YARN_MODE"));
-        System.out.println("SPARK_CONF_DIR:" + System.getenv("SPARK_CONF_DIR"));
-        System.out.println("HADOOP_CONF_DIR:" + System.getenv("HADOOP_CONF_DIR"));
-        System.out.println("YARN_CONF_DIR:" + System.getenv("YARN_CONF_DIR"));
-        System.out.println("SPARK_KAFKA_VERSION:" + System.getenv("SPARK_KAFKA_VERSION"));
-        System.out.println("HADOOP_HOME:" + System.getenv("HADOOP_HOME"));
-        System.out.println("HADOOP_COMMON_HOME:" + System.getenv("HADOOP_COMMON_HOME"));
-        System.out.println("SPARK_HOME:" + System.getenv("SPARK_HOME"));
-        System.out.println("SPARK_DIST_CLASSPATH:" + System.getenv("SPARK_DIST_CLASSPATH"));
-        System.out.println("SPARK_EXTRA_LIB_PATH:" + System.getenv("SPARK_EXTRA_LIB_PATH"));
-        System.out.println("LD_LIBRARY_PATH:" + System.getenv("LD_LIBRARY_PATH"));
-
-
         ExecutorJob executorJob = new ExecutorJob();
         executorJob.setStatus( ExecutorJobStatus.NEW.getValue());
 
+
         JSONObject confObj = new JSONObject();
-        confObj.put(CommonConstants.PARAM_EXECUTOR_JOB_NAME, "liteTest");
+        confObj.put(CommonConstants.PARAM_EXECUTOR_JOB_NAME, "liteTest-" + System.currentTimeMillis());
 
         executorJob.setConfig(confObj.toJSONString());
 
         SparkOnYarnContainer container = new SparkOnYarnContainer(executorJob);
         container.run();
+
+        while (true){
+            Thread.sleep(1000l);
+            container.checkStatus();
+        }
 
     }
 

@@ -29,3 +29,13 @@ lite:
     executor:
       workspace: /tmp/lite/executor
       isAutoRegisterToDB: true
+
+#hadoop相关配置
+hadoop:
+    userName: hadoop
+    spark:
+      jarPath: /user/lite/spark2
+      yarn:
+        stagingDir: /user/lite
+
+

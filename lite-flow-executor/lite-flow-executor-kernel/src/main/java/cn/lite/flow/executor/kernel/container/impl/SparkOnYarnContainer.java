@@ -1,6 +1,7 @@
 package cn.lite.flow.executor.kernel.container.impl;
 
 import cn.lite.flow.common.model.consts.CommonConstants;
+import cn.lite.flow.common.utils.YarnClientHolder;
 import cn.lite.flow.executor.common.consts.Constants;
 import cn.lite.flow.executor.common.exception.ExecutorRuntimeException;
 import cn.lite.flow.executor.kernel.utils.YarnUtils;
@@ -15,7 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.yarn.api.records.ApplicationId;
 import org.apache.hadoop.yarn.api.records.ApplicationReport;
 import org.apache.hadoop.yarn.api.records.YarnApplicationState;
-import org.apache.hadoop.yarn.client.api.YarnClient;
 import org.apache.spark.SparkConf;
 import org.apache.spark.deploy.yarn.Client;
 import org.apache.spark.deploy.yarn.ClientArguments;
@@ -35,44 +35,11 @@ public class SparkOnYarnContainer extends AsyncContainer {
 
     private SparkConf sparkConf;
 
-    private YarnClient yarnClient;
-
     public SparkOnYarnContainer(ExecutorJob executorJob) {
         super(executorJob);
-        initSparkBaseEnvs();
     }
 
-    public static void initSparkBaseEnvs() {
-        String sparkJar = "hdfs://hadoop2yarn/user/lite/spark-assembly/spark-assembly-2.0.2-hadoop2.6.0.jar";
 
-        System.setProperty("spark.default.parallelism", "200");
-        System.setProperty("spark.driver.maxResultSize", "16g");
-        System.setProperty(
-                "spark.executor.extraJavaOptions",
-                "-XX:MaxPermSize=1024M -XX:+UseG1GC -XX:+UnlockDiagnosticVMOptions -XX:+G1SummarizeConcMark -XX:InitiatingHeapOccupancyPercent=35");
-        System.setProperty("spark.driver.maxResultSize", "16g");
-        System.setProperty("spark.rpc.message.maxSize", "1024");
-        System.setProperty("spark.core.connection.ack.wait.timeout", "300");
-        System.setProperty("spark.rpc.askTimeout", "300");
-        System.setProperty("spark.storage.memoryFraction", "0.2");
-        System.setProperty("spark.shuffle.memoryFraction", "0.3");
-        System.setProperty("spark.network.timeout", "300");
-        System.setProperty("spark.sql.shuffle.partitions", "800");
-        System.setProperty("spark.sql.autoBroadcastJoinThreshold", "400000000");
-        System.setProperty("spark.sql.crossJoin.enabled", "true");
-        System.setProperty("spark.shuffle.io.maxRetries", "30");
-        System.setProperty("spark.shuffle.io.retryWait", "10s");
-        System.setProperty("spark.shuffle.io.numConnectionsPerPeer", "2");
-        System.setProperty("spark.serializer", "org.apache.spark.serializer.KryoSerializer");
-        System.setProperty("spark.yarn.executor.memoryOverhead", "3000");
-        System.setProperty("spark.yarn.jars", sparkJar);
-        System.setProperty("spark.jars",sparkJar);
-        System.setProperty("HADOOP_USER_NAME", "hadoop");
-        System.setProperty("SPARK_YARN_MODE", "true");
-        System.setProperty("SPARK_SUBMIT", "true");
-        System.setProperty("spark.master", "yarn");
-        System.setProperty("spark.submit.deployMode", "cluster");
-    }
 
     /**
      * 获取yarn applicationId
@@ -91,7 +58,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
             return;
         }
         try {
-            ApplicationReport applicationReport = yarnClient.getApplicationReport(applicationId);
+            ApplicationReport applicationReport = YarnClientHolder.getYarnClient().getApplicationReport(applicationId);
             ExecutorJobService executorJobService = ExecutorUtils.getExecutorJobService();
             YarnApplicationState yarnApplicationState = applicationReport.getYarnApplicationState();
 
@@ -122,7 +89,6 @@ public class SparkOnYarnContainer extends AsyncContainer {
 
         sparkConf.set("spark.app.name", jobName);
         sparkConf.set("spark.yarn.queue", "default");
-//        sparkConf.set("spark.yarn.maxAppAttempts", String.valueOf(MAX_APP_ATTEMPTS));
 
         sparkConf.set("spark.driver.memory", "100m");
         sparkConf.set("spark.driver.cores", "1");
@@ -138,14 +104,12 @@ public class SparkOnYarnContainer extends AsyncContainer {
         } else {
             sparkConf.set("spark.executor.instances", String.valueOf(instanceNum));
         }
-        sparkConf.set("spark.yarn.stagingDir", "hdfs://hadoop2yarn/user/lite");
 
         /**
          * hadoop、hive配置文件
          */
         String hadoopFiles = getHadoopFiles();
         sparkConf.set("spark.yarn.dist.files", hadoopFiles);
-
 
         return sparkConf;
 
@@ -208,7 +172,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
          * 这只运行状态
          */
         this.setStatus(ContainerStatus.RUNNING);
-//        executorJob.setApplicationId(appId);
+        executorJob.setApplicationId(appId);
 //        executorJobService.bindApplicationIdAndRun(executorJob.getId(), appId);
     }
 
@@ -219,7 +183,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
             return;
         }
         try {
-            yarnClient.killApplication(applicationId);
+            YarnClientHolder.getYarnClient().killApplication(applicationId);
         } catch (Throwable e) {
             LOG.error("kill job:{} error", executorJob.getId(), e);
             throw new ExecutorRuntimeException(e.getMessage());
