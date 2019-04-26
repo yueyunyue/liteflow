@@ -53,10 +53,6 @@
         </dependency>
         <dependency>
             <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-yarn-server-web-proxy</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-yarn-server-tests</artifactId>
             <type>test-jar</type>
             <scope>test</scope>
@@ -105,11 +101,6 @@
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-yarn_${scala.version}</artifactId>
             <version>${spark.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-library</artifactId>
-            <version>2.11.6</version>
         </dependency>
 
     </dependencies>

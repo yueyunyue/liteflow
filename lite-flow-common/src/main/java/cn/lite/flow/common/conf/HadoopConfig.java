@@ -2,36 +2,47 @@ package cn.lite.flow.common.conf;
 
 import cn.lite.flow.common.model.consts.CommonConstants;
 import cn.lite.flow.common.utils.HadoopUtils;
+import cn.lite.flow.common.utils.SpringUtils;
+import lombok.Getter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @description: hadoop相关配置
  * @author: yueyunyue
  * @create: 2019-04-25
  **/
+@Getter
 public class HadoopConfig implements InitializingBean {
 
-    @Value("${hadoop.userName:}")
-    private String hadoopUserName;
+    private final static Logger LOG = LoggerFactory.getLogger(HadoopConfig.class);
+
+    @Value("${hadoop.userName}")
+    private String hadoopUserName;                       //调用hadoop的用户名
+
+    @Value("${hadoop.spark.yarn.distFilePath:}")
+    private String sparkYarnDistFilePath;                //hadoop，hive，yarn文件所在文件夹
 
     @Value("${hadoop.spark.jarPath:}")
-    private String sparkJarPath;
+    private String sparkJarPath;                         //spark jar包所在hdfs路径
 
     @Value("${hadoop.spark.yarn.stagingDir:}")
-    private String sparkYarnStagingDir;
+    private String sparkYarnStagingDir;                  //spark staging的文件夹
+
+    private AtomicBoolean isInit = new AtomicBoolean(false);
 
     /**
      * 初始化hadoop相关参数
      */
     private void initHadoopProperties(){
-        if(StringUtils.isNotBlank(hadoopUserName)){
-            System.setProperty("HADOOP_USER_NAME", hadoopUserName);
-        }
+        System.setProperty("HADOOP_USER_NAME", hadoopUserName);
 
     }
 
@@ -39,13 +50,27 @@ public class HadoopConfig implements InitializingBean {
      * 获取spark的jar包
      * @return
      */
-    private String getSparkJars(){
+    public String getSparkJars(){
         List<String> files = HadoopUtils.listFileOrDirFileNames(sparkJarPath);
         if(CollectionUtils.isNotEmpty(files)){
             String filePaths = StringUtils.join(files, CommonConstants.COMMA);
             return filePaths;
         }
-        return null;
+        return "";
+
+    }
+
+    /**
+     * 获取yarn相关文件:hive-site.xml、yarn-site.xml等
+     * @return
+     */
+    private String getSparkYarnDistFiles(){
+        List<String> files = HadoopUtils.listFileOrDirFileNames(sparkYarnDistFilePath);
+        if(CollectionUtils.isNotEmpty(files)){
+            String filePaths = StringUtils.join(files, CommonConstants.COMMA);
+            return filePaths;
+        }
+        return "";
 
     }
 
@@ -90,10 +115,22 @@ public class HadoopConfig implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-
+        if(isInit.get()){
+            LOG.info("already inited");
+            return;
+        }
         initHadoopProperties();
-
         initSparkProperties();
+        isInit.set(true);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static HadoopConfig getHadoopConf(){
+        HadoopConfig hadoopConfig = SpringUtils.getBean(HadoopConfig.class);
+        return hadoopConfig;
     }
 
 

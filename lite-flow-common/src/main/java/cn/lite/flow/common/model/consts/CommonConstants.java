@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommonConstants {
 
+    public static final String UTF8 = "UTF-8";                                                //UTF-8
     /**
      * 常见字符
      */
@@ -60,6 +61,29 @@ public class CommonConstants {
 
     public final static String PARAM_EXECUTOR_JOB_NAME = "executorJobName";                  //执行者任务名
 
+
+    /**
+     * spark相关参数
+     */
+    public final static String SPARK_PARAM_YARN_QUEUE = "yarnQueue";                         //yarn队列
+
+    public final static String SPARK_PARAM_YARN_MAIN_CLASS = "mainClass";                    //main方法所在类
+
+    public final static String SPARK_PARAM_YARN_MAIN_JAR = "mainJar";                        //mainClass所在jar
+
+    public final static String SPARK_PARAM_YARN_DEPENDENCY_JAR = "dependencyJars";           //任务依赖的jar包
+
+    public final static String SPARK_PARAM_INSTANCE_NUM = "instanceNum";                     //实例数量
+
+    public final static String SPARK_PARAM_DRIVER_CORES = "driverCore";                      //driver核数
+
+    public final static String SPARK_PARAM_DRIVER_MEMORY = "driverMemory";                   //driver内存
+
+    public final static String SPARK_PARAM_EXECUTOR_CORES = "executorCore";                  //executor核数
+
+    public final static String SPARK_PARAM_EXECUTOR_MEMORY = "executorMemory";               //executor内存
+
+    public final static String SPARK_PARAM_MEMORY_UNIT = "m";                                //spark内存单位
 
 
 }

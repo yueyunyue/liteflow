@@ -19,11 +19,17 @@ public class SparkOnYarnContainerTest extends BaseTest {
     public void testSpark() throws Exception {
 
         ExecutorJob executorJob = new ExecutorJob();
+        executorJob.setId(1L);
         executorJob.setStatus( ExecutorJobStatus.NEW.getValue());
 
 
         JSONObject confObj = new JSONObject();
         confObj.put(CommonConstants.PARAM_EXECUTOR_JOB_NAME, "liteTest-" + System.currentTimeMillis());
+        confObj.put(CommonConstants.SPARK_PARAM_YARN_QUEUE, "default");
+        confObj.put(CommonConstants.SPARK_PARAM_DRIVER_CORES, 1);
+        confObj.put(CommonConstants.SPARK_PARAM_DRIVER_MEMORY, 100);
+        confObj.put(CommonConstants.SPARK_PARAM_EXECUTOR_CORES, 1);
+        confObj.put(CommonConstants.SPARK_PARAM_EXECUTOR_MEMORY, 100);
 
         executorJob.setConfig(confObj.toJSONString());
 

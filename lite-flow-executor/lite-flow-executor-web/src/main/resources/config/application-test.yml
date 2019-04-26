@@ -37,5 +37,6 @@ hadoop:
       jarPath: /user/lite/spark2
       yarn:
         stagingDir: /user/lite
+        getSparkYarnDistFiles: /user/lite/config
 
 

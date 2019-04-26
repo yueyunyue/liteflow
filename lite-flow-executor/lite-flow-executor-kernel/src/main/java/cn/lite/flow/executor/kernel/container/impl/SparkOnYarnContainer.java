@@ -1,9 +1,12 @@
 package cn.lite.flow.executor.kernel.container.impl;
 
+import cn.lite.flow.common.conf.HadoopConfig;
 import cn.lite.flow.common.model.consts.CommonConstants;
+import cn.lite.flow.common.utils.JSONUtils;
 import cn.lite.flow.common.utils.YarnClientHolder;
 import cn.lite.flow.executor.common.consts.Constants;
 import cn.lite.flow.executor.common.exception.ExecutorRuntimeException;
+import cn.lite.flow.executor.kernel.conf.ExecutorMetadata;
 import cn.lite.flow.executor.kernel.utils.YarnUtils;
 import cn.lite.flow.executor.model.basic.ExecutorJob;
 import cn.lite.flow.executor.model.consts.ContainerStatus;
@@ -12,6 +15,7 @@ import cn.lite.flow.executor.service.ExecutorJobService;
 import cn.lite.flow.executor.service.utils.ExecutorUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.yarn.api.records.ApplicationId;
 import org.apache.hadoop.yarn.api.records.ApplicationReport;
@@ -22,6 +26,7 @@ import org.apache.spark.deploy.yarn.ClientArguments;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -38,8 +43,6 @@ public class SparkOnYarnContainer extends AsyncContainer {
     public SparkOnYarnContainer(ExecutorJob executorJob) {
         super(executorJob);
     }
-
-
 
     /**
      * 获取yarn applicationId
@@ -62,6 +65,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
             ExecutorJobService executorJobService = ExecutorUtils.getExecutorJobService();
             YarnApplicationState yarnApplicationState = applicationReport.getYarnApplicationState();
 
+            LOG.info("check job:{}(applicationId:{}) status is {}", executorJob.getId(), executorJob.getApplicationId(), yarnApplicationState.name());
             switch (yarnApplicationState){
                 case FINISHED:
                     executorJobService.success(this.getExecutorJob().getId());
@@ -73,7 +77,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
                     executorJobService.fail(this.getExecutorJob().getId(), "killed by other");
                     break;
                 default:
-                    LOG.info("check job:{}(applicationId:{}) status is {}", executorJob.getId(), executorJob.getApplicationId(), yarnApplicationState.name());
+                    return;
             }
         } catch (Throwable e) {
             LOG.error("job:{} check status error", executorJob.getId(), e);
@@ -84,18 +88,21 @@ public class SparkOnYarnContainer extends AsyncContainer {
     private SparkConf initSparkConf(JSONObject configObj){
 
         String jobName = configObj.getString(CommonConstants.PARAM_EXECUTOR_JOB_NAME);
+
+        String yarnQueue = configObj.getString(CommonConstants.SPARK_PARAM_YARN_QUEUE);
+        String instanceNum = configObj.getString(CommonConstants.SPARK_PARAM_INSTANCE_NUM);
+
         SparkConf sparkConf = new SparkConf();
         sparkConf.setAppName(jobName);
 
         sparkConf.set("spark.app.name", jobName);
-        sparkConf.set("spark.yarn.queue", "default");
+        sparkConf.set("spark.yarn.queue", yarnQueue);
 
-        sparkConf.set("spark.driver.memory", "100m");
-        sparkConf.set("spark.driver.cores", "1");
-        sparkConf.set("spark.executor.memory","100m");
-        sparkConf.set("spark.executor.cores", "1");
+        sparkConf.set("spark.driver.cores", configObj.getString(CommonConstants.SPARK_PARAM_DRIVER_CORES));
+        sparkConf.set("spark.driver.memory", configObj.getString(CommonConstants.SPARK_PARAM_DRIVER_MEMORY) + CommonConstants.SPARK_PARAM_MEMORY_UNIT);
+        sparkConf.set("spark.executor.cores", configObj.getString(CommonConstants.SPARK_PARAM_EXECUTOR_CORES));
+        sparkConf.set("spark.executor.memory", configObj.getString(CommonConstants.SPARK_PARAM_EXECUTOR_MEMORY) + CommonConstants.SPARK_PARAM_MEMORY_UNIT);
         // 设置并发实例数
-        int instanceNum = 1;
         if (false) {
             sparkConf.set("spark.shuffle.service.enabled", "true");
             sparkConf.set("spark.dynamicAllocation.enabled", "true");
@@ -108,7 +115,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
         /**
          * hadoop、hive配置文件
          */
-        String hadoopFiles = getHadoopFiles();
+        String hadoopFiles = HadoopConfig.getHadoopConf().getSparkYarnDistFilePath();
         sparkConf.set("spark.yarn.dist.files", hadoopFiles);
 
         return sparkConf;
@@ -127,13 +134,19 @@ public class SparkOnYarnContainer extends AsyncContainer {
          * 添加主类
          */
         argList.add(Constants.YARN_PARAM_CLASS);
-        argList.add("cn.lite.flow.hello.word.HelloLiteFlow");
+        argList.add(configObj.getString(CommonConstants.SPARK_PARAM_YARN_MAIN_CLASS));
         /**
-         * 添加jar
+         * 添加主类所在jar
          */
         argList.add(Constants.YARN_PARAM_JAR);
-        argList.add("hdfs://hadoop2yarn/user/lite/jar/lite-flow-hello-word.jar");
+        argList.add(configObj.getString(CommonConstants.SPARK_PARAM_YARN_MAIN_JAR));
 
+        /**
+         * 添加配置文件
+         */
+        argList.add(Constants.YARN_PARAM_ARG);
+        String configFilePath = this.generateConfigFile(JSONUtils.toJSONStringWithoutCircleDetect(configObj));
+        argList.add(configFilePath);
 
         return new ClientArguments(argList.toArray(new String[]{}));
 
@@ -155,7 +168,6 @@ public class SparkOnYarnContainer extends AsyncContainer {
          */
         this.sparkConf = initSparkConf(configObj);
 
-
         /**
          * 生成用户参数
          */
@@ -167,13 +179,13 @@ public class SparkOnYarnContainer extends AsyncContainer {
         ApplicationId applicationId = client.submitApplication();
         String appId = applicationId.toString();
         LOG.info("{} get yarn applicationId:{}", executorJob.getId(), appId);
-//        ExecutorJobService executorJobService = ExecutorUtils.getExecutorJobService();
+        ExecutorJobService executorJobService = ExecutorUtils.getExecutorJobService();
         /**
          * 这只运行状态
          */
         this.setStatus(ContainerStatus.RUNNING);
         executorJob.setApplicationId(appId);
-//        executorJobService.bindApplicationIdAndRun(executorJob.getId(), appId);
+        executorJobService.bindApplicationIdAndRun(executorJob.getId(), appId);
     }
 
     @Override
@@ -190,15 +202,19 @@ public class SparkOnYarnContainer extends AsyncContainer {
         }
     }
 
-    private String getHadoopFiles(){
-        String rootPath = "hdfs://hadoop2yarn/user/lite/config/";
-        StringBuilder filesBuilder = new StringBuilder(rootPath)
-                .append("core-site.xml,").append(rootPath)
-                .append("hive-site.xml,").append(rootPath)
-                .append("hdfs-site.xml,").append(rootPath)
-                .append("yarn-site.xml,");
-
-        return filesBuilder.toString();
+    /**
+     * 生成文件
+     */
+    private String generateConfigFile(String config){
+        String workDirPath = ExecutorMetadata.getJobWorkspace(executorJob.getId());
+        String configFilePath = workDirPath + CommonConstants.FILE_SPLIT + executorJob.getId() + Constants.CONFIG_FILE_SUFFIX;
+        try {
+            FileUtils.write(new File(configFilePath), config, CommonConstants.UTF8);
+        } catch (Throwable e) {
+            LOG.error("generate config file error", e);
+            throw new ExecutorRuntimeException(e.getMessage());
+        }
+        return configFilePath;
     }
 
 }
