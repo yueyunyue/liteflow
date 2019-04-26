@@ -16,6 +16,11 @@
     <packaging>jar</packaging>
 
     <dependencies>
+        <!-- spark -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+        </dependency>
 
         <!-- 工具类 -->
         <dependency>

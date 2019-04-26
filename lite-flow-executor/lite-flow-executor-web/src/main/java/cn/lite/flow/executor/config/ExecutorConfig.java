@@ -9,6 +9,6 @@ import org.springframework.context.annotation.ImportResource;
  * @create: 2019-01-07
  **/
 @Configuration
-@ImportResource({"classpath:spring/application-dubbo.xml"})
+@ImportResource({"classpath:spring/application.xml"})
 public class ExecutorConfig {
 }

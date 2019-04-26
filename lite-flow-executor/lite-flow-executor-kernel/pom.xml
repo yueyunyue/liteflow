@@ -14,6 +14,10 @@
     <version>${lite-flow.version}</version>
     <name>lite-flow-executor-kernel</name>
 
+    <properties>
+        <scala.version>2.11</scala.version>
+    </properties>
+
     <packaging>jar</packaging>
 
     <dependencies>
@@ -46,10 +50,6 @@
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-yarn-server-web-proxy</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.hadoop</groupId>

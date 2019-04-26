@@ -5,13 +5,12 @@
         http://code.alibabatech.com/schema/dubbo
         http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
+
     <bean id="springUtils" class="cn.lite.flow.common.utils.SpringUtils"/>
+    <bean id="hadoopConfig" class="cn.lite.flow.common.conf.HadoopConfig"/>
 
-    <dubbo:application name="${dubbo.application.name}">
-        <dubbo:parameter key="qos.port" value="${dubbo.qos.port}"/>
-    </dubbo:application>
+    <import resource="application-dubbo.xml"/>
+    <import resource="application-dubbo-provider.xml"/>
+    <import resource="application-dubbo-consumer.xml"/>
 
-    <dubbo:registry protocol="zookeeper" address="${zk.servers}" file="${dubbo.registry.file}"/>
-
-    <dubbo:protocol name="${dubbo.protocol.name}" port="${dubbo.protocol.port}"/>
 </beans>

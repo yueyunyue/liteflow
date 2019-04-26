@@ -19,7 +19,7 @@ public class ProcessorUtils {
      */
     public static String generateApplicationId(long executorJobId, long processId){
         StringBuilder builder = new StringBuilder();
-        builder.append(Constants.PRCESS_JOB_PREFIX);
+        builder.append(Constants.PROCESS_JOB_PREFIX);
         builder.append(CommonConstants.LINE);
         builder.append(executorJobId);
         builder.append(CommonConstants.LINE);
