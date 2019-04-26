@@ -103,7 +103,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
         sparkConf.set("spark.executor.cores", configObj.getString(CommonConstants.SPARK_PARAM_EXECUTOR_CORES));
         sparkConf.set("spark.executor.memory", configObj.getString(CommonConstants.SPARK_PARAM_EXECUTOR_MEMORY) + CommonConstants.SPARK_PARAM_MEMORY_UNIT);
         // 设置并发实例数
-        if (false) {
+        if (HadoopConfig.getHadoopConf().isDynamicAllocation()) {
             sparkConf.set("spark.shuffle.service.enabled", "true");
             sparkConf.set("spark.dynamicAllocation.enabled", "true");
             sparkConf.set("spark.dynamicAllocation.minExecutors", "1");
@@ -115,7 +115,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
         /**
          * hadoop、hive配置文件
          */
-        String hadoopFiles = HadoopConfig.getHadoopConf().getSparkYarnDistFilePath();
+        String hadoopFiles = HadoopConfig.getHadoopConf().getSparkYarnDistFiles();
         sparkConf.set("spark.yarn.dist.files", hadoopFiles);
 
         return sparkConf;

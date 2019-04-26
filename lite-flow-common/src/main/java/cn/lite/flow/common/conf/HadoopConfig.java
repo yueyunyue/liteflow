@@ -27,14 +27,23 @@ public class HadoopConfig implements InitializingBean {
     @Value("${hadoop.userName}")
     private String hadoopUserName;                       //调用hadoop的用户名
 
-    @Value("${hadoop.spark.yarn.distFilePath:}")
-    private String sparkYarnDistFilePath;                //hadoop，hive，yarn文件所在文件夹
+    @Value("${spark.distFiles:}")
+    private String disFiles;                             //hadoop，hive，yarn文件所在文件夹
 
-    @Value("${hadoop.spark.jarPath:}")
+    @Value("${spark.jarPath:}")
     private String sparkJarPath;                         //spark jar包所在hdfs路径
 
-    @Value("${hadoop.spark.yarn.stagingDir:}")
+    @Value("${spark.yarn.stagingDir:}")
     private String sparkYarnStagingDir;                  //spark staging的文件夹
+
+    @Value("${spark.isDynamicAllocation:}")
+    private boolean isDynamicAllocation;                 //spark是否可以动态获取资源
+
+    @Value("${spark.executor.memoryOverhead:}")
+    private String executorMemoryOverhead;                //spark memoryOverhead内存配置
+
+    @Value("${spark.executor.dynamicAllocation.minExecutors:}")
+    private String dynamicAllocationMinExecutors;         //spark memoryOverhead内存配置
 
     private AtomicBoolean isInit = new AtomicBoolean(false);
 
@@ -64,8 +73,8 @@ public class HadoopConfig implements InitializingBean {
      * 获取yarn相关文件:hive-site.xml、yarn-site.xml等
      * @return
      */
-    private String getSparkYarnDistFiles(){
-        List<String> files = HadoopUtils.listFileOrDirFileNames(sparkYarnDistFilePath);
+    public String getSparkYarnDistFiles(){
+        List<String> files = HadoopUtils.listFileOrDirFileNames(disFiles);
         if(CollectionUtils.isNotEmpty(files)){
             String filePaths = StringUtils.join(files, CommonConstants.COMMA);
             return filePaths;
@@ -98,7 +107,13 @@ public class HadoopConfig implements InitializingBean {
         System.setProperty("spark.shuffle.io.retryWait", "10s");
         System.setProperty("spark.shuffle.io.numConnectionsPerPeer", "2");
         System.setProperty("spark.serializer", "org.apache.spark.serializer.KryoSerializer");
-        System.setProperty("spark.yarn.executor.memoryOverhead", "3000");
+        System.setProperty("spark.yarn.executor.memoryOverhead", executorMemoryOverhead);
+
+        if(isDynamicAllocation){
+            System.setProperty("spark.shuffle.service.enabled", "true");
+            System.setProperty("spark.dynamicAllocation.enabled", "true");
+            System.setProperty("spark.dynamicAllocation.minExecutors", dynamicAllocationMinExecutors);
+        }
 
         System.setProperty("SPARK_YARN_MODE", "true");
         System.setProperty("SPARK_SUBMIT", "true");

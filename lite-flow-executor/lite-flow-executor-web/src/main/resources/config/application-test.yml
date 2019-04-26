@@ -33,10 +33,19 @@ lite:
 #hadoop相关配置
 hadoop:
     userName: hadoop
-    spark:
-      jarPath: /user/lite/spark2
-      yarn:
-        stagingDir: /user/lite
-        getSparkYarnDistFiles: /user/lite/config
+spark:
+  jarPath: /user/lite/spark2
+  distFiles: /user/lite/config
+  isDynamicAllocation: false
+  executor:
+    memoryOverhead: 100
+    dynamicAllocation:
+      minExecutors: 1
+  yarn:
+    stagingDir: /user/lite
+
+
+
+
 
 
