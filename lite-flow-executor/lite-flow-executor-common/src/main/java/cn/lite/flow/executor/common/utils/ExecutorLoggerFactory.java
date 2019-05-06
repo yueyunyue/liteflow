@@ -111,6 +111,10 @@ public class ExecutorLoggerFactory {
         config.addLogger(loggerName, loggerConfig);
         ctx.updateLoggers();
         LOG.info("create logger {}, path is {}", loggerName, logPath);
+        /**
+         * start
+         */
+        loggerConfig.start();
     }
 
     /**
@@ -163,6 +167,7 @@ public class ExecutorLoggerFactory {
                 start(loggerName, logPath);
             }
         }
-        return org.slf4j.LoggerFactory.getLogger(loggerName);
+        Logger logger = LoggerFactory.getLogger(loggerName);
+        return logger;
     }
 }

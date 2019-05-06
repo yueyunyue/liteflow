@@ -53,11 +53,14 @@ VALUES
 '[
   {
     "label": "shell",
-    "name": "command",
-    "type": "Input",
+    "name": "shellContent",
+    "type": "TextArea",
     "editable": true,
     "defaultValue": "",
-    "required": true
+    "required": true,
+    "componentConfig": {
+       "rows":15
+    }
   }
 ]', 'shell脚本', 1),
 
@@ -70,13 +73,7 @@ VALUES
     "editable": false,
     "defaultValue": "",
     "required": true,
-    "help": "jar路径",
-    "children": [
-      {
-        "id": 1,
-        "name": "123"
-      }
-    ]
+    "help": "jar路径"
   },{
     "label": "主类",
     "name": "mainClass",
@@ -84,13 +81,7 @@ VALUES
     "editable": false,
     "defaultValue": "",
     "required": true,
-    "help": "main所在函数类名",
-    "children": [
-      {
-        "id": 1,
-        "name": "123"
-      }
-    ]
+    "help": "main所在函数类名"
   },
   {
     "label": "jvm参数",
@@ -99,13 +90,7 @@ VALUES
     "editable": false,
     "defaultValue": "",
     "required": true,
-    "help": "jvm 参数",
-    "children": [
-      {
-        "id": 1,
-        "name": "123"
-      }
-    ]
+    "help": "jvm 参数"
   }
 ]   ',
 'java进程',
