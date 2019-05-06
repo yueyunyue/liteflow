@@ -58,7 +58,14 @@ public class Constants {
     /**
      * shell
      */
-    public static final String SHELL_COMMAND = "command";
+    public static final String SHELL_COMMAND = "sh";
+
+    public static final String SHELL_COINTENT = "shellContent";
+
+    public static final String SHELL_SCRIPT_PATH = "shellPath";
+
+    public static final String SHELL_SCRIPT_PREFIX = "job_script_";
+
 
     /**
      * 任务文件地址
