@@ -27,7 +27,7 @@ public class HadoopUtils {
 
     private static volatile FileSystem FILE_SYSTEM = null;
 
-    private final static int COPY_BUFF_BYTE_SIZE = 4096;
+    public final static int COPY_BUFF_BYTE_SIZE = 4096;
 
     /**
      * 获取fs
@@ -55,22 +55,20 @@ public class HadoopUtils {
      * @return
      * @throws IOException
      */
-    public static String upload(File fileItem, String fsFileName) throws IOException {
-        String location;
+    public static String uploadLocalFile2Hdfs(File fileItem, String fsFileName) throws IOException {
+        FileSystem fileSystem = getFileSystem();
         InputStream inputStream = null;
         FSDataOutputStream os = null;
+        Path dstPath = new Path(fsFileName);
         try {
             inputStream = new FileInputStream(fileItem);
-            Path dstPath = new Path(fsFileName);
-            FileSystem fileSystem = getFileSystem();
             os = fileSystem.create(dstPath);
-            IOUtils.copyBytes(inputStream, os, COPY_BUFF_BYTE_SIZE, false);
-            location = fileSystem.getFileStatus(dstPath).getPath().toUri().toString();
+            IOUtils.copyBytes(inputStream, os, COPY_BUFF_BYTE_SIZE);
         } finally {
             org.apache.commons.io.IOUtils.closeQuietly(os);
             org.apache.commons.io.IOUtils.closeQuietly(inputStream);
         }
-        return location;
+        return fileSystem.getFileStatus(dstPath).getPath().toUri().toString();
     }
 
     /**
@@ -95,8 +93,19 @@ public class HadoopUtils {
             LOG.error("get dir:{} file list error", dir, e);
         }
         return null;
-
-
     }
+
+    /**
+     * 上传至hdfs
+     *
+     * @return
+     * @throws IOException
+     */
+    public static String download(String fsFilePath, String localFilePath) throws IOException {
+        FileSystem fileSystem = getFileSystem();
+        fileSystem.copyToLocalFile(new Path(fsFilePath), new Path(localFilePath));
+        return localFilePath;
+    }
+
 
 }

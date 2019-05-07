@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.net.URL;
 import java.util.Arrays;
 
 /**
@@ -50,19 +51,4 @@ public class FileUtils {
         return result;
     }
 
-    public static void main(String[] args) {
-        String filePath = "log/1";
-        long offset = 1;
-        int length = 200;
-        Tuple<Integer, String> result = readFile(filePath, 1, 200);
-        StringBuilder log = new StringBuilder();
-        while (result.getA() > 0) {
-            log.append(result.getB());
-            offset += 200;
-            result = readFile(filePath, offset, length);
-        }
-        if (log != null) {
-
-        }
-    }
 }

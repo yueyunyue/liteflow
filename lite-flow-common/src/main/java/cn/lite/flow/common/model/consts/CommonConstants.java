@@ -1,6 +1,9 @@
 package cn.lite.flow.common.model.consts;
 
+import com.google.common.collect.Sets;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
 
 /**
  * 常量
@@ -61,6 +64,9 @@ public class CommonConstants {
 
     public final static String PARAM_EXECUTOR_JOB_NAME = "executorJobName";                  //执行者任务名
 
+    public final static String PARAM_FILE = "file";                                          //文件
+
+    public final static String PARAM_PARAM = "param";                                          //文件
 
     /**
      * spark相关参数
@@ -85,5 +91,7 @@ public class CommonConstants {
 
     public final static String SPARK_PARAM_MEMORY_UNIT = "m";                                //spark内存单位
 
+
+    public final static Set<String> TEXT_FILE_SUFFIX = Sets.newHashSet(".txt", ".sh", ".sql", ".json");
 
 }
