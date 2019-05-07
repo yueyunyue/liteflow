@@ -66,7 +66,7 @@ public class CommonConstants {
 
     public final static String PARAM_FILE = "file";                                          //文件
 
-    public final static String PARAM_PARAM = "param";                                          //文件
+    public final static String PARAM = "param";                                              //参数
 
     /**
      * spark相关参数

@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.OutputStream;
-import java.io.StringWriter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -111,18 +110,19 @@ public class HdfsCommonController extends BaseController {
      */
     @RequestMapping(value = "getFileContent")
     public String getFileContent(@RequestParam("hdfsFilePath")String hdfsFilePath){
-        FSDataInputStream fsDataInputStream = null;
         try {
-            FileSystem fileSystem = HadoopUtils.getFileSystem();
-            fsDataInputStream = fileSystem.open(new Path(hdfsFilePath));
-            StringWriter stringWriter = new StringWriter();
-            IOUtils.copy(fsDataInputStream, stringWriter);
-            return ResponseUtils.success(stringWriter.toString());
+            HadoopConfig hadoopConf = HadoopConfig.getHadoopConf();
+            /**
+             * 非上传路径下的不能查看
+             */
+            if(!StringUtils.contains(hdfsFilePath, hadoopConf.getHdfsWorkspace())){
+                return ResponseUtils.error("非"+ hadoopConf.getHdfsWorkspace() + "路径下的不能查看");
+            }
+            String fileContent = HadoopUtils.getFileContent(hdfsFilePath, true);
+            return ResponseUtils.success(fileContent);
         } catch (Throwable e) {
             LOG.error("download file error:{}", hdfsFilePath, e);
             return ResponseUtils.error(ExceptionUtils.collectStackMsg(e));
-        } finally {
-            IOUtils.closeQuietly(fsDataInputStream);
         }
     }
 
