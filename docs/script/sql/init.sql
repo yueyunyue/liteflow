@@ -48,11 +48,11 @@ lf_executor_container(name, class_name, field_config, description, user_id)
 VALUES
 ('Noop', 'cn.lite.flow.executor.kernel.container.impl.NoopContainer', '', '无操作容器', 1),
 
-('Shell',
+('SimpleShell',
 'cn.lite.flow.executor.kernel.container.impl.ShellContainer',
 '[
   {
-    "label": "shell",
+    "label": "脚本内容",
     "name": "shellContent",
     "type": "TextArea",
     "editable": true,
@@ -61,6 +61,26 @@ VALUES
     "componentConfig": {
        "rows":15
     }
+  }
+]', '简单的shell脚本', 1),
+('Shell',
+'cn.lite.flow.executor.kernel.container.impl.FileShellContainer',
+'[
+  {
+    "label": "脚本",
+    "name": "file",
+    "type": "Input",
+    "editable": true,
+    "defaultValue": "",
+    "required": true,
+  },
+  {
+    "label": "参数",
+    "name": "param",
+    "type": "TextArea",
+    "editable": true,
+    "defaultValue": "",
+    "required": true,
   }
 ]', 'shell脚本', 1),
 

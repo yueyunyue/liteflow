@@ -18,6 +18,7 @@ import cn.lite.flow.executor.model.query.ExecutorJobQM;
 import cn.lite.flow.executor.model.query.ExecutorServerQM;
 import cn.lite.flow.executor.service.ExecutorJobService;
 import cn.lite.flow.executor.service.ExecutorPluginService;
+import cn.lite.flow.executor.service.utils.ExecutorServiceUtils;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -83,8 +84,12 @@ public class ExecutorJobRpcServiceImpl implements ExecutorJobRpcService {
         /**
          * 添加任务
          */
-        Container container = ContainerFactory.newInstance(job);
-        ContainerMetadata.putContainer(job.getId(), container);
+        try {
+            Container container = ContainerFactory.newInstance(job);
+            ContainerMetadata.putContainer(job.getId(), container);
+        }catch (Throwable e){
+            executorJobService.fail(job.getId(), e.getMessage());
+        }
 
         return job.getId();
     }
