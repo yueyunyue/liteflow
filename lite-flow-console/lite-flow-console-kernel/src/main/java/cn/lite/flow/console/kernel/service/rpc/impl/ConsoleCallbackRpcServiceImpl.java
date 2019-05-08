@@ -11,6 +11,7 @@ import cn.lite.flow.console.model.consts.TaskVersionStatus;
 import cn.lite.flow.console.service.AlarmService;
 import cn.lite.flow.console.service.TaskInstanceService;
 import cn.lite.flow.console.service.TaskVersionService;
+import com.google.common.collect.ImmutableSet;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by ly on 2018/11/19.
@@ -36,6 +38,14 @@ public class ConsoleCallbackRpcServiceImpl implements ConsoleCallbackRpcService 
 
     @Autowired
     private AlarmService alarmService;
+
+    /**
+     * 可以设置为失败的前置状态
+     */
+    private final Set<Integer> CAN_FAIL_PRE_STATUS = ImmutableSet.of(
+            TaskVersionStatus.READY.getValue(),
+            TaskVersionStatus.RUNNING.getValue(),
+            TaskVersionStatus.SUBMITTED.getValue());
 
 
     @Transactional("consoleTxManager")
@@ -126,9 +136,7 @@ public class ConsoleCallbackRpcServiceImpl implements ConsoleCallbackRpcService 
         if (taskInstance.getStatus() == TaskVersionStatus.FAIL.getValue()) {
             return;
         }
-        if (!(taskInstance.getStatus() == TaskVersionStatus.READY.getValue()
-                ||taskInstance.getStatus() == TaskVersionStatus.RUNNING.getValue()
-                || taskInstance.getStatus() == TaskVersionStatus.SUBMITTED.getValue())) {
+        if (!CAN_FAIL_PRE_STATUS.contains(taskInstance.getStatus())) {
             throw new ConsoleRuntimeException("该实例状态是非执行中状态, 不能更新为失败状态");
         }
 
