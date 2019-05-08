@@ -16,12 +16,17 @@ import org.slf4j.LoggerFactory;
  **/
 public class ShellContainer extends SyncContainer {
 
-    private final ShellProcessJob shellProcessJob;
+    private ShellProcessJob shellProcessJob;
 
     private final static Logger LOG = LoggerFactory.getLogger(ShellContainer.class);
 
     public ShellContainer(ExecutorJob executorJob) {
         super(executorJob);
+
+    }
+
+    @Override
+    public void runInternal() throws Exception {
         String config = executorJob.getConfig();
         Props sysProps = new Props();
         Props props = new Props(config);
@@ -30,17 +35,8 @@ public class ShellContainer extends SyncContainer {
 
         this.shellProcessJob = new ShellProcessJob(executorJob.getId(), sysProps, props, logger);
 
-    }
+        shellProcessJob.run();
 
-    @Override
-    public void runInternal() throws Exception {
-        try {
-
-            shellProcessJob.run();
-
-        } finally {
-
-        }
     }
 
     @Override

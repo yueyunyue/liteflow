@@ -21,37 +21,36 @@ import java.io.File;
  **/
 public class JavaProcessContainer extends SyncContainer {
 
-    private final JavaProcessJob javaProcessJob;
+    private JavaProcessJob javaProcessJob;
 
-    private final String workDirPath;
+    private String workDirPath;
 
     public JavaProcessContainer(ExecutorJob executorJob) throws Exception {
         super(executorJob);
-        String config = executorJob.getConfig();
-        if(StringUtils.isNotBlank(config)){
-            Props sysProps = new Props();
-            Props props = new Props(config);
-
-            this.workDirPath = ExecutorMetadata.getJobWorkspace(executorJob.getId());
-
-            Logger logger = ExecutorLoggerFactory.getLogger(executorJob.getId(), workDirPath);
-
-            String configFilePath = this.workDirPath + CommonConstants.FILE_SPLIT + executorJob.getId() + Constants.CONFIG_FILE_SUFFIX;
-            FileUtils.write(new File(configFilePath), config);
-            props.put(Constants.JAVA_MAIN_ARGS, executorJob.getId() + CommonConstants.BLANK_SPACE + configFilePath);
-
-            this.javaProcessJob = new JavaProcessJob(executorJob.getId(),sysProps, props, logger);
-
-        }else{
-            throw new IllegalArgumentException("execute job config is empty");
-        }
-
     }
 
     @Override
     public void runInternal() throws Exception {
         try{
-            javaProcessJob.run();
+            String config = executorJob.getConfig();
+            if(StringUtils.isNotBlank(config)){
+                Props sysProps = new Props();
+                Props props = new Props(config);
+
+                this.workDirPath = ExecutorMetadata.getJobWorkspace(executorJob.getId());
+
+                Logger logger = ExecutorLoggerFactory.getLogger(executorJob.getId(), workDirPath);
+
+                String configFilePath = this.workDirPath + CommonConstants.FILE_SPLIT + executorJob.getId() + Constants.CONFIG_FILE_SUFFIX;
+                FileUtils.write(new File(configFilePath), config);
+                props.put(Constants.JAVA_MAIN_ARGS, executorJob.getId() + CommonConstants.BLANK_SPACE + configFilePath);
+
+                this.javaProcessJob = new JavaProcessJob(executorJob.getId(),sysProps, props, logger);
+                javaProcessJob.run();
+
+            }else{
+                throw new IllegalArgumentException("execute job config is empty");
+            }
         } finally {
             ExecutorLoggerFactory.stop(executorJob.getId());
         }
