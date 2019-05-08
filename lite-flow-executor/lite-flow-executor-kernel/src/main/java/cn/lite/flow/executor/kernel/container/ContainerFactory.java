@@ -8,7 +8,7 @@ import cn.lite.flow.executor.model.kernel.AsyncContainer;
 import cn.lite.flow.executor.model.kernel.Container;
 import cn.lite.flow.executor.model.kernel.SyncContainer;
 import cn.lite.flow.executor.service.ExecutorContainerService;
-import cn.lite.flow.executor.service.utils.ExecutorUtils;
+import cn.lite.flow.executor.service.utils.ExecutorServiceUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.lang.reflect.Constructor;
@@ -31,7 +31,7 @@ public class ContainerFactory {
      */
     public static Container newInstance(ExecutorJob executorJob){
 
-        ExecutorContainerService executorContainerService = ExecutorUtils.getExecutorContainerService();
+        ExecutorContainerService executorContainerService = ExecutorServiceUtils.getExecutorContainerService();
         ExecutorContainer executorContainer = executorContainerService.getById(executorJob.getContainerId());
         String className = executorContainer.getClassName();
 
@@ -72,7 +72,6 @@ public class ContainerFactory {
         if(container != null && container instanceof AsyncContainer){
             return true;
         }
-
         return false;
     }
     /**
@@ -88,7 +87,7 @@ public class ContainerFactory {
     }
 
     private static boolean isAssignableFrom(long containerId, Class cls){
-        ExecutorContainerService executorContainerService = ExecutorUtils.getExecutorContainerService();
+        ExecutorContainerService executorContainerService = ExecutorServiceUtils.getExecutorContainerService();
         ExecutorContainer executorContainer = executorContainerService.getById(containerId);
         String className = executorContainer.getClassName();
 

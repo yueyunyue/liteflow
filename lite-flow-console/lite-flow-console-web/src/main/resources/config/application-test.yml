@@ -38,3 +38,7 @@ zk:
     leader:
       path: /lite/console/server/leader
 
+
+#hadoop相关配置
+hadoop:
+    userName: hadoop

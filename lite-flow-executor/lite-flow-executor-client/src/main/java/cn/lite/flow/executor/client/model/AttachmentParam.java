@@ -10,7 +10,9 @@ import lombok.ToString;
  * @create: 2019-01-17
  **/
 @Data
-@ToString
+@ToString(callSuper = true)
 public class AttachmentParam extends BaseRpcListParam {
+
+    private Integer status;
 
 }

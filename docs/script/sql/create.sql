@@ -12,7 +12,7 @@ CREATE TABLE lf_console_user (
   update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (id),
   UNIQUE KEY idx_uniq_user_name (user_name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户信息表';
 
 -- 用户组
 DROP TABLE if EXISTS lf_console_user_group;
@@ -26,7 +26,7 @@ CREATE TABLE lf_console_user_group (
   update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (id),
   UNIQUE KEY idx_uniq_name (name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户组信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户组信息表';
 
 -- 用户和用户组对应关系表
 DROP TABLE if EXISTS lf_console_user_group_mid;
@@ -37,7 +37,7 @@ CREATE TABLE lf_console_user_group_mid (
   create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (id),
   UNIQUE KEY idx_uniq_user_id_group_id (user_id,group_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户和用户组对应关系表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户和用户组对应关系表';
 
 
 -- 用户和用户组对应的任务-任务组权限表
@@ -55,7 +55,7 @@ CREATE TABLE lf_console_user_group_auth_mid (
 	update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (id),
   UNIQUE KEY uniq_sourceId_sourceType_targetId_targetType (source_id, source_type, target_id, target_type)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户和用户组对应的任务-任务组权限表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户和用户组对应的任务-任务组权限表';
 
 -- 菜单表
 DROP TABLE if EXISTS lf_console_menu;
@@ -67,7 +67,7 @@ CREATE TABLE lf_console_menu (
   order_num INT NOT NULL DEFAULT '0' COMMENT '排序',
   PRIMARY KEY (id),
   UNIQUE KEY idx_uniq_name (name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='菜单表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='菜单表';
 
 -- 子菜单表
 DROP TABLE if EXISTS lf_console_menu_item;
@@ -79,7 +79,7 @@ CREATE TABLE lf_console_menu_item (
   order_num INT NOT NULL DEFAULT '0' COMMENT '排序',
   PRIMARY KEY (id),
   UNIQUE KEY idx_uniq_name (name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='子菜单表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='子菜单表';
 
 -- 角色信息表
 DROP TABLE if EXISTS lf_console_role;
@@ -92,7 +92,7 @@ CREATE TABLE lf_console_role (
   update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (id),
   UNIQUE KEY idx_uniq_role_name (role_name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色信息表';
 
 -- 角色和权限对应关系表
 DROP TABLE if EXISTS lf_console_role_auth_mid;
@@ -103,7 +103,7 @@ CREATE TABLE lf_console_role_auth_mid (
   create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (id),
   UNIQUE KEY idx_uniq_role_id_auth_url_id (role_id,menu_item_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色权限对应关系表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色权限对应关系表';
 
 -- 用户和角色对应关系表
 DROP TABLE if EXISTS lf_console_user_role_mid;
@@ -114,7 +114,7 @@ CREATE TABLE lf_console_user_role_mid (
   create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (id),
   UNIQUE KEY idx_uniq_user_id_role_id (user_id,role_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色对应关系表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户角色对应关系表';
 
 
 
@@ -131,7 +131,7 @@ CREATE TABLE lf_console_task (
   is_concurrency tinyint NOT NULL DEFAULT '0' COMMENT '是否可以并发',
   execute_etrategy varchar(128) DEFAULT '' COMMENT '当并发发生时的执行策略',
   plugin_id int DEFAULT NULL COMMENT '插件id',
-  plugin_conf varchar(512) DEFAULT NULL COMMENT '插件配置',
+  plugin_conf text COMMENT '插件配置',
   is_retry tinyint NOT NULL DEFAULT '0' COMMENT '失败是否重试',
   retry_conf varchar(128) DEFAULT NULL COMMENT '失败时的重试配置',
   max_run_time int DEFAULT NULL COMMENT '最长运行时长',
@@ -145,7 +145,7 @@ CREATE TABLE lf_console_task (
   UNIQUE KEY idx_uniq_name (name),
   KEY idx_status(status),
   KEY idx_period(period)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='任务信息表';
 
 -- 任务依赖关系表
 DROP TABLE if EXISTS lf_console_task_dependency;
@@ -154,14 +154,14 @@ CREATE TABLE lf_console_task_dependency (
   task_id bigint NOT NULL DEFAULT '0' COMMENT '任务id',
   upstream_task_id bigint NOT NULL DEFAULT '0' COMMENT '上游任务id',
   type tinyint NOT NULL DEFAULT '0' COMMENT '类型',
-  config varchar(500) DEFAULT NULL COMMENT '依赖配置信息',
+  config varchar(128) DEFAULT NULL COMMENT '依赖配置信息',
   status tinyint NOT NULL DEFAULT '0' COMMENT '状态',
   create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (id),
   UNIQUE KEY idx_uniq_task_id_upstream_task_id(task_id,upstream_task_id),
   KEY idx_upstream_task_id_task_id(upstream_task_id, task_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务依赖关系表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='任务依赖关系表';
 
 -- 任务版本每天生成信息表
 DROP TABLE if EXISTS lf_console_task_version_daily_init;
@@ -170,13 +170,13 @@ CREATE TABLE lf_console_task_version_daily_init (
   task_id bigint NOT NULL DEFAULT '0' COMMENT '实例id',
   day int NOT NULL DEFAULT '0' COMMENT '日期yyyyMMdd格式',
   status tinyint NOT NULL DEFAULT '0' COMMENT '状态',
-  msg text DEFAULT NULL COMMENT '信息',
+  msg  DEFAULT NULL COMMENT '信息',
   create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (id),
   UNIQUE KEY idx_uniq_day_task_id (day, task_id),
   KEY idx_task_id (task_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务版本每天生成信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='任务版本每天生成信息表';
 
 -- 任务版本信息表
 DROP TABLE if EXISTS lf_console_task_version;
@@ -193,7 +193,7 @@ CREATE TABLE lf_console_task_version (
   UNIQUE KEY idx_uniq_task_id_version_no(task_id,version_no),
   KEY idx_tid_status(task_id,status),
   KEY idx_tid_final_status_no(task_id,final_status)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务版本信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='任务版本信息表';
 
 -- 任务实例信息表
 DROP TABLE if EXISTS lf_console_task_instance;
@@ -204,7 +204,7 @@ CREATE TABLE lf_console_task_instance (
   task_version_no bigint NOT NULL DEFAULT '0' COMMENT '任务版本(冗余字段)',
   logic_run_time datetime NOT NULL COMMENT '逻辑运行时间',
   plugin_id int NOT NULL DEFAULT '0' COMMENT '插件id',
-  plugin_conf varchar(500) DEFAULT NULL COMMENT '插件配置',
+  plugin_conf text COMMENT '插件配置',
   status tinyint NOT NULL DEFAULT '0' COMMENT '状态',
   run_start_time datetime DEFAULT NULL COMMENT '运行开始时间',
   run_end_time datetime DEFAULT NULL COMMENT '运行结束时间',
@@ -216,7 +216,7 @@ CREATE TABLE lf_console_task_instance (
   KEY idx_version_id (task_version_id),
   KEY idx_task_id_version (task_id,task_version_no),
   KEY idx_status_logic_time (status,logic_run_time)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务实例信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='任务实例信息表';
 
 -- 任务实例依赖关系表
 DROP TABLE if EXISTS lf_console_task_instance_dependency;
@@ -231,7 +231,7 @@ CREATE TABLE lf_console_task_instance_dependency (
   PRIMARY KEY (id),
   KEY idx_instance_id (instance_id),
   KEY idx_upstream_task_id_version (upstream_task_id, upstream_task_version_no)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务实例依赖关系表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='任务实例依赖关系表';
 
 -- 任务流信息表
 DROP TABLE if EXISTS lf_console_flow;
@@ -245,7 +245,7 @@ CREATE TABLE lf_console_flow (
   update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (id),
   UNIQUE KEY uniq_name (name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务流信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='任务流信息表';
 
 -- 任务依赖快照信息表
 DROP TABLE if EXISTS lf_console_flow_dependency_snapshot;
@@ -255,13 +255,13 @@ CREATE TABLE lf_console_flow_dependency_snapshot (
 	task_id bigint NOT NULL DEFAULT '0' COMMENT '任务id',
 	upstream_task_id bigint NOT NULL DEFAULT '0' COMMENT '上游任务id',
 	type INT NOT NULL DEFAULT '0' COMMENT '依赖类型',
-	conf VARCHAR(500) DEFAULT NULL COMMENT '依赖配置信息',
+	conf VARCHAR(128) DEFAULT NULL COMMENT '依赖配置信息',
   create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (id),
   KEY idx_flow_id (flow_id),
   KEY idx_task_id (task_id),
   KEY idx_upstream_id (upstream_task_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务依赖快照信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='任务依赖快照信息表';
 
 -- 任务流中依赖任务信息表
 DROP TABLE if EXISTS lf_console_flow_dependency;
@@ -273,7 +273,7 @@ CREATE TABLE lf_console_flow_dependency (
   PRIMARY KEY (id),
   UNIQUE KEY idx_uniq_flow_id_dependency_id (flow_id,task_dependency_id),
   KEY idx_dependency_id (task_dependency_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务流中任务依赖信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='任务流中任务依赖信息表';
 
 
 -- 执行者信息表
@@ -290,7 +290,7 @@ CREATE TABLE lf_executor_server (
   PRIMARY KEY (id),
   UNIQUE KEY uniq_name (name),
   UNIQUE KEY uniq_ip (ip)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='执行者信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='执行者信息表';
 
 -- 执行容器信息表
 DROP TABLE if EXISTS lf_executor_container;
@@ -306,7 +306,7 @@ CREATE TABLE lf_executor_container (
   update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (id),
   UNIQUE KEY uniq_name (name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='执行容器信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='执行容器信息表';
 
 -- 执行任务信息表
 DROP TABLE if EXISTS lf_executor_job;
@@ -327,7 +327,7 @@ CREATE TABLE lf_executor_job(
   PRIMARY KEY (id),
   KEY idx_status(status),
   UNIQUE KEY idx_source_id(source_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='执行任务信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='执行任务信息表';
 
 -- 执行任务回调表
 DROP TABLE if EXISTS lf_executor_callback;
@@ -345,7 +345,7 @@ CREATE TABLE lf_executor_callback (
   KEY idx_job_id(job_id),
   KEY idx_executor_status(executor_server_id, status),
   KEY idx_job_source_id(job_source_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='执行任务回调表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='执行任务回调表';
 
 -- 执行插件信息表
 DROP TABLE if EXISTS lf_executor_plugin;
@@ -353,7 +353,7 @@ CREATE TABLE lf_executor_plugin (
   id int NOT NULL AUTO_INCREMENT COMMENT '主键id',
   name varchar(64) DEFAULT NULL COMMENT '插件名称',
   field_config text COMMENT '插件需要实现的参数',
-  config varchar(512) COMMENT '插件实现容器的参数',
+  config text COMMENT '插件实现容器的参数',
   description varchar(64) NOT NULL DEFAULT '' COMMENT '说明',
   container_id int NOT NULL DEFAULT '0' COMMENT '容器id',
   user_id int NOT NULL DEFAULT '0' COMMENT '创建者id',
@@ -362,7 +362,7 @@ CREATE TABLE lf_executor_plugin (
   update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (id),
   UNIQUE KEY uniq_name (name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='执行插件信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='执行插件信息表';
 
 -- 执行附件表
 DROP TABLE if EXISTS lf_executor_attachment;
@@ -377,4 +377,4 @@ CREATE TABLE lf_executor_attachment (
   update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (id),
   KEY idx_name (name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='执行附件表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='执行附件表';

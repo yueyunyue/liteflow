@@ -2,20 +2,16 @@ package cn.lite.flow.console.kernel.event.handler.check;
 
 import cn.lite.flow.common.model.Tuple;
 import cn.lite.flow.common.model.consts.BooleanType;
-import cn.lite.flow.common.model.query.Page;
 import cn.lite.flow.console.model.basic.Task;
 import cn.lite.flow.console.model.basic.TaskInstance;
-import cn.lite.flow.console.model.basic.TaskVersion;
 import cn.lite.flow.console.model.consts.ExecuteStrategy;
 import cn.lite.flow.console.model.consts.TaskVersionFinalStatus;
-import cn.lite.flow.console.model.query.TaskVersionQM;
+import cn.lite.flow.console.model.event.model.ScheduleEvent;
 import cn.lite.flow.console.service.TaskService;
 import cn.lite.flow.console.service.TaskVersionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 /**
  * @description: 任务并发验证
@@ -33,7 +29,7 @@ public class TaskConcurrencyChecker implements Checker<TaskInstance> {
     private TaskService taskService;
 
     @Override
-    public Tuple<Boolean, String> check(TaskInstance taskInstance) {
+    public Tuple<Boolean, String> check(ScheduleEvent event, TaskInstance taskInstance) {
 
         Long taskId = taskInstance.getTaskId();
         Long versionId = taskInstance.getTaskVersionId();

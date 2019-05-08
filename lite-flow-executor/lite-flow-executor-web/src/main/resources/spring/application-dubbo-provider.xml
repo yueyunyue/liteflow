@@ -12,4 +12,6 @@
     <dubbo:service interface="cn.lite.flow.executor.client.ExecutorContainerRpcService" ref="executorContainerRpcServiceImpl" version="1.0.0"/>
 
     <dubbo:service interface="cn.lite.flow.executor.client.ExecutorPluginRpcService" ref="executorPluginRpcServiceImpl" version="1.0.0"/>
+
+    <dubbo:service interface="cn.lite.flow.executor.client.ExecutorAttachmentRpcService" ref="executorAttachmentRpcServiceImpl" version="1.0.0"/>
 </beans>

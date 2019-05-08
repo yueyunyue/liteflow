@@ -48,7 +48,7 @@
 		#{fieldConfig},
 		#{className},
 		#{userId},
-		#{status)
+		#{status})
 	</insert>
 	<select id="findList" resultType="ExecutorContainer">
 		select 

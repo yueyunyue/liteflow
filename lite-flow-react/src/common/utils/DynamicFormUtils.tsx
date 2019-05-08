@@ -38,6 +38,7 @@ export class CommonDynamicFormUtils {
         if(property.help){
             formLayout["help"] = property.help;
         }
+        const componentConfig = property.componentConfig ? property.componentConfig : {};
 
         switch (property.type) {
             case "Input":
@@ -50,7 +51,33 @@ export class CommonDynamicFormUtils {
                                 message: property.message ? property.message : ''
                             }
                         ]
-                    })(<Input disabled={disabled}/>)}
+                    })(<Input {...componentConfig} disabled={disabled}/>)}
+                </Form.Item>)
+                break;
+            case "InputPassword":
+                dom = (<Form.Item {...formLayout} >
+                    {formParent.props.form.getFieldDecorator(property.name, {
+                        initialValue: CommonUtils.getValueFromModel(property.name, model, property.defaultValue),
+                        rules: [
+                            {
+                                required: property.required,
+                                message: property.message ? property.message : ''
+                            }
+                        ]
+                    })(<Input.Password {...componentConfig} disabled={disabled}/>)}
+                </Form.Item>)
+                break;
+            case "InputNumber":
+                dom = (<Form.Item {...formLayout} >
+                    {formParent.props.form.getFieldDecorator(property.name, {
+                        initialValue: CommonUtils.getValueFromModel(property.name, model, property.defaultValue),
+                        rules: [
+                            {
+                                required: property.required,
+                                message: property.message ? property.message : ''
+                            }
+                        ]
+                    })(<InputNumber {...componentConfig} disabled={disabled}/>)}
                 </Form.Item>)
                 break;
             case "Select":
@@ -71,10 +98,23 @@ export class CommonDynamicFormUtils {
                                     message: property.message ? property.message : ''
                                 }
                             ]
-                        })(<Select disabled={disabled}>
+                        })(<Select {...componentConfig} disabled={disabled}>
                             {options}
                         </Select>)}
                     </Form.Item>);
+                break;
+            case "TextArea":
+                dom = (<Form.Item {...formLayout} >
+                    {formParent.props.form.getFieldDecorator(property.name, {
+                        initialValue: CommonUtils.getValueFromModel(property.name, model, property.defaultValue),
+                        rules: [
+                            {
+                                required: property.required,
+                                message: property.message ? property.message : ''
+                            }
+                        ]
+                    })(<Input.TextArea {...componentConfig} disabled={disabled} />)}
+                </Form.Item>)
                 break;
         }
         return dom;

@@ -3,6 +3,7 @@ package cn.lite.flow.executor.client;
 import cn.lite.flow.executor.client.model.AttachmentParam;
 import cn.lite.flow.executor.model.basic.ExecutorAttachment;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -36,4 +37,19 @@ public interface ExecutorAttachmentRpcService {
      * @return
      */
     ExecutorAttachment getById(long id);
+
+    /**
+     * 通过生成的url获取
+     * @param url
+     * @return
+     */
+    ExecutorAttachment getByUrl(String url);
+
+    /**
+     * 获取文件内容
+     * @param url
+     * @return
+     */
+    String getFileContent(String url) throws IOException;
+
 }

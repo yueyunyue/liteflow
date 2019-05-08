@@ -14,7 +14,4 @@
     <dubbo:registry protocol="zookeeper" address="${zk.servers}" file="${dubbo.registry.file}"/>
 
     <dubbo:protocol name="${dubbo.protocol.name}" port="${dubbo.protocol.port}"/>
-
-    <import resource="application-dubbo-provider.xml"/>
-    <import resource="application-dubbo-consumer.xml"/>
 </beans>

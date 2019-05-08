@@ -1,5 +1,6 @@
 package cn.lite.flow.console.web.controller.task;
 
+import cn.lite.flow.common.model.consts.CommonConstants;
 import cn.lite.flow.console.common.enums.AuthCheckTypeEnum;
 import cn.lite.flow.console.common.enums.OperateTypeEnum;
 import cn.lite.flow.console.common.model.vo.SessionUser;
@@ -19,6 +20,8 @@ import cn.lite.flow.console.web.controller.BaseController;
 import cn.lite.flow.console.web.utils.ModelUtils;
 import cn.lite.flow.executor.client.ExecutorContainerRpcService;
 import cn.lite.flow.executor.client.ExecutorPluginRpcService;
+import cn.lite.flow.executor.client.model.PluginParam;
+import cn.lite.flow.executor.model.basic.ExecutorPlugin;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Preconditions;
@@ -33,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -130,14 +134,32 @@ public class TaskController extends BaseController {
                     .map(Task::getUserId)
                     .distinct()
                     .collect(Collectors.toList());
+            List<Long> pluginIds = taskList.stream()
+                    .map(Task::getPluginId)
+                    .distinct()
+                    .collect(Collectors.toList());
+
+            PluginParam param = new PluginParam();
+            param.setIds(pluginIds);
+            List<ExecutorPlugin> executorPlugins = executorPluginRpcService.list(param);
+            Map<Long, ExecutorPlugin> pluginMap = null;
+            if(CollectionUtils.isNotEmpty(executorPlugins)){
+                pluginMap = executorPlugins.stream().collect(Collectors.toMap(ExecutorPlugin::getId, executorPlugin -> executorPlugin));
+            }
 
             total = taskService.count(taskQM);
-            taskList.forEach(task -> {
+            for(Task task : taskList ){
                 JSONObject obj = ModelUtils.getTaskObj(task);
                 Map<Long, String> userInfo = getUserName(userIds);
+                if(pluginMap != null){
+                    Long pId = task.getPluginId();
+                    ExecutorPlugin executorPlugin = pluginMap.get(pId);
+                    JSONObject pluginObj = ModelUtils.getPluginObj(executorPlugin);
+                    obj.put(CommonConstants.PARAM_PLUGIN, pluginObj);
+                }
                 setUserInfo(obj, task.getUserId(), userInfo);
                 datas.add(obj);
-            });
+            }
         }
         return ResponseUtils.list(total, datas);
     }

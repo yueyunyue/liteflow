@@ -48,16 +48,39 @@ lf_executor_container(name, class_name, field_config, description, user_id)
 VALUES
 ('Noop', 'cn.lite.flow.executor.kernel.container.impl.NoopContainer', '', '无操作容器', 1),
 
-('Shell',
+('SimpleShell',
 'cn.lite.flow.executor.kernel.container.impl.ShellContainer',
 '[
   {
-    "label": "shell",
-    "name": "command",
+    "label": "脚本内容",
+    "name": "shellContent",
+    "type": "TextArea",
+    "editable": true,
+    "defaultValue": "",
+    "required": true,
+    "componentConfig": {
+       "rows":15
+    }
+  }
+]', '简单的shell脚本', 1),
+('Shell',
+'cn.lite.flow.executor.kernel.container.impl.FileShellContainer',
+'[
+  {
+    "label": "脚本",
+    "name": "file",
     "type": "Input",
     "editable": true,
     "defaultValue": "",
-    "required": true
+    "required": true,
+  },
+  {
+    "label": "参数",
+    "name": "param",
+    "type": "TextArea",
+    "editable": true,
+    "defaultValue": "",
+    "required": true,
   }
 ]', 'shell脚本', 1),
 
@@ -70,13 +93,7 @@ VALUES
     "editable": false,
     "defaultValue": "",
     "required": true,
-    "help": "jar路径",
-    "children": [
-      {
-        "id": 1,
-        "name": "123"
-      }
-    ]
+    "help": "jar路径"
   },{
     "label": "主类",
     "name": "mainClass",
@@ -84,13 +101,7 @@ VALUES
     "editable": false,
     "defaultValue": "",
     "required": true,
-    "help": "main所在函数类名",
-    "children": [
-      {
-        "id": 1,
-        "name": "123"
-      }
-    ]
+    "help": "main所在函数类名"
   },
   {
     "label": "jvm参数",
@@ -99,17 +110,99 @@ VALUES
     "editable": false,
     "defaultValue": "",
     "required": true,
-    "help": "jvm 参数",
-    "children": [
-      {
-        "id": 1,
-        "name": "123"
-      }
-    ]
+    "help": "jvm 参数"
   }
 ]   ',
 'java进程',
+1),
+('SPARK_ON_YARN',
+'cn.lite.flow.executor.kernel.container.impl.SparkOnYarnContainer', '[
+  {
+    "label": "yarn队列",
+    "name": "yarnQueue",
+    "type": "Input",
+    "editable": false,
+    "defaultValue": "default",
+    "required": true,
+    "help": ""
+  },
+  {
+    "label": "主类",
+    "name": "mainClass",
+    "type": "Input",
+    "editable": false,
+    "defaultValue": "",
+    "required": true,
+    "help": "main函数所在类名"
+  },
+  {
+    "label": "jar包",
+    "name": "mainJar",
+    "type": "Input",
+    "editable": false,
+    "defaultValue": "",
+    "required": true,
+    "help": "主类所在jar包"
+  },
+  {
+    "label": "依赖jar包",
+    "name": "dependencyJars",
+    "type": "Input",
+    "editable": false,
+    "defaultValue": "",
+    "required": false,
+    "help": "运行依赖的jar包，多个以,隔开"
+  },
+  {
+    "label": "instanceNum",
+    "name": "instanceNum",
+    "type": "InputNumber",
+    "editable": false,
+    "defaultValue": "1",
+    "required": true,
+    "help": ""
+  },
+  {
+    "label": "driver核数",
+    "name": "driverCore",
+    "type": "InputNumber",
+    "editable": false,
+    "defaultValue": "1",
+    "required": true,
+    "help": ""
+  },
+  {
+    "label": "driver内存",
+    "name": "driverMemory",
+    "type": "InputNumber",
+    "editable": false,
+    "defaultValue": "100",
+    "required": true,
+    "help": ""
+  },
+  {
+    "label": "executor核数",
+    "name": "executorCore",
+    "type": "InputNumber",
+    "editable": false,
+    "defaultValue": "1",
+    "required": true,
+    "help": ""
+  },
+  {
+    "label": "executor内存",
+    "name": "executorMemory",
+    "type": "InputNumber",
+    "editable": false,
+    "defaultValue": "100",
+    "required": true,
+    "help": ""
+  }
+]',
+'sparkOnYarn',
 1);
+
+
 
 
 INSERT INTO

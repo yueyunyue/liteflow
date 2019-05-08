@@ -1,6 +1,7 @@
 package cn.lite.flow.executor.model.kernel;
 
 import cn.lite.flow.executor.model.basic.ExecutorJob;
+import cn.lite.flow.executor.model.consts.ContainerStatus;
 import cn.lite.flow.executor.model.consts.ExecutorJobStatus;
 
 /**
@@ -14,7 +15,13 @@ public abstract class AsyncContainer extends AbstractContainer{
      * 异步任务是否是运行中
      */
     if(executorJob.getStatus() == ExecutorJobStatus.RUNNING.getValue()){
-      this.isRunning = true;
+      super.setStatus(ContainerStatus.RUNNING);
     }
   }
+
+  /**
+   * 验证任务状态
+   */
+  public abstract void checkStatus();
+
 }

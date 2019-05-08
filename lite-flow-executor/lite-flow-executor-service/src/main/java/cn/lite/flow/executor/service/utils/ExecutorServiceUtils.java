@@ -1,6 +1,7 @@
 package cn.lite.flow.executor.service.utils;
 
 import cn.lite.flow.common.utils.SpringUtils;
+import cn.lite.flow.executor.service.ExecutorAttachmentService;
 import cn.lite.flow.executor.service.ExecutorContainerService;
 import cn.lite.flow.executor.service.ExecutorJobService;
 import cn.lite.flow.executor.service.ExecutorPluginService;
@@ -11,13 +12,13 @@ import cn.lite.flow.executor.service.ExecutorServerService;
  * @author: yueyunyue
  * @create: 2018-09-13
  **/
-public class ExecutorUtils {
+public class ExecutorServiceUtils {
     /**
      * 获取job service
      * @return
      */
     public static ExecutorJobService getExecutorJobService(){
-        ExecutorJobService executorJobService = (ExecutorJobService)SpringUtils.getBean("executorJobServiceImpl");
+        ExecutorJobService executorJobService = SpringUtils.getBean(ExecutorJobService.class);
         return executorJobService;
     }
 
@@ -26,7 +27,7 @@ public class ExecutorUtils {
      * @return
      */
     public static ExecutorContainerService getExecutorContainerService(){
-        ExecutorContainerService containerService = (ExecutorContainerService)SpringUtils.getBean("executorContainerServiceImpl");
+        ExecutorContainerService containerService = SpringUtils.getBean(ExecutorContainerService.class);
         return containerService;
     }
 
@@ -35,7 +36,7 @@ public class ExecutorUtils {
      * @return
      */
     public static ExecutorPluginService getExecutorPluginService(){
-        ExecutorPluginService containerService = (ExecutorPluginService)SpringUtils.getBean("executorPluginServiceImpl");
+        ExecutorPluginService containerService = SpringUtils.getBean(ExecutorPluginService.class);
         return containerService;
     }
     /**
@@ -43,8 +44,17 @@ public class ExecutorUtils {
      * @return
      */
     public static ExecutorServerService getExecutorServerService(){
-        ExecutorServerService containerService = (ExecutorServerService)SpringUtils.getBean("executorServerServiceImpl");
+        ExecutorServerService containerService = SpringUtils.getBean(ExecutorServerService.class);
         return containerService;
+    }
+
+    /**
+     * 获取附件
+     * @return
+     */
+    public static ExecutorAttachmentService getExecutorAttachmentService(){
+        ExecutorAttachmentService attachmentService = SpringUtils.getBean(ExecutorAttachmentService.class);
+        return attachmentService;
     }
 
 

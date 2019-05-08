@@ -6,7 +6,7 @@ import cn.lite.flow.executor.common.consts.Constants;
 import cn.lite.flow.executor.model.kernel.SyncContainer;
 import cn.lite.flow.executor.model.basic.ExecutorJob;
 import cn.lite.flow.executor.service.ExecutorJobService;
-import cn.lite.flow.executor.service.utils.ExecutorUtils;
+import cn.lite.flow.executor.service.utils.ExecutorServiceUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +27,7 @@ public class NoopContainer extends SyncContainer {
     public void runInternal() {
         Long executorJobId = executorJob.getId();
         String applicationId = executorJob.getSourceId() + CommonConstants.LINE + RandomUtils.digital(Constants.NOOP_ID_RANDOM_SIZE);
-        ExecutorJobService executorJobService = ExecutorUtils.getExecutorJobService();
+        ExecutorJobService executorJobService = ExecutorServiceUtils.getExecutorJobService();
         /**
          * executorJobId和绑定id,并标记任务开始
          */
@@ -48,7 +48,7 @@ public class NoopContainer extends SyncContainer {
     }
 
     @Override
-    public boolean isCanceled() {
+    public boolean isFailed() {
         return true;
     }
 

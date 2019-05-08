@@ -1,6 +1,10 @@
 package cn.lite.flow.common.model.consts;
 
+import com.google.common.collect.Sets;
 import org.springframework.stereotype.Component;
+
+import java.nio.charset.Charset;
+import java.util.Set;
 
 /**
  * 常量
@@ -8,6 +12,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommonConstants {
 
+    public static final String UTF8 = "UTF-8";                                                //UTF-8
+
+    public static final Charset UTF8_CHARSET =  Charset.forName(CommonConstants.UTF8);       //UTF-8
     /**
      * 常见字符
      */
@@ -22,6 +29,8 @@ public class CommonConstants {
     public static final String SEMICOLON = ";";                                               //分号
 
     public static final String LINE = "-";                                                    //横线
+
+    public static final String DOUBLE_LINE = "--";                                            //双横线
 
     public static final String UNDERLINE = "_";                                               //下划线
 
@@ -50,10 +59,52 @@ public class CommonConstants {
 
     public final static String PARAM_NAME = "name";                                          //名称
 
-    public final static String PARAM_CONTAINER = "container";                                //名称
+    public final static String PARAM_CONTAINER = "container";                                //容器
+
+    public final static String PARAM_PLUGIN = "plugin";                                      //插件
 
     public final static String PARAM_FIELD_CONFIG = "fieldConfig";                           //字段配置
 
+    public final static String PARAM_EXECUTOR_JOB_NAME = "executorJobName";                  //执行者任务名
 
+    public final static String PARAM_FILE = "file";                                          //文件
+
+    public final static String PARAM = "param";                                              //参数
+
+    /**
+     * spark相关参数
+     */
+    public final static String SPARK_PARAM_YARN_QUEUE = "yarnQueue";                         //yarn队列
+
+    public final static String SPARK_PARAM_YARN_MAIN_CLASS = "mainClass";                    //main方法所在类
+
+    public final static String SPARK_PARAM_YARN_MAIN_JAR = "mainJar";                        //mainClass所在jar
+
+    public final static String SPARK_PARAM_YARN_DEPENDENCY_JAR = "dependencyJars";           //任务依赖的jar包
+
+    public final static String SPARK_PARAM_INSTANCE_NUM = "instanceNum";                     //实例数量
+
+    public final static String SPARK_PARAM_DRIVER_CORES = "driverCore";                      //driver核数
+
+    public final static String SPARK_PARAM_DRIVER_MEMORY = "driverMemory";                   //driver内存
+
+    public final static String SPARK_PARAM_EXECUTOR_CORES = "executorCore";                  //executor核数
+
+    public final static String SPARK_PARAM_EXECUTOR_MEMORY = "executorMemory";               //executor内存
+
+    public final static String SPARK_PARAM_MEMORY_UNIT = "m";                                //spark内存单位
+
+
+
+    public final static Set<String> TEXT_FILE_SUFFIX = Sets.newHashSet(".txt", ".sh", ".sql", ".json");
+
+    /**
+     * 附件相关
+     */
+    public static final String EXECUTOR = "executor";                                         //executor
+
+    public static final String ATTACHMENT_PREFIX = "liteAttachment://";                       //附件前缀
+
+    public static final String HDFS_PREFIX = "hdfs://";                                       //hdfs前缀
 
 }

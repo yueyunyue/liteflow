@@ -284,12 +284,12 @@ class DagShow extends Component<DagProps, any> {
             if (btnCode != 2) {
                 return;
             }
+            that.hideAllWindow();
             let position = getMousePosition();
 
             that.nodeId = id;    //设置节点id
 
             that.setState({
-                showDetail: false,//隐藏详情
                 showMenu: true,
                 nodeTop: position["y"],
                 nodeLeft: position["x"]
@@ -356,6 +356,8 @@ class DagShow extends Component<DagProps, any> {
             if (btnCode != 2) {
                 return;
             }
+            that.hideAllWindow();
+
             const taskId = Number(data["w"]);
             const upstreamTaskId = Number(data["v"]);
             that.linkData = that.getLink(taskId, upstreamTaskId);

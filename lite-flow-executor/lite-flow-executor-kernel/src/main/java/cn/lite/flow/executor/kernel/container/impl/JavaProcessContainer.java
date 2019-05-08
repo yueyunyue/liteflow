@@ -6,6 +6,7 @@ import cn.lite.flow.executor.common.utils.ExecutorLoggerFactory;
 import cn.lite.flow.executor.common.utils.Props;
 import cn.lite.flow.executor.kernel.conf.ExecutorMetadata;
 import cn.lite.flow.executor.kernel.job.JavaProcessJob;
+import cn.lite.flow.executor.model.consts.ContainerStatus;
 import cn.lite.flow.executor.model.kernel.SyncContainer;
 import cn.lite.flow.executor.model.basic.ExecutorJob;
 import org.apache.commons.io.FileUtils;
@@ -62,13 +63,21 @@ public class JavaProcessContainer extends SyncContainer {
     }
 
     @Override
-    public boolean isCanceled() {
-        return javaProcessJob.isCanceled();
+    public boolean isFailed() {
+        boolean canceled = javaProcessJob.isCanceled();
+        if(canceled){
+            super.setStatus(ContainerStatus.FAIL);
+        }
+        return canceled;
     }
 
     @Override
     public boolean isSuccess() {
-        return javaProcessJob.isSuccess();
+        boolean success = javaProcessJob.isSuccess();
+        if(success){
+            super.setStatus(ContainerStatus.SUCCESS);
+        }
+        return success;
     }
 
 }

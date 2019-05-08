@@ -20,14 +20,7 @@ public class ShellTest {
         String shell = "/Users/yueyunyue/workspace4m/liteflow/docs/jars/paramTest.sh";
         Props sysProps = new Props();
         Props props = new Props();
-        props.put(Constants.SHELL_COMMAND, shell);
-        props.put("a", "A");
-        props.put("b", "B");
-        props.put("c", "C");
-        props.put("d", "D");
-        props.put("e", "E");
-        props.put("f", "F");
-        props.put("g", "G");
+        props.put(Constants.SHELL_SCRIPT_PATH, shell);
 
         ShellProcessJob shellProcessJob = new ShellProcessJob(100,sysProps, props, logger);
 

@@ -1,5 +1,8 @@
 package cn.lite.flow.executor.service.impl;
 
+import cn.lite.flow.common.model.consts.CommonConstants;
+import cn.lite.flow.common.utils.CommonFileUtils;
+import cn.lite.flow.executor.common.utils.CommandUtils;
 import cn.lite.flow.executor.dao.ExecutorAttachmentMapper;
 import cn.lite.flow.executor.model.basic.ExecutorAttachment;
 import cn.lite.flow.executor.model.query.ExecutorAttachmentQM;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description: 附件相关
@@ -43,5 +47,13 @@ public class ExecutorAttachmentServiceImpl implements ExecutorAttachmentService 
     @Override
     public List<ExecutorAttachment> list(ExecutorAttachmentQM queryModel) {
         return executorAttachmentMapper.findList(queryModel);
+    }
+
+    @Override
+    public ExecutorAttachment getByUrl(String url) {
+        Map<String, String> attachmentParamMap = CommonFileUtils.getAttachmentParamMap(url);
+        String id = attachmentParamMap.get(CommonConstants.PARAM_ID);
+        ExecutorAttachment attachment = executorAttachmentMapper.getById(Long.parseLong(id));
+        return attachment;
     }
 }

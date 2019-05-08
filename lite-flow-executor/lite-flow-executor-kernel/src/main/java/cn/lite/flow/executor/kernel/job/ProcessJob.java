@@ -1,6 +1,7 @@
 package cn.lite.flow.executor.kernel.job;
 
 import cn.lite.flow.executor.common.consts.Constants;
+import cn.lite.flow.executor.common.exception.ExecutorRuntimeException;
 import cn.lite.flow.executor.common.utils.CommandUtils;
 import cn.lite.flow.executor.common.utils.LiteThreadPool;
 import cn.lite.flow.executor.common.utils.ProcessorUtils;
@@ -9,7 +10,7 @@ import cn.lite.flow.executor.kernel.process.LiteProcess;
 import cn.lite.flow.executor.kernel.process.ProcessFailureException;
 import cn.lite.flow.executor.kernel.utils.LiteProcessBuilder;
 import cn.lite.flow.executor.service.ExecutorJobService;
-import cn.lite.flow.executor.service.utils.ExecutorUtils;
+import cn.lite.flow.executor.service.utils.ExecutorServiceUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -43,7 +44,7 @@ public class ProcessJob extends AbstractJob {
             throw new IllegalArgumentException("command can not be empty");
         }
 
-        ExecutorJobService executorJobService = ExecutorUtils.getExecutorJobService();
+        ExecutorJobService executorJobService = ExecutorServiceUtils.getExecutorJobService();
         /**
          * 任务运行
          */
@@ -140,6 +141,7 @@ public class ProcessJob extends AbstractJob {
                     }
                 }catch (Throwable e){
                     logger.error("kill process error", e);
+                    throw new ExecutorRuntimeException(e.getMessage());
                 }
             }
         }

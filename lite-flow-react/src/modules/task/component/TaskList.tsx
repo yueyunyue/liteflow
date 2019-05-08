@@ -188,9 +188,10 @@ export class TaskList extends Component<TaskListProps, { showModal, showVersionM
                 dataIndex: 'config',
                 key: 'config',
                 render: (config, record, index) => {
-                    const {cronExpression, period} = record;
+                    const {cronExpression, period, plugin} = record;
                     const periodStr = EnumUtils.getPeriodName(period);
                     return <Row className={"list-content-row"}>
+                        <Row><Col className={"list-content-col-title"} span={12}>类型:</Col><Col className={"list-content-col-content"} span={12}>{plugin != null ? plugin.name : ""}</Col></Row>
                         <Row><Col className={"list-content-col-title"} span={12}>周期:</Col><Col className={"list-content-col-content"} span={12}>{periodStr}</Col></Row>
                         <Row><Col className={"list-content-col-title"} span={12}>表达式:</Col><Col className={"list-content-col-content"} span={12}>{cronExpression}</Col></Row>
                     </Row>;

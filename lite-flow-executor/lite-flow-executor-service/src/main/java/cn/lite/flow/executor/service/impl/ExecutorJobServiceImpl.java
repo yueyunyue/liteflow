@@ -49,6 +49,11 @@ public class ExecutorJobServiceImpl implements ExecutorJobService {
         executorJobMapper.bindApplicationId(jobId, applicationId);
     }
 
+    @Override
+    public void bindApplicationIdAndRun(long jobId, String applicationId) {
+        executorJobMapper.bindApplicationIdWithStatus(jobId, applicationId, ExecutorJobStatus.SUCCESS.getValue());
+    }
+
     @Transactional("executorTxManager")
     @Override
     public void success(long jobId) {
@@ -131,7 +136,7 @@ public class ExecutorJobServiceImpl implements ExecutorJobService {
             if (container != null) {
                 container.kill();
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             LOG.error("job kill error, id:{}", id, e);
             throw new ExecutorRuntimeException("操作失败");
         }

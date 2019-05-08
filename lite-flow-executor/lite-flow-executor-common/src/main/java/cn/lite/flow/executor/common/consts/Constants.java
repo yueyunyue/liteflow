@@ -58,23 +58,27 @@ public class Constants {
     /**
      * shell
      */
-    public static final String SHELL_COMMAND = "command";
+    public static final String SHELL_COMMAND = "sh";
+
+    public static final String SHELL_COINTENT = "shellContent";
+
+    public static final String SHELL_SCRIPT_PATH = "shellPath";
+
+    public static final String SHELL_SCRIPT_PREFIX = "job_script_";
+
 
     /**
      * 任务文件地址
      */
     public static final String CONFIG_FILE_SUFFIX = "_config.json";
 
+    public static final String JOB_CONFIG_PATH = "jobConfigPath";
+
     /**
      * 查询相关
      */
     public static final int MAX_QUERY_COUNT = 50;                           //最大查询数量
 
-
-    /**
-     * 附件相关
-     */
-    public static final String ATTACHMENT_PREFIX = "attachment://executor";         //附件前缀
 
     /**
      * 任务消息常量
@@ -94,7 +98,17 @@ public class Constants {
     /**
      * 进程
      */
-    public static final String PRCESS_JOB_PREFIX = "p";    //空
+    public static final String PROCESS_JOB_PREFIX = "p";          //进程类型job前缀
+
+
+    /**
+     * yarn相关
+     */
+    public static final String YARN_PARAM_JAR = CommonConstants.DOUBLE_LINE + "jar";            //--jar
+
+    public static final String YARN_PARAM_CLASS = CommonConstants.DOUBLE_LINE + "class";        //--class
+
+    public static final String YARN_PARAM_ARG = CommonConstants.DOUBLE_LINE + "arg";            //--class
 
 
 

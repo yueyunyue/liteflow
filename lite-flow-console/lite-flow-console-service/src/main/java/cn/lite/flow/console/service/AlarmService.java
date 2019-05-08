@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * @description: 报警服务
- * @author: cyp
+ * @author: yueyunyue
  * @create: 2019-03-11
  **/
 public interface AlarmService {
@@ -19,7 +19,7 @@ public interface AlarmService {
     void alarmTask(long taskId, String msg);
     /**
      * 任务报警，包括电话、邮件
-     * @param taskId
+     * @param task
      * @param msg
      */
     void alarmTask(Task task, String msg);
