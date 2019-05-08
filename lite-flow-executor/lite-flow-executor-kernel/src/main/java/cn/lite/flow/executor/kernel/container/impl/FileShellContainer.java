@@ -2,7 +2,7 @@ package cn.lite.flow.executor.kernel.container.impl;
 
 import cn.lite.flow.common.model.consts.CommonConstants;
 import cn.lite.flow.common.utils.FreeMarkerUtils;
-import cn.lite.flow.common.utils.HadoopUtils;
+import cn.lite.flow.common.utils.ParamUtils;
 import cn.lite.flow.executor.common.consts.Constants;
 import cn.lite.flow.executor.common.exception.ExecutorRuntimeException;
 import cn.lite.flow.executor.common.utils.ExecutorLoggerFactory;
@@ -11,6 +11,7 @@ import cn.lite.flow.executor.kernel.conf.ExecutorMetadata;
 import cn.lite.flow.executor.kernel.job.ShellProcessJob;
 import cn.lite.flow.executor.model.basic.ExecutorJob;
 import cn.lite.flow.executor.model.kernel.SyncContainer;
+import cn.lite.flow.executor.service.utils.ExecutorFileUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -24,13 +25,13 @@ import java.io.File;
  * @author: yueyunyue
  * @create: 2018-08-17
  **/
-public class RemoteFileShellContainer extends SyncContainer {
+public class FileShellContainer extends SyncContainer {
 
     private final ShellProcessJob shellProcessJob;
 
-    private final static Logger LOG = LoggerFactory.getLogger(RemoteFileShellContainer.class);
+    private final static Logger LOG = LoggerFactory.getLogger(FileShellContainer.class);
 
-    public RemoteFileShellContainer(ExecutorJob executorJob) {
+    public FileShellContainer(ExecutorJob executorJob) {
         super(executorJob);
         String config = executorJob.getConfig();
         Props sysProps = new Props();
@@ -45,13 +46,13 @@ public class RemoteFileShellContainer extends SyncContainer {
         String shellName = Constants.SHELL_SCRIPT_PREFIX + executorJob.getId() + CommonConstants.POINT + Constants.SHELL_COMMAND;
         String shellPath = jobWorkspace + CommonConstants.FILE_SPLIT + shellName;
         try {
-            String shellContent = HadoopUtils.getFileContent(filePath, true);
+            String shellContent = ExecutorFileUtils.getFileContent(filePath);
             logger.info("job:{} get origin shell content:{}", executorJob.getId(), shellContent);
             /**
              * 参数不为空，通过freemarker替换关键字
              */
             if(StringUtils.isNotBlank(param)){
-                shellContent = FreeMarkerUtils.formatString(shellContent, param);
+                shellContent = FreeMarkerUtils.formatString(shellContent, ParamUtils.param2Map(param));
                 logger.info("job:{} handle shell param:{} content:{}", executorJob.getId(), param,shellContent);
             }
             FileUtils.write(new File(shellPath), shellContent);

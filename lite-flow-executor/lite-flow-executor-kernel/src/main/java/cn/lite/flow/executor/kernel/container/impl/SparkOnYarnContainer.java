@@ -12,7 +12,7 @@ import cn.lite.flow.executor.model.basic.ExecutorJob;
 import cn.lite.flow.executor.model.consts.ContainerStatus;
 import cn.lite.flow.executor.model.kernel.AsyncContainer;
 import cn.lite.flow.executor.service.ExecutorJobService;
-import cn.lite.flow.executor.service.utils.ExecutorUtils;
+import cn.lite.flow.executor.service.utils.ExecutorServiceUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import org.apache.commons.io.FileUtils;
@@ -62,7 +62,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
         }
         try {
             ApplicationReport applicationReport = YarnClientHolder.getYarnClient().getApplicationReport(applicationId);
-            ExecutorJobService executorJobService = ExecutorUtils.getExecutorJobService();
+            ExecutorJobService executorJobService = ExecutorServiceUtils.getExecutorJobService();
             YarnApplicationState yarnApplicationState = applicationReport.getYarnApplicationState();
 
             LOG.info("check job:{}(applicationId:{}) status is {}", executorJob.getId(), executorJob.getApplicationId(), yarnApplicationState.name());
@@ -179,7 +179,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
         ApplicationId applicationId = client.submitApplication();
         String appId = applicationId.toString();
         LOG.info("{} get yarn applicationId:{}", executorJob.getId(), appId);
-        ExecutorJobService executorJobService = ExecutorUtils.getExecutorJobService();
+        ExecutorJobService executorJobService = ExecutorServiceUtils.getExecutorJobService();
         /**
          * 这只运行状态
          */

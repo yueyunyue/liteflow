@@ -11,4 +11,11 @@ import cn.lite.flow.executor.model.query.ExecutorAttachmentQM;
  **/
 public interface ExecutorAttachmentService extends BaseService<ExecutorAttachment, ExecutorAttachmentQM> {
 
+    /**
+     * 获取文件内容
+     * @param url
+     * @return
+     */
+    ExecutorAttachment getByUrl(String url);
+
 }

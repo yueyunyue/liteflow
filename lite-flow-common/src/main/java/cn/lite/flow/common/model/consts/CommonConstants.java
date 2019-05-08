@@ -3,6 +3,7 @@ package cn.lite.flow.common.model.consts;
 import com.google.common.collect.Sets;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.Charset;
 import java.util.Set;
 
 /**
@@ -12,6 +13,8 @@ import java.util.Set;
 public class CommonConstants {
 
     public static final String UTF8 = "UTF-8";                                                //UTF-8
+
+    public static final Charset UTF8_CHARSET =  Charset.forName(CommonConstants.UTF8);       //UTF-8
     /**
      * 常见字符
      */
@@ -92,6 +95,16 @@ public class CommonConstants {
     public final static String SPARK_PARAM_MEMORY_UNIT = "m";                                //spark内存单位
 
 
+
     public final static Set<String> TEXT_FILE_SUFFIX = Sets.newHashSet(".txt", ".sh", ".sql", ".json");
+
+    /**
+     * 附件相关
+     */
+    public static final String EXECUTOR = "executor";                                         //executor
+
+    public static final String ATTACHMENT_PREFIX = "liteAttachment://";                       //附件前缀
+
+    public static final String HDFS_PREFIX = "hdfs://";                                       //hdfs前缀
 
 }

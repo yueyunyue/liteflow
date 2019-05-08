@@ -3,19 +3,19 @@ package cn.lite.flow.console.web.controller.common;
 import cn.lite.flow.common.conf.HadoopConfig;
 import cn.lite.flow.common.model.consts.CommonConstants;
 import cn.lite.flow.common.utils.ExceptionUtils;
-import cn.lite.flow.common.utils.HadoopUtils;
 import cn.lite.flow.console.common.exception.ConsoleRuntimeException;
 import cn.lite.flow.console.common.utils.ResponseUtils;
 import cn.lite.flow.console.web.annotation.AuthCheckIgnore;
 import cn.lite.flow.console.web.controller.BaseController;
+import cn.lite.flow.executor.client.ExecutorAttachmentRpcService;
+import cn.lite.flow.executor.model.basic.ExecutorAttachment;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.hadoop.fs.FSDataInputStream;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,11 +35,14 @@ import java.util.stream.Collectors;
  * Created by yueyunyue on 2019/05/06.
  */
 @RestController("consoleHdfsCommonController")
-@RequestMapping("console/common/hdfs")
+@RequestMapping("executor/common/attachment")
 @AuthCheckIgnore
-public class HdfsCommonController extends BaseController {
+public class AttachmentCommonController extends BaseController {
 
-    private final static Logger LOG = LoggerFactory.getLogger(HdfsCommonController.class);
+    private final static Logger LOG = LoggerFactory.getLogger(AttachmentCommonController.class);
+
+    @Autowired
+    private ExecutorAttachmentRpcService attachmentRpcService;
     /**
      * 上传
      * @param request
@@ -54,7 +57,6 @@ public class HdfsCommonController extends BaseController {
             return ResponseUtils.error("file is empty");
         }
         HadoopConfig hadoopConf = HadoopConfig.getHadoopConf();
-        String hdfsWorkSpace = hadoopConf.getHdfsWorkspace();
 
         List<String> uploadHdfsFiles = files.stream().map(file -> {
             File localFile = null;
@@ -65,10 +67,12 @@ public class HdfsCommonController extends BaseController {
                  * 先保存本地
                  */
                 file.transferTo(localFile);
-                String hdfsFilePath = hdfsWorkSpace + CommonConstants.FILE_SPLIT + fileName;
-                String hdfsPath = HadoopUtils.uploadLocalFile2Hdfs(localFile, hdfsFilePath);
 
-                return hdfsPath;
+                ExecutorAttachment attachment = new ExecutorAttachment();
+                attachment.setName(file.getOriginalFilename());
+                attachment.setContent(FileUtils.readFileToString(localFile, CommonConstants.UTF8));
+                String url = attachmentRpcService.add(attachment);
+                return url;
             } catch (Throwable e) {
                 LOG.error("uploadLocalFile2Hdfs hdfs file", e);
                 throw new ConsoleRuntimeException(e.getMessage());
@@ -82,46 +86,38 @@ public class HdfsCommonController extends BaseController {
     }
     /**
      * 下载
-     * @param hdfsFilePath
+     * @param attachmentUrl
      * @param response
      */
     @RequestMapping(value = "download")
-    public void download(@RequestParam("url")String hdfsFilePath, HttpServletResponse response){
+    public void download(@RequestParam("url")String attachmentUrl, HttpServletResponse response){
         OutputStream outputStream = null;
-        FSDataInputStream fsDataInputStream = null;
         try {
-            String fileName = StringUtils.substringAfterLast(hdfsFilePath, CommonConstants.FILE_SPLIT);
+            String fileName = StringUtils.substringAfterLast(attachmentUrl, CommonConstants.FILE_SPLIT);
             response.setHeader("Content-Disposition", "attachment;filename="
                     + new String(fileName.getBytes("utf-8")));
+            ExecutorAttachment attachment = attachmentRpcService.getByUrl(attachmentUrl);
+
             outputStream = response.getOutputStream();
-            FileSystem fileSystem = HadoopUtils.getFileSystem();
-            fsDataInputStream = fileSystem.open(new Path(hdfsFilePath));
-            IOUtils.copy(fsDataInputStream, outputStream);
+            outputStream.write(attachment.getContent().getBytes(CommonConstants.UTF8_CHARSET));
+
         } catch (Throwable e) {
-            LOG.error("download file error:{}", hdfsFilePath, e);
+            LOG.error("download file error:{}", attachmentUrl, e);
         } finally {
-            IOUtils.closeQuietly(fsDataInputStream);
             IOUtils.closeQuietly(outputStream);
         }
     }
     /**
      * 获取文件内容
-     * @param hdfsFilePath
+     * @param attachmentUrl
      */
     @RequestMapping(value = "getFileContent")
-    public String getFileContent(@RequestParam("url")String hdfsFilePath){
+    public String getFileContent(@RequestParam("url")String attachmentUrl){
         try {
-            HadoopConfig hadoopConf = HadoopConfig.getHadoopConf();
-            /**
-             * 非上传路径下的不能查看
-             */
-            if(!StringUtils.contains(hdfsFilePath, hadoopConf.getHdfsWorkspace())){
-                return ResponseUtils.error("非"+ hadoopConf.getHdfsWorkspace() + "路径下的不能查看");
-            }
-            String fileContent = HadoopUtils.getFileContent(hdfsFilePath, true);
-            return ResponseUtils.success(fileContent);
+            ExecutorAttachment attachment = attachmentRpcService.getByUrl(attachmentUrl);
+            return ResponseUtils.success(attachment.getContent());
         } catch (Throwable e) {
-            LOG.error("download file error:{}", hdfsFilePath, e);
+            LOG.error("download file error:{}", attachmentUrl, e);
             return ResponseUtils.error(ExceptionUtils.collectStackMsg(e));
         }
     }

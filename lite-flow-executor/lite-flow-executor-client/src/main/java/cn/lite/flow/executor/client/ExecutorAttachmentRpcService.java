@@ -36,4 +36,13 @@ public interface ExecutorAttachmentRpcService {
      * @return
      */
     ExecutorAttachment getById(long id);
+
+    /**
+     * 通过生成的url获取
+     * @param url
+     * @return
+     */
+    ExecutorAttachment getByUrl(String url);
+
+
 }

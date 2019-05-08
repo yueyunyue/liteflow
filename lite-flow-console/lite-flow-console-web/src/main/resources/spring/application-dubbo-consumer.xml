@@ -13,4 +13,6 @@
 
     <dubbo:reference id="executorPluginRpcService" interface="cn.lite.flow.executor.client.ExecutorPluginRpcService" version="1.0.0" check="false" loadbalance="direct"/>
 
+    <dubbo:reference id="executorAttachmentRpcService" interface="cn.lite.flow.executor.client.ExecutorAttachmentRpcService" version="1.0.0" check="false" loadbalance="direct"/>
+
 </beans>
