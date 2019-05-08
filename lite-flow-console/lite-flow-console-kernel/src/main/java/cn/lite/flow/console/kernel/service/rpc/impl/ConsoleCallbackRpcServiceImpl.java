@@ -126,7 +126,8 @@ public class ConsoleCallbackRpcServiceImpl implements ConsoleCallbackRpcService 
         if (taskInstance.getStatus() == TaskVersionStatus.FAIL.getValue()) {
             return;
         }
-        if (!(taskInstance.getStatus() == TaskVersionStatus.RUNNING.getValue()
+        if (!(taskInstance.getStatus() == TaskVersionStatus.READY.getValue()
+                ||taskInstance.getStatus() == TaskVersionStatus.RUNNING.getValue()
                 || taskInstance.getStatus() == TaskVersionStatus.SUBMITTED.getValue())) {
             throw new ConsoleRuntimeException("该实例状态是非执行中状态, 不能更新为失败状态");
         }
