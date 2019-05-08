@@ -12,6 +12,7 @@
 		container_id AS containerId,
 		executor_server_id AS executorServerId,
 		config AS config,
+		msg AS msg,
 		start_time AS startTime,
 		end_time AS endTime,
 		create_time AS createTime,
