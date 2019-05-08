@@ -27,6 +27,9 @@ public class HadoopConfig implements InitializingBean {
     @Value("${hadoop.userName}")
     private String hadoopUserName;                       //调用hadoop的用户名
 
+    @Value("${hadoop.lite.hdfs.workspace:}")
+    private String hdfsWorkspace;                         //上传文件在hdfs路径
+
     @Value("${spark.distFiles:}")
     private String disFiles;                             //hadoop，hive，yarn文件所在文件夹
 
@@ -44,6 +47,9 @@ public class HadoopConfig implements InitializingBean {
 
     @Value("${spark.executor.dynamicAllocation.minExecutors:}")
     private String dynamicAllocationMinExecutors;         //spark memoryOverhead内存配置
+
+    @Value("${console.localTmpDirPath:}")
+    private String localTmpDirPath = "/tmp";              //项目的临时目录，用来存放一下临时文件；默认为：/tmp
 
     private AtomicBoolean isInit = new AtomicBoolean(false);
 
@@ -140,13 +146,14 @@ public class HadoopConfig implements InitializingBean {
     }
 
     /**
-     *
+     * 获取配置
      * @return
      */
     public static HadoopConfig getHadoopConf(){
         HadoopConfig hadoopConfig = SpringUtils.getBean(HadoopConfig.class);
         return hadoopConfig;
     }
+
 
 
 }

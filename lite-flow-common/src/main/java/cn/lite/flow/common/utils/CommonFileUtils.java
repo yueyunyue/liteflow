@@ -11,7 +11,7 @@ import java.util.Map;
  * @author: yueyunyue
  * @create: 2019-01-10
  **/
-public class UrlUtils {
+public class CommonFileUtils {
 
     /**
      * 获取协议
@@ -31,7 +31,7 @@ public class UrlUtils {
      * @param url
      * @return
      */
-    public static Map<String, String> getParamMap(String url){
+    public static Map<String, String> getAttachmentParamMap(String url){
 
         if(StringUtils.isBlank(url)){
             return null;

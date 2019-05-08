@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @description: yarn相关工具
- * @author: cyp
+ * @author: yueyunyue
  * @create: 2019-04-15
  **/
 public class YarnUtils {

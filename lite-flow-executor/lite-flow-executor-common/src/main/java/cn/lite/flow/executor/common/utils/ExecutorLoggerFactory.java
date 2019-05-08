@@ -124,9 +124,9 @@ public class ExecutorLoggerFactory {
         try {
             synchronized (config){
                 if (config!= null && config.getLoggers().containsKey(loggerName)) {
+                    config.getAppender(loggerName).stop();
                     config.removeLogger(loggerName);
                     config.getLoggerConfig(loggerName).removeAppender(loggerName);
-//                    config.getAppender(loggerName).stop();
                     ctx.updateLoggers();
                     LOG.info("remove logger {}", loggerName);
                 }

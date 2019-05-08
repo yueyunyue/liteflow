@@ -14,7 +14,7 @@ public class HdfsTest {
 
     @Test
     public void testListFile(){
-        List<String> files = HadoopUtils.listFileOrDirFileNames("/user/lite/spark2/JavaEWAH-0.3.2.jar");
+        List<String> files = HadoopUtils.listFileOrDirFileNames("/user/lite/spark2");
         System.out.println(files);
     }
 

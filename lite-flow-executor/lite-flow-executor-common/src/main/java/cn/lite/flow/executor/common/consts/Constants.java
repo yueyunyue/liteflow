@@ -81,11 +81,6 @@ public class Constants {
 
 
     /**
-     * 附件相关
-     */
-    public static final String ATTACHMENT_PREFIX = "attachment://executor";         //附件前缀
-
-    /**
      * 任务消息常量
      */
     public static final String MSG_ERROR = "ERROR";             //异常
