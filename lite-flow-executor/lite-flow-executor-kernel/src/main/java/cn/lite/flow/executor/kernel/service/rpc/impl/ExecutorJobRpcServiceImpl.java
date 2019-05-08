@@ -6,6 +6,7 @@ import cn.lite.flow.executor.client.ExecutorJobRpcService;
 import cn.lite.flow.executor.client.model.JobParam;
 import cn.lite.flow.executor.client.model.SubmitExecuteJob;
 import cn.lite.flow.executor.common.consts.Constants;
+import cn.lite.flow.executor.common.exception.ExecutorRuntimeException;
 import cn.lite.flow.executor.common.utils.ContainerMetadata;
 import cn.lite.flow.executor.common.utils.ExecutorLoggerFactory;
 import cn.lite.flow.executor.kernel.conf.ExecutorMetadata;
@@ -89,6 +90,7 @@ public class ExecutorJobRpcServiceImpl implements ExecutorJobRpcService {
             ContainerMetadata.putContainer(job.getId(), container);
         }catch (Throwable e){
             executorJobService.fail(job.getId(), e.getMessage());
+            throw new ExecutorRuntimeException(e.getMessage());
         }
 
         return job.getId();
