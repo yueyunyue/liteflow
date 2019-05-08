@@ -43,18 +43,18 @@ public enum FileType {
 
     /**
      * 根据文件路径判断文件类型
-     * @param path
+     * @param url
      * @return
      */
-    public static FileType getTypeByFilePatch(String path){
+    public static FileType getTypeByFileUrl(String url){
 
-        if(StringUtils.isBlank(path)){
+        if(StringUtils.isBlank(url)){
             return null;
         }
-        if(StringUtils.startsWith(path, HDFS.getPrefix())){
+        if(StringUtils.startsWith(url, HDFS.getPrefix())){
             return HDFS;
         }
-        if(StringUtils.startsWith(path, LITE_ATTACHMENT.getPrefix())){
+        if(StringUtils.startsWith(url, LITE_ATTACHMENT.getPrefix())){
             return LITE_ATTACHMENT;
         }
         return LOCAL;

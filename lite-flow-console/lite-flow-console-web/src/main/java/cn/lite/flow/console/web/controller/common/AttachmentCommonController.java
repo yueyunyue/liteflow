@@ -2,7 +2,9 @@ package cn.lite.flow.console.web.controller.common;
 
 import cn.lite.flow.common.conf.HadoopConfig;
 import cn.lite.flow.common.model.consts.CommonConstants;
+import cn.lite.flow.common.model.consts.FileType;
 import cn.lite.flow.common.utils.ExceptionUtils;
+import cn.lite.flow.common.utils.HadoopUtils;
 import cn.lite.flow.console.common.exception.ConsoleRuntimeException;
 import cn.lite.flow.console.common.utils.ResponseUtils;
 import cn.lite.flow.console.web.annotation.AuthCheckIgnore;
@@ -13,6 +15,9 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,38 +91,58 @@ public class AttachmentCommonController extends BaseController {
     }
     /**
      * 下载
-     * @param attachmentUrl
+     * @param url
      * @param response
      */
     @RequestMapping(value = "download")
-    public void download(@RequestParam("url")String attachmentUrl, HttpServletResponse response){
+    public void download(@RequestParam("url")String url, HttpServletResponse response){
         OutputStream outputStream = null;
-        try {
-            String fileName = StringUtils.substringAfterLast(attachmentUrl, CommonConstants.FILE_SPLIT);
-            response.setHeader("Content-Disposition", "attachment;filename="
-                    + new String(fileName.getBytes("utf-8")));
-            ExecutorAttachment attachment = attachmentRpcService.getByUrl(attachmentUrl);
+        FileType fileType = FileType.getTypeByFileUrl(url);
+        if(fileType == FileType.LITE_ATTACHMENT){
+            try {
+                String fileName = StringUtils.substringAfterLast(url, CommonConstants.FILE_SPLIT);
+                response.setHeader("Content-Disposition", "attachment;filename="
+                        + new String(fileName.getBytes("utf-8")));
+                ExecutorAttachment attachment = attachmentRpcService.getByUrl(url);
 
-            outputStream = response.getOutputStream();
-            outputStream.write(attachment.getContent().getBytes(CommonConstants.UTF8_CHARSET));
+                outputStream = response.getOutputStream();
+                outputStream.write(attachment.getContent().getBytes(CommonConstants.UTF8_CHARSET));
 
-        } catch (Throwable e) {
-            LOG.error("download file error:{}", attachmentUrl, e);
-        } finally {
-            IOUtils.closeQuietly(outputStream);
+            } catch (Throwable e) {
+                LOG.error("download file error:{}", url, e);
+            } finally {
+                IOUtils.closeQuietly(outputStream);
+            }
+
+        }else if(fileType == FileType.HDFS){
+            FSDataInputStream fsDataInputStream = null;
+            try {
+                String fileName = StringUtils.substringAfterLast(url, CommonConstants.FILE_SPLIT);
+                response.setHeader("Content-Disposition", "attachment;filename="
+                        + new String(fileName.getBytes("utf-8")));
+                outputStream = response.getOutputStream();
+                FileSystem fileSystem = HadoopUtils.getFileSystem();
+                fsDataInputStream = fileSystem.open(new Path(url));
+                IOUtils.copy(fsDataInputStream, outputStream);
+            } catch (Throwable e) {
+                LOG.error("download file error:{}", url, e);
+            } finally {
+                IOUtils.closeQuietly(fsDataInputStream);
+                IOUtils.closeQuietly(outputStream);
+            }
         }
+
     }
     /**
      * 获取文件内容
-     * @param attachmentUrl
+     * @param url
      */
     @RequestMapping(value = "getFileContent")
-    public String getFileContent(@RequestParam("url")String attachmentUrl){
+    public String getFileContent(@RequestParam("url")String url){
         try {
-            ExecutorAttachment attachment = attachmentRpcService.getByUrl(attachmentUrl);
-            return ResponseUtils.success(attachment.getContent());
+            return ResponseUtils.success(attachmentRpcService.getFileContent(url));
         } catch (Throwable e) {
-            LOG.error("download file error:{}", attachmentUrl, e);
+            LOG.error("download file error:{}", url, e);
             return ResponseUtils.error(ExceptionUtils.collectStackMsg(e));
         }
     }

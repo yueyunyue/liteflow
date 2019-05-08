@@ -1,5 +1,6 @@
 package cn.lite.flow.executor.kernel.service.rpc.impl;
 
+import cn.lite.flow.common.model.consts.FileType;
 import cn.lite.flow.common.model.query.Page;
 import cn.lite.flow.executor.client.ExecutorAttachmentRpcService;
 import cn.lite.flow.executor.client.model.AttachmentParam;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -61,4 +63,10 @@ public class ExecutorAttachmentRpcServiceImpl implements ExecutorAttachmentRpcSe
     public ExecutorAttachment getByUrl(String url) {
         return attachmentService.getByUrl(url);
     }
+
+    @Override
+    public String getFileContent(String url) throws IOException {
+        return ExecutorFileUtils.getFileContent(url);
+    }
+
 }

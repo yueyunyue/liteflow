@@ -80,51 +80,5 @@ public class HdfsCommonController extends BaseController {
         }).collect(Collectors.toList());
         return ResponseUtils.success(uploadHdfsFiles);
     }
-    /**
-     * 下载
-     * @param hdfsFilePath
-     * @param response
-     */
-    @RequestMapping(value = "download")
-    public void download(@RequestParam("url")String hdfsFilePath, HttpServletResponse response){
-        OutputStream outputStream = null;
-        FSDataInputStream fsDataInputStream = null;
-        try {
-            String fileName = StringUtils.substringAfterLast(hdfsFilePath, CommonConstants.FILE_SPLIT);
-            response.setHeader("Content-Disposition", "attachment;filename="
-                    + new String(fileName.getBytes("utf-8")));
-            outputStream = response.getOutputStream();
-            FileSystem fileSystem = HadoopUtils.getFileSystem();
-            fsDataInputStream = fileSystem.open(new Path(hdfsFilePath));
-            IOUtils.copy(fsDataInputStream, outputStream);
-        } catch (Throwable e) {
-            LOG.error("download file error:{}", hdfsFilePath, e);
-        } finally {
-            IOUtils.closeQuietly(fsDataInputStream);
-            IOUtils.closeQuietly(outputStream);
-        }
-    }
-    /**
-     * 获取文件内容
-     * @param hdfsFilePath
-     */
-    @RequestMapping(value = "getFileContent")
-    public String getFileContent(@RequestParam("url")String hdfsFilePath){
-        try {
-            HadoopConfig hadoopConf = HadoopConfig.getHadoopConf();
-            /**
-             * 非上传路径下的不能查看
-             */
-            if(!StringUtils.contains(hdfsFilePath, hadoopConf.getHdfsWorkspace())){
-                return ResponseUtils.error("非"+ hadoopConf.getHdfsWorkspace() + "路径下的不能查看");
-            }
-            String fileContent = HadoopUtils.getFileContent(hdfsFilePath, true);
-            return ResponseUtils.success(fileContent);
-        } catch (Throwable e) {
-            LOG.error("download file error:{}", hdfsFilePath, e);
-            return ResponseUtils.error(ExceptionUtils.collectStackMsg(e));
-        }
-    }
-
 
 }

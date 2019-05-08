@@ -30,7 +30,7 @@ public class ExecutorFileUtils {
      * @throws IOException
      */
     public static String getFileContent(String path) throws IOException {
-        FileType fileType = FileType.getTypeByFilePatch(path);
+        FileType fileType = FileType.getTypeByFileUrl(path);
         String content = null;
         switch (fileType){
 
