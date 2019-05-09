@@ -78,10 +78,26 @@ public class CommonConstants {
 
     public final static String PARAM = "param";                                              //参数
 
+    public final static String PARAM_SQL = "sql";                                            //sql
+
+    public final static String PARAM_TYPE = "type";                                          //类型
+
+    public final static String PARAM_USER = "user";                                          //用户
+
+    public final static String PARAM_PASSWORD = "password";                                  //类型
+
+    public final static String PARAM_DB = "database";                                        //数据库
+
+    public final static String PARAM_URL = "url";                                            //url
+
+    public final static String PARAM_PORT = "port";                                          //端口号
+
+    public final static String PARAM_QUEUE = "queue";                                        //队列
+
     /**
      * spark相关参数
      */
-    public final static String SPARK_PARAM_YARN_QUEUE = "yarnQueue";                         //yarn队列
+    public final static String SPARK_PARAM_YARN_QUEUE = PARAM_QUEUE;                         //yarn队列
 
     public final static String SPARK_PARAM_YARN_MAIN_CLASS = "mainClass";                    //main方法所在类
 

@@ -8,7 +8,7 @@ import lombok.ToString;
  * Created by ly on 2018/10/24.
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class RoleQM extends BaseQM {
 
     private String roleNameLike;        //角色名 模糊查询

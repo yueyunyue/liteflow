@@ -10,7 +10,7 @@ import java.util.List;
  * Created by ly on 2018/10/18.
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class UserGroupAuthMidQM extends BaseQM {
 
     private Long sourceId;          //源id

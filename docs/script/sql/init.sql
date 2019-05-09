@@ -119,7 +119,7 @@ VALUES
 'cn.lite.flow.executor.kernel.container.impl.SparkOnYarnContainer', '[
   {
     "label": "yarn队列",
-    "name": "yarnQueue",
+    "name": "queue",
     "type": "Input",
     "editable": false,
     "defaultValue": "default",

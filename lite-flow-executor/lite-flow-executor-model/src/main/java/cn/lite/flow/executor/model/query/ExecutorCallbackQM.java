@@ -8,7 +8,7 @@ import lombok.ToString;
  * 任务查询模型
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class ExecutorCallbackQM extends BaseQM {
 
     private Integer callbackStatus;     //回调状态

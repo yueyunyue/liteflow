@@ -10,7 +10,7 @@ import java.util.List;
  * 系统用户组查询模型
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class UserGroupQM extends BaseQM {
 
     private String name;                    //用户组名精确匹配

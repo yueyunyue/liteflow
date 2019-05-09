@@ -16,6 +16,7 @@
 
     <modules>
         <module>lite-flow-executor-plugin-hello</module>
+        <module>lite-flow-executor-plugin-sql</module>
     </modules>
     <properties>
         <lite-flow-model-basic.version>1.0.0-SNAPSHOT</lite-flow-model-basic.version>
@@ -31,8 +32,6 @@
             <groupId>cn.lite.flow</groupId>
             <artifactId>lite-flow-common</artifactId>
         </dependency>
-
-
 
     </dependencies>
     <dependencyManagement>

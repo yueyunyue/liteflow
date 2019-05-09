@@ -8,7 +8,7 @@ import lombok.ToString;
  * Job查询模型
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class ExecutorContainerQM extends BaseQM {
 
     private String nameLike;        //按照名称模糊查询

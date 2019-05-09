@@ -8,7 +8,7 @@ import lombok.ToString;
  * 任务查询模型
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class ExecutorJobQM extends BaseQM {
 
     private String applicationId;       //应用id

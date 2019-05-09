@@ -19,19 +19,10 @@ public class Hello {
     private final static Logger LOG = LoggerFactory.getLogger(Hello.class);
 
     public static void main(String[] args) throws IOException {
-
-        if(args == null || args.length == 0){
-
-            LOG.error("args is empty");
-            System.exit(CommonConstants.SYSTEM_EXIT_ERROR);
-        }
         LOG.info("args is {}", args);
         String arg0 = args[0];
         String data = FileUtils.readFileToString(new File(arg0), CommonConstants.UTF8_CHARSET);
-        LOG.info(data);
-        JSONObject dataObj = JSONObject.parseObject(data);
-        
-
+        LOG.info("config is {}" + data);
     }
 
 }
