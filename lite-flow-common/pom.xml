@@ -11,7 +11,7 @@
 
     <groupId>cn.lite.flow</groupId>
     <artifactId>lite-flow-common</artifactId>
-    <version>${lite-flow.version}</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>lite-flow-common</name>
     <packaging>jar</packaging>
 

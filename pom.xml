@@ -12,6 +12,7 @@
         <module>lite-flow-common</module>
         <module>lite-flow-console</module>
         <module>lite-flow-executor</module>
+        <module>lite-flow-executor-plugin</module>
 	</modules>
 
     <!-- Spring Boot 启动父依赖 -->

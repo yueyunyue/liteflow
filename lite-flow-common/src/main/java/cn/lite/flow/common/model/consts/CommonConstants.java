@@ -12,9 +12,16 @@ import java.util.Set;
 @Component
 public class CommonConstants {
 
-    public static final String UTF8 = "UTF-8";                                                //UTF-8
+    public static final String UTF8 = "UTF-8";                                               //UTF-8
 
     public static final Charset UTF8_CHARSET =  Charset.forName(CommonConstants.UTF8);       //UTF-8
+
+    /**
+     * java 进程退出
+     */
+    public static final int SYSTEM_EXIT_SUCCESS = 0;
+
+    public static final int SYSTEM_EXIT_ERROR = -1;
     /**
      * 常见字符
      */
