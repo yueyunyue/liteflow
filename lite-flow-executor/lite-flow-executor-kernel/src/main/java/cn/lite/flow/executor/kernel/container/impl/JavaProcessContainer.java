@@ -44,7 +44,7 @@ public class JavaProcessContainer extends SyncContainer {
 
                 String configFilePath = this.workDirPath + CommonConstants.FILE_SPLIT + executorJob.getId() + Constants.CONFIG_FILE_SUFFIX;
                 FileUtils.write(new File(configFilePath), config);
-                props.put(Constants.JAVA_MAIN_ARGS, executorJob.getId() + CommonConstants.BLANK_SPACE + configFilePath);
+                props.put(Constants.JAVA_MAIN_ARGS, configFilePath);
 
                 this.javaProcessJob = new JavaProcessJob(executorJob.getId(),sysProps, props, logger);
                 javaProcessJob.run();
