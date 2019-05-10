@@ -88,7 +88,7 @@ public class CommonConstants {
 
     public final static String PARAM_DB = "database";                                        //数据库
 
-    public final static String PARAM_URL = "url";                                            //url
+    public final static String PARAM_IP = "ip";                                              //ip
 
     public final static String PARAM_PORT = "port";                                          //端口号
 

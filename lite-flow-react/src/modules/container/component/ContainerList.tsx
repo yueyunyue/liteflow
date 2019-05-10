@@ -77,6 +77,14 @@ export class ContainerList extends Component<ContainerListProps, {showModal, con
                 return statusStr;
             }
         },{
+            title: '日志类型',
+            dataIndex: 'logType',
+            key: 'logType',
+            render: (logType, record, index) => {
+                const logTypeStr = EnumUtils.getLogTypeMapName(logType);
+                return logTypeStr;
+            }
+        },{
             title: '描述',
             dataIndex: 'description',
             key: 'description'

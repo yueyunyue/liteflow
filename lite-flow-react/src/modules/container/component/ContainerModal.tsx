@@ -4,6 +4,8 @@ import {Container} from "../model/ContainerModel";
 import {FormComponentProps} from "antd/lib/form/Form";
 import {kernel} from "../../../common/utils/IOC"
 import CommonUtils from "../../../common/utils/CommonUtils";
+import {DomUtils} from "../../../common/utils/DomUtils";
+import EnumUtils from "../../../common/utils/EnumUtils";
 
 const formItemLayout = {
     labelCol: {
@@ -50,6 +52,8 @@ class ContainerModal extends Component<ModalProps> {
                 onOk: handleOk,
                 onCancel: this.props.onCancel
             };
+        const logTypes = EnumUtils.getLogTypeOptionArray();
+        let logTypeOptions = DomUtils.getSelectOptionsWithoutAll(logTypes);
 
         return (<Modal {...modalOpts}>
             <Form layout={'horizontal'} >
@@ -76,6 +80,19 @@ class ContainerModal extends Component<ModalProps> {
                                     }
                                 ]
                             })(<Input/>)}
+                        </Form.Item>
+                        <Form.Item label="日志类型" hasFeedback {...formItemLayout}>
+                            {this.props.form.getFieldDecorator("logType", {
+                                initialValue: CommonUtils.getStringValueFromModel("logType", containerItem, "1"),
+                                rules: [
+                                    {
+                                        required: true,
+                                        message: '不能为空'
+                                    }
+                                ]
+                            })(<Select>
+                                {logTypeOptions}
+                            </Select>)}
                         </Form.Item>
                         <Form.Item label='描述' hasFeedback {...formItemLayout}>
                             {this.props.form.getFieldDecorator('description', {

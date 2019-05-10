@@ -14,6 +14,7 @@ export class Container {
     description ?: string;
     envFieldConfig ?: string;
     status: number;
+    logType: number;
     createTime: number;
     updateTime: number;
 }

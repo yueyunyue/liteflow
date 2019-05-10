@@ -211,6 +211,7 @@ public class ModelUtils {
         String fieldConfig = container.getFieldConfig();
         obj.put("fieldConfig", fieldConfig);
         obj.put("className", container.getClassName());
+        obj.put("logType", container.getLogType());
         obj.put("status", container.getStatus());
         obj.put("description", container.getDescription());
         obj.put("createTime", container.getCreateTime());

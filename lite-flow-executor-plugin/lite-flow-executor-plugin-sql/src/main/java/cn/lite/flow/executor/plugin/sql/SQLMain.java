@@ -3,14 +3,15 @@ package cn.lite.flow.executor.plugin.sql;
 import cn.lite.flow.common.model.consts.CommonConstants;
 import cn.lite.flow.common.model.consts.SQLType;
 import cn.lite.flow.executor.plugin.sql.base.SQLHandler;
+import cn.lite.flow.executor.plugin.sql.hive.HiveSQLHandler;
 import cn.lite.flow.executor.plugin.sql.mysql.MySQLHandler;
+import cn.lite.flow.executor.plugin.sql.spark.SparkSQLHandler;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * @description: 入口方法
@@ -34,12 +35,26 @@ public class SQLMain {
         boolean success = false;
         SQLHandler sqlHandler = null;
         switch (sqlType){
-            //mysql
             case MYSQL:
                 sqlHandler = new MySQLHandler();
-                success = sqlHandler.handleSQL(dataObj);
                 break;
+            case DEFAULT_HIVE_SQL:
+                sqlHandler = new HiveSQLHandler(true);
+                break;
+            case HIVE_SQL:
+                sqlHandler = new HiveSQLHandler(false);
+                break;
+            case SPARK_SQL:
+                sqlHandler = new SparkSQLHandler();
+                break;
+
         }
+        if(sqlHandler == null){
+            LOG.error("there is no sql handler for type:{}" ,sqlType);
+            System.exit(CommonConstants.SYSTEM_EXIT_ERROR);
+
+        }
+        success = sqlHandler.handleSQL(dataObj);
         /**
          * 1.执行成功正常退出
          * 2.失败异常退出

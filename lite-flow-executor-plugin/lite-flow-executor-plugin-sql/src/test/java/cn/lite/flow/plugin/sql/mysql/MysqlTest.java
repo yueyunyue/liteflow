@@ -19,7 +19,7 @@ public class MysqlTest {
 
         configObj.put(CommonConstants.PARAM_TYPE, SQLType.MYSQL.getValue());
         configObj.put(CommonConstants.PARAM_SQL, "select version()");
-        configObj.put(CommonConstants.PARAM_URL, "db.liteflow.cn");
+        configObj.put(CommonConstants.PARAM_IP, "db.liteflow.cn");
         configObj.put(CommonConstants.PARAM_PORT, "3306");
         configObj.put(CommonConstants.PARAM_USER, "lite");
         configObj.put(CommonConstants.PARAM_PASSWORD, "lite");

@@ -26,7 +26,7 @@ public class MySQLHandler implements SQLHandler {
     public boolean handleSQL(JSONObject configMap) throws Throwable {
 
         String sql = configMap.getString(CommonConstants.PARAM_SQL);
-        String url = configMap.getString(CommonConstants.PARAM_URL);
+        String url = configMap.getString(CommonConstants.PARAM_IP);
         String user = configMap.getString(CommonConstants.PARAM_USER);
         String pwd = configMap.getString(CommonConstants.PARAM_PASSWORD);
         String port = configMap.getString(CommonConstants.PARAM_PORT);

@@ -8,11 +8,13 @@ import lombok.Getter;
 @Getter
 public enum SQLType {
 
-    MYSQL(0, "MYSQL"),
+    MYSQL(1, "MYSQL"),
 
-    HIVE(1, "HIVE"),
+    DEFAULT_HIVE_SQL(2, "默认配置的HIVE_SQL"),
 
-    SPARK_SQL(2, "SPARK_SQL");
+    HIVE_SQL(3, "HIVE_SQL"),
+
+    SPARK_SQL(4, "SPARK_SQL");
 
     private int value;
 

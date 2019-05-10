@@ -91,8 +91,15 @@ dailyInitStatusMap[dailyInitStatusSuccess] = "成功";
 dailyInitStatusMap[dailyInitStatusFail] = "失败";
 dailyInitStatusMap[dailyInitStatusDisable] = "无效";
 
+/**
+ * logType
+ */
+const logTypeMap = {};
+const localLogType = 1;
+const yarnLogType = 2;
 
-
+logTypeMap[localLogType] = "本地";
+logTypeMap[yarnLogType] = "yarn";
 
 module.exports = {
 
@@ -158,6 +165,8 @@ module.exports = {
   taskVersionFinalStatusKilled: taskVersionFinalStatusKilled,
 
   taskVersionFinalStatusMap: taskVersionFinalStatusMap,
+
+    logTypeMap: logTypeMap,
   /**
    * 获取类型名称
    */
@@ -290,6 +299,18 @@ module.exports = {
      */
    getDailyInitStatusName(status) {
         return this.dailyInitStatusMap[status];
+    },
+    /**
+     * 获取logType类型名称
+     */
+   getLogTypeMapName(logType) {
+        return this.logTypeMap[logType];
+    },
+    getLogTypeOptionArray(){
+        const options = [];
+        for(let key in this.logTypeMap){
+            options.push({id: key, name: this.logTypeMap[key]})
+        }
+        return options;
     }
-
 };

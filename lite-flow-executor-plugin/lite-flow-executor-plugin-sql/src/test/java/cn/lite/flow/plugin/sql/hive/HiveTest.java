@@ -19,7 +19,7 @@ public class HiveTest {
         JSONObject configObj = new JSONObject();
 
         configObj.put(CommonConstants.PARAM_SQL, "select 123");
-        HiveSQLHandler sqlHandler = new HiveSQLHandler();
+        HiveSQLHandler sqlHandler = new HiveSQLHandler(true);
         sqlHandler.handleSQL(configObj);
 
 
