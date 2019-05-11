@@ -6,11 +6,13 @@ import cn.lite.flow.executor.plugin.sql.base.SQLHandler;
 import cn.lite.flow.executor.plugin.sql.model.consts.SQLConstants;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.hive.jdbc.HiveStatement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.Properties;
 
 /**
@@ -45,8 +47,8 @@ public class HiveSQLHandler implements SQLHandler {
         String passwd = null;
 
         if(isDefault){
-            String propertyPath = Thread.currentThread().getContextClassLoader().getResource(CommonConstants.FILE_SPLIT + SQLConstants.CONFIG_FILE).toURI().toString();
-            Properties property = PropertyUtils.getProperty(propertyPath);
+//            String propertyPath = Thread.currentThread().getContextClassLoader().getResource().toURI().toString();
+            Properties property = PropertyUtils.getProperty("/Users/yueyunyue/workspace4m/liteflow/lite-flow-executor-plugin/lite-flow-executor-plugin-sql/src/main/resources/dev/config.properties");
             ip = property.getProperty(SQLConstants.HIVE_IP);
             port = property.getProperty(SQLConstants.HIVE_PORT);
             db = property.getProperty(SQLConstants.HIVE_DB);
@@ -69,15 +71,26 @@ public class HiveSQLHandler implements SQLHandler {
         String dbUrl = String.format(DB_URL_TEMPLATE, ip, port, db);
         LOG.info("hive db url is {}", dbUrl);
         Connection connection = null;
+        HiveStatement hiveStatement;
         try {
             Class.forName("org.apache.hive.jdbc.HiveDriver");
             connection = DriverManager.getConnection(dbUrl, user, passwd);
             LOG.info("hive sql execute sql {}", sql);
             String setQueueCommand = SET_QUEUE + queue;
-            LOG.info("set queue to hive sql", setQueueCommand);
+            LOG.info("set queue to hive sql : {}", setQueueCommand);
 
-            connection.createStatement().executeUpdate(setQueueCommand);
-            connection.createStatement().executeUpdate(sql);
+            Statement queueStatement = connection.createStatement();
+            HiveLogCollector queueCollector = new HiveLogCollector((HiveStatement) queueStatement);
+            queueCollector.start();
+            queueStatement.executeUpdate(setQueueCommand);
+            queueCollector.join();
+
+            Statement sqlStatement = connection.createStatement();
+            HiveLogCollector sqlCollector = new HiveLogCollector((HiveStatement) queueStatement);
+            sqlCollector.start();
+            LOG.info("execute hive sql :{}", sql);
+            sqlStatement.executeUpdate(sql);
+            sqlCollector.join();
             return true;
         } catch (Throwable e) {
             LOG.error("execute hive sql error", e);
