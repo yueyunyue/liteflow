@@ -70,12 +70,15 @@ public class SparkOnYarnContainer extends AsyncContainer {
             switch (yarnApplicationState){
                 case FINISHED:
                     executorJobService.success(this.getExecutorJob().getId());
+                    this.setStatus(ContainerStatus.SUCCESS);
                     break;
                 case FAILED:
                     executorJobService.fail(this.getExecutorJob().getId(), applicationReport.getDiagnostics());
+                    this.setStatus(ContainerStatus.FAIL);
                     break;
                 case KILLED:
                     executorJobService.fail(this.getExecutorJob().getId(), "killed by other");
+                    this.setStatus(ContainerStatus.FAIL);
                     break;
                 default:
                     return;
