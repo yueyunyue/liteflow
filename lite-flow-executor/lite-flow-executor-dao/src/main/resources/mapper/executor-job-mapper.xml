@@ -123,11 +123,6 @@
 			<include refid="table"/>
 		set application_id=#{applicationId} where id=#{jobId}
 	</update>
-	<update id="bindApplicationIdWithRunStatus">
-		update
-			<include refid="table"/>
-		set application_id=#{applicationId},status=#{status},start_time=now() where id=#{jobId}
-	</update>
 
 	<select id="getBySourceId" resultType="ExecutorJob">
 		select
