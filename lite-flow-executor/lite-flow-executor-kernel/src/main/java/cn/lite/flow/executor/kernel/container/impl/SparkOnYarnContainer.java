@@ -1,6 +1,7 @@
 package cn.lite.flow.executor.kernel.container.impl;
 
 import cn.lite.flow.common.conf.HadoopConfig;
+import cn.lite.flow.common.model.Tuple;
 import cn.lite.flow.common.model.consts.CommonConstants;
 import cn.lite.flow.common.utils.JSONUtils;
 import cn.lite.flow.common.utils.YarnClientHolder;
@@ -116,7 +117,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
          * hadoop、hive配置文件
          */
         String hadoopFiles = HadoopConfig.getHadoopConf().getSparkYarnDistFiles();
-        sparkConf.set("spark.yarn.dist.files", hadoopFiles);
+        sparkConf.set("spark.yarn.dist.files", hadoopFiles + CommonConstants.COMMA + configObj.getString(Constants.JOB_CONFIG_PATH));
 
         return sparkConf;
 
@@ -145,8 +146,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
          * 添加配置文件
          */
         argList.add(Constants.YARN_PARAM_ARG);
-        String configFilePath = this.generateConfigFile(JSONUtils.toJSONStringWithoutCircleDetect(configObj));
-        argList.add(configFilePath);
+        argList.add(configObj.getString(Constants.CONFIG_FILE_NAME));
 
         return new ClientArguments(argList.toArray(new String[]{}));
 
@@ -163,6 +163,12 @@ public class SparkOnYarnContainer extends AsyncContainer {
             configObj = JSONObject.parseObject(config);
         }
 
+        Tuple<String, String> configTuple = this.generateConfigFile(JSONUtils.toJSONStringWithoutCircleDetect(configObj));
+        String configName = configTuple.getA();
+        String configPath = configTuple.getB();
+
+        configObj.put(Constants.CONFIG_FILE_NAME, configName);
+        configObj.put(Constants.JOB_CONFIG_PATH, configPath);
         /**
          * 初始化spark conf
          */
@@ -205,16 +211,17 @@ public class SparkOnYarnContainer extends AsyncContainer {
     /**
      * 生成文件
      */
-    private String generateConfigFile(String config){
+    private Tuple<String, String> generateConfigFile(String config){
         String workDirPath = ExecutorMetadata.getJobWorkspace(executorJob.getId());
-        String configFilePath = workDirPath + CommonConstants.FILE_SPLIT + executorJob.getId() + Constants.CONFIG_FILE_SUFFIX;
+        String configFileName = executorJob.getId() + Constants.CONFIG_FILE_SUFFIX;
+        String configFilePath = workDirPath + CommonConstants.FILE_SPLIT + configFileName;
         try {
             FileUtils.write(new File(configFilePath), config, CommonConstants.UTF8);
         } catch (Throwable e) {
             LOG.error("generate config file error", e);
             throw new ExecutorRuntimeException(e.getMessage());
         }
-        return configFilePath;
+        return Tuple.of(configFileName, configFilePath);
     }
 
 }
