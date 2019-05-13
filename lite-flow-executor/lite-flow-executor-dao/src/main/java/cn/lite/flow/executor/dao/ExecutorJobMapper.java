@@ -22,7 +22,7 @@ public interface ExecutorJobMapper extends BaseMapper<ExecutorJob, ExecutorJobQM
      * @param jobId
      * @param applicationId
      */
-    void bindApplicationIdWithStatus(@Param("jobId")long jobId, @Param("applicationId") String applicationId, @Param("status")int status);
+    void bindApplicationIdWithRunStatus(@Param("jobId")long jobId, @Param("applicationId") String applicationId, @Param("status")int status);
 
     /**
      * 通过sourceId 获取job
