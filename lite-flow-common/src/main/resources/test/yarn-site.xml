@@ -118,10 +118,4 @@
   </property>
 
 
-  <property>
-     <name>yarn.log.server.url</name>
-     <value>http://namenode01.hdfs.10101111.com:19888/jobhistory/logs</value>
-  </property>
-
-
 </configuration>
