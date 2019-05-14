@@ -7,6 +7,7 @@ import cn.lite.flow.common.utils.JSONUtils;
 import cn.lite.flow.common.utils.YarnHolder;
 import cn.lite.flow.executor.common.consts.Constants;
 import cn.lite.flow.executor.common.exception.ExecutorRuntimeException;
+import cn.lite.flow.executor.common.utils.ExecutorLoggerFactory;
 import cn.lite.flow.executor.kernel.conf.ExecutorMetadata;
 import cn.lite.flow.executor.kernel.utils.YarnUtils;
 import cn.lite.flow.executor.model.basic.ExecutorJob;
@@ -252,7 +253,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
         PrintStream out = null;
         try {
             String jobWorkspace = ExecutorMetadata.getJobWorkspace(executorJob.getId());
-            String configFilePath = jobWorkspace + CommonConstants.FILE_SPLIT + executorJob.getId() + Constants.CONFIG_FILE_SUFFIX;
+            String configFilePath = ExecutorLoggerFactory.getLogFile(jobWorkspace, executorJob.getId());
 
             File logFile = new File(configFilePath);
             out = new PrintStream(new FileOutputStream(logFile));
