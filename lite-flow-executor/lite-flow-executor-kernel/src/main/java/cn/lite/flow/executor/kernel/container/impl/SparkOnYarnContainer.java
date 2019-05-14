@@ -261,6 +261,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
             String user = hadoopConf.getHadoopUserName();
 
             LogCLIHelpers logCLIHelpers = new LogCLIHelpers();
+            logCLIHelpers.setConf(YarnHolder.getYarnConfiguration());
             int code = logCLIHelpers.dumpAllContainersLogs(applicationId, user, out);
 
             if(code != 0){
