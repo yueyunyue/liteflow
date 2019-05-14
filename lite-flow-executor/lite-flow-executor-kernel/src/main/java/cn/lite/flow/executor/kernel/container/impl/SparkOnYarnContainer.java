@@ -110,11 +110,14 @@ public class SparkOnYarnContainer extends AsyncContainer {
         String yarnQueue = configObj.getString(CommonConstants.SPARK_PARAM_YARN_QUEUE);
         String instanceNum = configObj.getString(CommonConstants.SPARK_PARAM_INSTANCE_NUM);
 
+        HadoopConfig.getHadoopConf().initSparkProperties();
+
         SparkConf sparkConf = new SparkConf();
         sparkConf.setAppName(jobName);
 
         sparkConf.set("spark.app.name", jobName);
         sparkConf.set("spark.yarn.queue", yarnQueue);
+
 
         sparkConf.set("spark.driver.cores", configObj.getString(CommonConstants.SPARK_PARAM_DRIVER_CORES));
         sparkConf.set("spark.driver.memory", configObj.getString(CommonConstants.SPARK_PARAM_DRIVER_MEMORY) + CommonConstants.SPARK_PARAM_MEMORY_UNIT);
