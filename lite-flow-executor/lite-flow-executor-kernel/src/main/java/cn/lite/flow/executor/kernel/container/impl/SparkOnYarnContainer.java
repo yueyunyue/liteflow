@@ -4,7 +4,7 @@ import cn.lite.flow.common.conf.HadoopConfig;
 import cn.lite.flow.common.model.Tuple;
 import cn.lite.flow.common.model.consts.CommonConstants;
 import cn.lite.flow.common.utils.JSONUtils;
-import cn.lite.flow.common.utils.YarnClientHolder;
+import cn.lite.flow.common.utils.YarnHolder;
 import cn.lite.flow.executor.common.consts.Constants;
 import cn.lite.flow.executor.common.exception.ExecutorRuntimeException;
 import cn.lite.flow.executor.kernel.conf.ExecutorMetadata;
@@ -17,10 +17,12 @@ import cn.lite.flow.executor.service.utils.ExecutorServiceUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.yarn.api.records.ApplicationId;
 import org.apache.hadoop.yarn.api.records.ApplicationReport;
 import org.apache.hadoop.yarn.api.records.YarnApplicationState;
+import org.apache.hadoop.yarn.logaggregation.LogCLIHelpers;
 import org.apache.spark.SparkConf;
 import org.apache.spark.deploy.yarn.Client;
 import org.apache.spark.deploy.yarn.ClientArguments;
@@ -28,6 +30,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.List;
 
 /**
@@ -62,27 +66,36 @@ public class SparkOnYarnContainer extends AsyncContainer {
             return;
         }
         try {
-            ApplicationReport applicationReport = YarnClientHolder.getYarnClient().getApplicationReport(applicationId);
+            ApplicationReport applicationReport = YarnHolder.getYarnClient().getApplicationReport(applicationId);
             ExecutorJobService executorJobService = ExecutorServiceUtils.getExecutorJobService();
             YarnApplicationState yarnApplicationState = applicationReport.getYarnApplicationState();
 
+            boolean isDumpLog = false;
             LOG.info("check job:{}(applicationId:{}) status is {}", executorJob.getId(), executorJob.getApplicationId(), yarnApplicationState.name());
             switch (yarnApplicationState){
                 case FINISHED:
                     executorJobService.success(this.getExecutorJob().getId());
                     this.setStatus(ContainerStatus.SUCCESS);
+                    isDumpLog = true;
                     break;
                 case FAILED:
                     executorJobService.fail(this.getExecutorJob().getId(), applicationReport.getDiagnostics());
                     this.setStatus(ContainerStatus.FAIL);
+                    isDumpLog = true;
                     break;
                 case KILLED:
                     executorJobService.fail(this.getExecutorJob().getId(), "killed by other");
                     this.setStatus(ContainerStatus.FAIL);
+                    isDumpLog = true;
                     break;
                 default:
                     return;
             }
+
+            if(isDumpLog){
+                this.dumpLog2Local();
+            }
+
         } catch (Throwable e) {
             LOG.error("job:{} check status error", executorJob.getId(), e);
         }
@@ -204,7 +217,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
             return;
         }
         try {
-            YarnClientHolder.getYarnClient().killApplication(applicationId);
+            YarnHolder.getYarnClient().killApplication(applicationId);
         } catch (Throwable e) {
             LOG.error("kill job:{} error", executorJob.getId(), e);
             throw new ExecutorRuntimeException(e.getMessage());
@@ -225,6 +238,48 @@ public class SparkOnYarnContainer extends AsyncContainer {
             throw new ExecutorRuntimeException(e.getMessage());
         }
         return Tuple.of(configFileName, configFilePath);
+    }
+
+    /**
+     * 把yarn的日志dump下来
+     */
+    private void dumpLog2Local(){
+
+        ApplicationId applicationId = this.getApplicationId();
+        if(applicationId == null){
+            return;
+        }
+        PrintStream out = null;
+        try {
+            String jobWorkspace = ExecutorMetadata.getJobWorkspace(executorJob.getId());
+            String configFilePath = jobWorkspace + CommonConstants.FILE_SPLIT + executorJob.getId() + Constants.CONFIG_FILE_SUFFIX;
+
+            File logFile = new File(configFilePath);
+            out = new PrintStream(new FileOutputStream(logFile));
+
+            HadoopConfig hadoopConf = HadoopConfig.getHadoopConf();
+            String user = hadoopConf.getHadoopUserName();
+
+            LogCLIHelpers logCLIHelpers = new LogCLIHelpers();
+            int code = logCLIHelpers.dumpAllContainersLogs(applicationId, user, out);
+
+            if(code != 0){
+                String errorMsg = "job:"+ executorJob.getId() +" dumpLog2Local error, result code is " + code;
+                if(out != null){
+                    out.println(errorMsg);
+                }
+                LOG.error(errorMsg);
+            }
+        }catch (Throwable e){
+            String errorMsg = "job:"+ executorJob.getId() +" dumpLog2Local error, error msg is " + e.getMessage();
+            if(out != null){
+                out.println(errorMsg);
+            }
+            LOG.error(errorMsg,  e);
+        }finally {
+            IOUtils.closeQuietly(out);
+        }
+
     }
 
 }
