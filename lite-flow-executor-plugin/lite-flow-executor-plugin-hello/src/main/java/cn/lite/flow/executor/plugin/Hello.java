@@ -23,6 +23,7 @@ public class Hello {
         String arg0 = args[0];
         String data = FileUtils.readFileToString(new File(arg0), CommonConstants.UTF8_CHARSET);
         LOG.info("config is {}" + data);
+        System.exit(CommonConstants.SYSTEM_EXIT_SUCCESS);
     }
 
 }
