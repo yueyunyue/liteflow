@@ -1,6 +1,8 @@
 package cn.lite.flow.console.common.utils;
 
 import cn.lite.flow.common.time.TimeCalculatorFactory;
+import cn.lite.flow.common.utils.ParamExpressionUtils;
+import cn.lite.flow.common.utils.TimeExpressionUtils;
 import cn.lite.flow.console.common.consts.Constants;
 import cn.lite.flow.common.model.consts.TimeUnit;
 import cn.lite.flow.common.time.calculator.TimeCalculator;
@@ -33,25 +35,7 @@ public class TaskVersionUtils {
         return String.valueOf(versionNo);
     }
 
-    /**
-     * 通过任务版本获取对应的时间
-     * @param version
-     * @return
-     */
-    public static Date getDateByVersion(String version){
-        TimeUnit[] timeUnits = TimeUnit.values();
-        String versionExpression = "";
-        for(TimeUnit t : timeUnits){
-            if(version.length() == t.getVersionExpression().length()){
-                versionExpression = t.getVersionExpression();
-                break;
-            }
-        }
-        DateTimeFormatter format = DateTimeFormat.forPattern(versionExpression);
-        DateTime dateTime = DateTime.parse(version, format);
-        return dateTime.toDate();
 
-    }
 
     /**
      * 通过版本获取获取版本的时间表达式
@@ -137,7 +121,7 @@ public class TaskVersionUtils {
     public static List<Long> getUpstreamTaskVersions(Task task, Long taskVersion, Task upstreamTask, TaskDependency dependency){
 
         String versionStr = getVersionStr(taskVersion);
-        Date taskVersionDate = getDateByVersion(versionStr);
+        Date taskVersionDate = TimeExpressionUtils.getDateByVersion(versionStr);
         Date startTime = null;
         Date endTime = null;
         /**

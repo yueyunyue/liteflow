@@ -1,12 +1,14 @@
-package cn.lite.flow.console.common.utils;
+package cn.lite.flow.common.utils;
 
 import cn.lite.flow.common.model.Tuple;
-import cn.lite.flow.console.common.consts.Constants;
+import cn.lite.flow.common.model.consts.CommonConstants;
 import cn.lite.flow.common.model.consts.TimeUnit;
 import cn.lite.flow.common.time.preset.*;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.util.Date;
 import java.util.Map;
@@ -131,13 +133,13 @@ public class TimeExpressionUtils {
      */
     public static String calculateTimeExpression(String expression, String taskVersion){
 
-        String[] params = StringUtils.split(expression, Constants.PARAM_VARIABLE_SPLIT);
+        String[] params = StringUtils.split(expression, CommonConstants.COMMA);
 
         if(params == null || params.length > 3 || params.length == 0) {
             throw new IllegalArgumentException("expression：" + expression + " error");
         }
 
-        Date date = TaskVersionUtils.getDateByVersion(taskVersion);
+        Date date = getDateByVersion(taskVersion);
         DateTime versionDateTime = new DateTime(date);
 
         boolean isPreset = false;//变量是不是预设置
@@ -189,15 +191,12 @@ public class TimeExpressionUtils {
                 String dateOperator = StringUtils.trim(params[1]);
                 TimeParamCalculator presetCal = PRESET_PARMAS.get(dateOperator);
                 if (presetCal != null){
-
                     DateTime dateTime = presetCal.calculate(versionDateTime);
                     return formatDate(dateTime, dateParam);
                 }else{
-
                     Tuple<Integer, TimeUnit> timeUnitTuple = parseToNumAndTimeUnit(dateOperator);
                     DateTime dateTime = calculateTime(versionDateTime, timeUnitTuple.getA(), timeUnitTuple.getB());
                     return formatDate(dateTime, dateParam);
-
                 }
 
             }
@@ -205,18 +204,32 @@ public class TimeExpressionUtils {
 
         if(params.length == 1) {
             if(isPreset){
-
                 return calculator.format(versionDateTime);
-
             }else{
-
                 return formatDate(versionDateTime, dateParam);
-
             }
 
         }
         return null;
     }
+    /**
+     * 通过任务版本获取对应的时间
+     * @param version
+     * @return
+     */
+    public static Date getDateByVersion(String version){
+        TimeUnit[] timeUnits = TimeUnit.values();
+        String versionExpression = "";
+        for(TimeUnit t : timeUnits){
+            if(version.length() == t.getVersionExpression().length()){
+                versionExpression = t.getVersionExpression();
+                break;
+            }
+        }
+        DateTimeFormatter format = DateTimeFormat.forPattern(versionExpression);
+        DateTime dateTime = DateTime.parse(version, format);
+        return dateTime.toDate();
 
+    }
 
 }

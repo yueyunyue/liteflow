@@ -1,8 +1,10 @@
-package cn.lite.flow.console.common.utils;
+package cn.lite.flow.common.utils;
 
+import cn.lite.flow.common.model.consts.CommonConstants;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,11 +63,27 @@ public class ParamExpressionUtils {
                 }
             }
             String dateNumStr = dateNumSb.toString();
-            Date dateParam = TaskVersionUtils.getDateByVersion(dateNumStr);
+            Date dateParam = TimeExpressionUtils.getDateByVersion(dateNumStr);
             return dateParam;
         }
 
         return null;
     }
+
+    /**
+     * 将文本内容更改一下
+     * @param content
+     * @param paramMap
+     * @return
+     */
+    public static String handleParam(String content, Map<String, ?> paramMap){
+        String template = content;
+        Object taskVersionNo = paramMap.get(CommonConstants.PARAM_CONSOLE_TASK_VERSION);
+        if(taskVersionNo != null){
+            template = handleTimeExpression(content, String.valueOf(taskVersionNo));
+        }
+        return FreeMarkerUtils.formatString(template, paramMap);
+    }
+
 
 }

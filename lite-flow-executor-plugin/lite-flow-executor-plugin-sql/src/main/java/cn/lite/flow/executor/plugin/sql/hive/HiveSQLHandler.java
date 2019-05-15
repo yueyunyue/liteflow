@@ -88,7 +88,9 @@ public class HiveSQLHandler implements SQLHandler {
             connection.createStatement().executeUpdate(setDynamicNonstrictCommand);
 
             Statement sqlStatement = connection.createStatement();
-            HiveLogCollector sqlCollector = new HiveLogCollector((HiveStatement) sqlStatement);
+            hiveStatement = (HiveStatement) sqlStatement;
+
+            HiveLogCollector sqlCollector = new HiveLogCollector(hiveStatement);
             sqlCollector.start();
             LOG.info("execute hive sql :{}", sql);
             sqlStatement.executeUpdate(sql);

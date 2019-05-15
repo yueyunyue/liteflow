@@ -8,7 +8,7 @@ import cn.lite.flow.console.common.enums.AuthCheckTypeEnum;
 import cn.lite.flow.console.common.enums.TargetTypeEnum;
 import cn.lite.flow.console.common.exception.ConsoleRuntimeException;
 import cn.lite.flow.console.common.utils.DagUtils;
-import cn.lite.flow.console.common.utils.ParamExpressionUtils;
+import cn.lite.flow.common.utils.ParamExpressionUtils;
 import cn.lite.flow.console.common.utils.ResponseUtils;
 import cn.lite.flow.console.common.utils.TaskVersionUtils;
 import cn.lite.flow.console.model.basic.*;

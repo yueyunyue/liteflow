@@ -41,7 +41,6 @@
         </dependency>
 
         <!--hive-->
-
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-common</artifactId>
