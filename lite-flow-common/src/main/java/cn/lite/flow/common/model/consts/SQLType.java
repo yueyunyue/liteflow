@@ -10,11 +10,9 @@ public enum SQLType {
 
     MYSQL(1, "MYSQL"),
 
-    DEFAULT_HIVE_SQL(2, "默认配置的HIVE_SQL"),
+    HIVE_SQL(2, "HIVE_SQL"),
 
-    HIVE_SQL(3, "HIVE_SQL"),
-
-    SPARK_SQL(4, "SPARK_SQL");
+    SPARK_SQL(3, "SPARK_SQL");
 
     private int value;
 
