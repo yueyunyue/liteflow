@@ -46,9 +46,9 @@ public class SQLOnYarnContainer extends SparkOnYarnContainer {
         }
         sqlContent = ParamExpressionUtils.handleParam(sqlContent, paramMap);
         logger.info("job:{} handle shell param:{} sql:{}", executorJob.getId(), paramMap.toString(), sqlContent);
-        jobParamMap.put(CommonConstants.PARAM_SQL, sqlContent);
+        props.put(CommonConstants.PARAM_SQL, sqlContent);
         //配置重新放回config
-        config = JSONUtils.toJSONStringWithoutCircleDetect(jobParamMap);
+        config = JSONUtils.toJSONStringWithoutCircleDetect(props.getParamMap());
         executorJob.setConfig(config);
     }
 }
