@@ -38,11 +38,8 @@ public class SQLMain {
             case MYSQL:
                 sqlHandler = new MySQLHandler();
                 break;
-            case DEFAULT_HIVE_SQL:
-                sqlHandler = new HiveSQLHandler(true);
-                break;
             case HIVE_SQL:
-                sqlHandler = new HiveSQLHandler(false);
+                sqlHandler = new HiveSQLHandler();
                 break;
             case SPARK_SQL:
                 sqlHandler = new SparkSQLHandler();

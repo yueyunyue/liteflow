@@ -38,7 +38,6 @@ public class HiveLogCollector extends Thread {
             while (!hiveStatement.isClosed() && hiveStatement.hasMoreLogs()) {
                 List<String> logs = hiveStatement.getQueryLog();
                 for (String log : logs) {
-                    LOG.info(hiveStatement.getYarnATSGuid());
                     LOG.info(log);
                 }
                 Thread.sleep(sleepTime);

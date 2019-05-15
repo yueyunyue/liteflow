@@ -87,6 +87,8 @@ public class CommonConstants {
 
     public final static String PARAM = "param";                                              //参数
 
+    public final static String PARAM_CONTENT = "content";                                    //内容
+
     public final static String PARAM_SQL = "sql";                                            //sql
 
     public final static String PARAM_TYPE = "type";                                          //类型

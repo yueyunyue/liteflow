@@ -60,7 +60,7 @@ public class Constants {
      */
     public static final String SHELL_COMMAND = "sh";
 
-    public static final String SHELL_COINTENT = "shellContent";
+    public static final String SHELL_CONTENT = "shellContent";
 
     public static final String SHELL_SCRIPT_PATH = "shellPath";
 

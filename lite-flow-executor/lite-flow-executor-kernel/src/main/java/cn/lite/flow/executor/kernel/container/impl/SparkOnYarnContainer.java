@@ -9,6 +9,7 @@ import cn.lite.flow.executor.common.consts.Constants;
 import cn.lite.flow.executor.common.exception.ExecutorRuntimeException;
 import cn.lite.flow.executor.common.utils.ExecutorLoggerFactory;
 import cn.lite.flow.executor.kernel.conf.ExecutorMetadata;
+import cn.lite.flow.executor.kernel.utils.JobUtils;
 import cn.lite.flow.executor.kernel.utils.YarnUtils;
 import cn.lite.flow.executor.model.basic.ExecutorJob;
 import cn.lite.flow.executor.model.consts.ContainerStatus;
@@ -28,7 +29,6 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.deploy.yarn.Client;
 import org.apache.spark.deploy.yarn.ClientArguments;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,12 +42,13 @@ import java.util.List;
  **/
 public class SparkOnYarnContainer extends AsyncContainer {
 
-    private final static Logger LOG = LoggerFactory.getLogger(SparkOnYarnContainer.class);
+    protected Logger logger;
 
     private SparkConf sparkConf;
 
     public SparkOnYarnContainer(ExecutorJob executorJob) {
         super(executorJob);
+        logger = JobUtils.getLogger(executorJob);
     }
 
     /**
@@ -72,7 +73,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
             YarnApplicationState yarnApplicationState = applicationReport.getYarnApplicationState();
 
             boolean isDumpLog = false;
-            LOG.info("check job:{}(applicationId:{}) status is {}", executorJob.getId(), executorJob.getApplicationId(), yarnApplicationState.name());
+            logger.info("check job:{} applicationId:{} status is {}", executorJob.getId(), executorJob.getApplicationId(), yarnApplicationState.name());
             switch (yarnApplicationState){
                 case FINISHED:
                     executorJobService.success(this.getExecutorJob().getId());
@@ -98,7 +99,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
             }
 
         } catch (Throwable e) {
-            LOG.error("job:{} check status error", executorJob.getId(), e);
+            logger.error("job:{} check status error", executorJob.getId(), e);
         }
 
     }
@@ -204,7 +205,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
         Client client = new Client(clientArgs, this.sparkConf);
         ApplicationId applicationId = client.submitApplication();
         String appId = applicationId.toString();
-        LOG.info("{} get yarn applicationId:{}", executorJob.getId(), appId);
+        logger.info("{} get yarn applicationId:{}", executorJob.getId(), appId);
         ExecutorJobService executorJobService = ExecutorServiceUtils.getExecutorJobService();
         /**
          * 这只运行状态
@@ -223,7 +224,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
         try {
             YarnHolder.getYarnClient().killApplication(applicationId);
         } catch (Throwable e) {
-            LOG.error("kill job:{} error", executorJob.getId(), e);
+            logger.error("kill job:{} error", executorJob.getId(), e);
             throw new ExecutorRuntimeException(e.getMessage());
         }
     }
@@ -238,7 +239,7 @@ public class SparkOnYarnContainer extends AsyncContainer {
         try {
             FileUtils.write(new File(configFilePath), config, CommonConstants.UTF8);
         } catch (Throwable e) {
-            LOG.error("generate config file error", e);
+            logger.error("generate config file error", e);
             throw new ExecutorRuntimeException(e.getMessage());
         }
         return Tuple.of(configFileName, configFilePath);
@@ -256,9 +257,9 @@ public class SparkOnYarnContainer extends AsyncContainer {
         PrintStream out = null;
         try {
             String jobWorkspace = ExecutorMetadata.getJobWorkspace(executorJob.getId());
-            String configFilePath = ExecutorLoggerFactory.getLogFile(jobWorkspace, executorJob.getId());
+            String logFilePath = ExecutorLoggerFactory.getLogFile(jobWorkspace, executorJob.getId());
 
-            File logFile = new File(configFilePath);
+            File logFile = new File(logFilePath);
             out = new PrintStream(new FileOutputStream(logFile));
 
             HadoopConfig hadoopConf = HadoopConfig.getHadoopConf();
@@ -273,14 +274,14 @@ public class SparkOnYarnContainer extends AsyncContainer {
                 if(out != null){
                     out.println(errorMsg);
                 }
-                LOG.error(errorMsg);
+                logger.error(errorMsg);
             }
         }catch (Throwable e){
             String errorMsg = "job:"+ executorJob.getId() +" dumpLog2Local error, error msg is " + e.getMessage();
             if(out != null){
                 out.println(errorMsg);
             }
-            LOG.error(errorMsg,  e);
+            logger.error(errorMsg,  e);
         }finally {
             IOUtils.closeQuietly(out);
         }

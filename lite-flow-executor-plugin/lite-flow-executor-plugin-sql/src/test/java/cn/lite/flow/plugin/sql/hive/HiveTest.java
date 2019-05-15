@@ -21,8 +21,13 @@ public class HiveTest {
 
         JSONObject configObj = new JSONObject();
         configObj.put(CommonConstants.PARAM_QUEUE, "default");
-        configObj.put(CommonConstants.PARAM_SQL, insertSql);
-        HiveSQLHandler sqlHandler = new HiveSQLHandler(true);
+        configObj.put(CommonConstants.PARAM_IP, "10.26.15.168");
+        configObj.put(CommonConstants.PARAM_PORT, "10000");
+        configObj.put(CommonConstants.PARAM_USER, "hadoop");
+        configObj.put(CommonConstants.PARAM_DB, "default");
+        configObj.put(CommonConstants.PARAM_SQL, selectSql);
+
+        HiveSQLHandler sqlHandler = new HiveSQLHandler();
         sqlHandler.handleSQL(configObj);
 
     }
