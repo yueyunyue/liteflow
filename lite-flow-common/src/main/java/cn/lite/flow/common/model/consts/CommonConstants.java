@@ -12,6 +12,13 @@ import java.util.Set;
 @Component
 public class CommonConstants {
 
+    /**
+     * 普通
+     */
+    public final static int ZERO = 0;
+
+    public final static int FIFTY_NINE = 59;
+
     public static final String UTF8 = "UTF-8";                                               //UTF-8
 
     public static final Charset UTF8_CHARSET =  Charset.forName(CommonConstants.UTF8);       //UTF-8
@@ -73,6 +80,8 @@ public class CommonConstants {
     public final static String PARAM_FIELD_CONFIG = "fieldConfig";                           //字段配置
 
     public final static String PARAM_EXECUTOR_JOB_NAME = "executorJobName";                  //执行者任务名
+
+    public final static String PARAM_CONSOLE_TASK_VERSION = "consoleTaskVersionNo";         //任务对应的版本号
 
     public final static String PARAM_FILE = "file";                                          //文件
 

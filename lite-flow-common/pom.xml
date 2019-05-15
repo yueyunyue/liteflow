@@ -157,16 +157,16 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>copy-resources</id>
-                        <phase>compile</phase>
+                        <id>lite-common-copy-resources</id>
+                        <phase>validate</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/classes</outputDirectory>
+                            <outputDirectory>${basedir}/src/main/resources</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>src/main/resources/${env}</directory>
+                                    <directory>${basedir}/src/main/resources/${env}</directory>
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>

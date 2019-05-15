@@ -134,7 +134,7 @@ public class TaskInstanceServiceImpl implements TaskInstanceService {
         /**
          * 控制每次获取数量，避免任务堆积时获取大量数据
          */
-        qm.setPage(Page.getPage(Constants.ZERO, MAX_COUNT_PER_TIME));
+        qm.setPage(Page.getPage(CommonConstants.ZERO, MAX_COUNT_PER_TIME));
         return qm;
     }
 

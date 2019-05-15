@@ -1,15 +1,9 @@
 package cn.lite.flow.console.common.utils;
 
+import cn.lite.flow.common.time.TimeCalculatorFactory;
 import cn.lite.flow.console.common.consts.Constants;
-import cn.lite.flow.console.common.consts.TimeUnit;
-import cn.lite.flow.console.common.time.TimeCalculatorFactory;
-import cn.lite.flow.console.common.time.calculator.DayTimeCalculator;
-import cn.lite.flow.console.common.time.calculator.HourTimeCalculator;
-import cn.lite.flow.console.common.time.calculator.MinuteTimeCalculator;
-import cn.lite.flow.console.common.time.calculator.MonthTimeCalculator;
-import cn.lite.flow.console.common.time.calculator.TimeCalculator;
-import cn.lite.flow.console.common.time.calculator.WeekTimeCalculator;
-import cn.lite.flow.console.common.time.calculator.YearTimeCalculator;
+import cn.lite.flow.common.model.consts.TimeUnit;
+import cn.lite.flow.common.time.calculator.TimeCalculator;
 import cn.lite.flow.console.model.basic.Task;
 import cn.lite.flow.console.model.basic.TaskDependency;
 import cn.lite.flow.console.model.consts.TaskDependencyType;

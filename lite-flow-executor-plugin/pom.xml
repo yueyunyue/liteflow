@@ -17,6 +17,7 @@
     <modules>
         <module>lite-flow-executor-plugin-hello</module>
         <module>lite-flow-executor-plugin-sql</module>
+        <module>lite-flow-executor-plugin-sqoop</module>
     </modules>
     <properties>
         <lite-flow-model-basic.version>1.0.0-SNAPSHOT</lite-flow-model-basic.version>
@@ -110,28 +111,6 @@
                         <source>1.8</source>
                         <target>1.8</target>
                     </configuration>
-                </plugin>
-
-                <plugin>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <id>copy-resources</id>
-                            <phase>compile</phase>
-                            <goals>
-                                <goal>copy-resources</goal>
-                            </goals>
-                            <configuration>
-                                <outputDirectory>${basedir}/target/classes</outputDirectory>
-                                <resources>
-                                    <resource>
-                                        <directory>src/main/resources/${env}</directory>
-                                        <filtering>false</filtering>
-                                    </resource>
-                                </resources>
-                            </configuration>
-                        </execution>
-                    </executions>
                 </plugin>
 
             </plugins>

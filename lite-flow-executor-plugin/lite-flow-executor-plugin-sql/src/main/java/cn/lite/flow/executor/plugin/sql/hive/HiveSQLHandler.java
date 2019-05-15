@@ -26,8 +26,6 @@ public class HiveSQLHandler implements SQLHandler {
 
     private final static String DB_URL_TEMPLATE = "jdbc:hive2://%s:%s/%s";
 
-    private final static String SET_QUEUE = "set mapreduce.job.queuename=";
-
     private final boolean isDefault;
 
     public HiveSQLHandler(boolean isDefault) {
@@ -75,18 +73,22 @@ public class HiveSQLHandler implements SQLHandler {
         try {
             Class.forName("org.apache.hive.jdbc.HiveDriver");
             connection = DriverManager.getConnection(dbUrl, user, passwd);
-            LOG.info("hive sql execute sql {}", sql);
-            String setQueueCommand = SET_QUEUE + queue;
+
+            String setQueueCommand = "set mapreduce.job.queuename=" + queue;
             LOG.info("set queue to hive sql : {}", setQueueCommand);
 
-            Statement queueStatement = connection.createStatement();
-            HiveLogCollector queueCollector = new HiveLogCollector((HiveStatement) queueStatement);
-            queueCollector.start();
-            queueStatement.executeUpdate(setQueueCommand);
-            queueCollector.join();
+            String setDynamicCommand = "set hive.exec.dynamic.partition=true";
+            LOG.info("set hive.exec.dynamic.partition : {}", setDynamicCommand);
+
+            String setDynamicNonstrictCommand = "set hive.exec.dynamic.partition.mode=nonstrict";
+            LOG.info("set hive.exec.dynamic.partition.mode : {}", setDynamicNonstrictCommand);
+
+            connection.createStatement().executeUpdate(setQueueCommand);
+            connection.createStatement().executeUpdate(setDynamicCommand);
+            connection.createStatement().executeUpdate(setDynamicNonstrictCommand);
 
             Statement sqlStatement = connection.createStatement();
-            HiveLogCollector sqlCollector = new HiveLogCollector((HiveStatement) queueStatement);
+            HiveLogCollector sqlCollector = new HiveLogCollector((HiveStatement) sqlStatement);
             sqlCollector.start();
             LOG.info("execute hive sql :{}", sql);
             sqlStatement.executeUpdate(sql);

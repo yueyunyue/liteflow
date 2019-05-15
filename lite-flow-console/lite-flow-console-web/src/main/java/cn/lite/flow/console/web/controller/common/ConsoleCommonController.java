@@ -1,6 +1,6 @@
 package cn.lite.flow.console.web.controller.common;
 
-import cn.lite.flow.console.common.consts.TimeUnit;
+import cn.lite.flow.common.model.consts.TimeUnit;
 import cn.lite.flow.console.common.enums.TargetTypeEnum;
 import cn.lite.flow.console.common.model.vo.SessionUser;
 import cn.lite.flow.console.common.utils.ResponseUtils;
@@ -13,21 +13,14 @@ import cn.lite.flow.console.service.UserGroupAuthMidService;
 import cn.lite.flow.console.web.annotation.AuthCheckIgnore;
 import cn.lite.flow.console.web.controller.BaseController;
 import cn.lite.flow.console.web.utils.ModelUtils;
-import cn.lite.flow.executor.client.ExecutorContainerRpcService;
-import cn.lite.flow.executor.client.ExecutorPluginRpcService;
-import cn.lite.flow.executor.model.basic.ExecutorContainer;
-import cn.lite.flow.executor.model.basic.ExecutorPlugin;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by ly on 2018/12/14.

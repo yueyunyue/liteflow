@@ -1,7 +1,7 @@
 package cn.lite.flow.console.web.utils;
 
 import cn.lite.flow.console.common.consts.Constants;
-import cn.lite.flow.console.common.consts.TimeUnit;
+import cn.lite.flow.common.model.consts.TimeUnit;
 import cn.lite.flow.console.common.model.vo.DependencyVo;
 import cn.lite.flow.console.model.basic.Flow;
 import cn.lite.flow.console.model.basic.Task;

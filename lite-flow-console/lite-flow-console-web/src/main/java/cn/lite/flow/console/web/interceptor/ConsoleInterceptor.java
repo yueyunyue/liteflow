@@ -63,7 +63,6 @@ public class ConsoleInterceptor implements HandlerInterceptor {
             if (StringUtils.isNotEmpty(userInfo)) {
                 SessionContext.setUser(JSON.parseObject(userInfo, SessionUser.class));
             }
-            return true;
         }
 
         ResponseUtils.notLogin(request, response);

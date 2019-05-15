@@ -16,16 +16,14 @@ public class HiveTest {
     @Test
     public void testSql() throws Throwable{
 
-        String insertSql = "insert into lite.test(id) values(6)";
+        String insertSql = "insert into lite.test(id) values(66)";
         String selectSql = " select * from lite.test where  id > 100 group by id ";
 
         JSONObject configObj = new JSONObject();
         configObj.put(CommonConstants.PARAM_QUEUE, "default");
-        configObj.put(CommonConstants.PARAM_SQL, selectSql);
+        configObj.put(CommonConstants.PARAM_SQL, insertSql);
         HiveSQLHandler sqlHandler = new HiveSQLHandler(true);
         sqlHandler.handleSQL(configObj);
-
-
 
     }
 

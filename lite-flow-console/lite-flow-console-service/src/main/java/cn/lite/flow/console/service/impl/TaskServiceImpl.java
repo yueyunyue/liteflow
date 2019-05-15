@@ -3,7 +3,7 @@ package cn.lite.flow.console.service.impl;
 import cn.lite.flow.common.model.Tuple;
 import cn.lite.flow.common.model.consts.BooleanType;
 import cn.lite.flow.common.model.consts.CommonConstants;
-import cn.lite.flow.console.common.consts.TimeUnit;
+import cn.lite.flow.common.model.consts.TimeUnit;
 import cn.lite.flow.console.common.enums.AuthCheckTypeEnum;
 import cn.lite.flow.console.common.enums.SourceTypeEnum;
 import cn.lite.flow.console.common.exception.ConsoleRuntimeException;

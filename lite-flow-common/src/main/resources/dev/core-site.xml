@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+
+    <property>
+
+    <name>fs.default.name</name>
+
+    <value>hdfs://hadoop2yarn</value>
+
+  </property>
+
+  <property>
+
+    <name>fs.defaultFS</name>
+
+    <value>hdfs://hadoop2yarn</value>
+
+  </property>
+
+  <property>
+
+    <name>io.file.buffer.size</name>
+
+    <value>131072</value>
+
+  </property>
+
+  <property>
+
+    <name>hadoop.tmp.dir</name>
+
+    <value>/data/</value>
+
+    <description>Abase for other temporary directories.</description>
+
+  </property>
+
+  <property>
+
+    <name>hadoop.proxyuser.hduser.hosts</name>
+
+    <value>*</value>
+
+  </property>
+
+  <property>
+
+    <name>hadoop.proxyuser.hduser.groups</name>
+
+    <value>*</value>
+
+  </property>
+<property>
+  <name>io.compression.codecs</name>
+  <value>org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.BZip2Codec,org.apache.hadoop.io.compress.SnappyCodec</value>
+</property>
+
+
+<!-- <property>
+  <name>hadoop.security.group.mapping</name>
+  <value>org.apache.hadoop.security.CompositeGroupsMapping</value>
+</property> -->
+
+<property>
+    <name>ha.zookeeper.quorum</name>
+    <value>hadoop01:2181</value>
+</property>
+
+<property>
+          <name>ha.zookeeper.session-timeout.ms</name>
+          <value>60000</value>
+</property>
+
+<property>
+          <name>ha.failover-controller.cli-check.rpc-timeout.ms</name>
+          <value>60000</value>
+</property>
+
+<property>
+          <name>ipc.client.connect.timeout</name>
+          <value>20000</value>
+</property>
+
+<!-- <property>
+  <name>hadoop.security.group.mapping</name>
+  <value>org.apache.hadoop.security.CompositeGroupsMapping</value>
+</property> -->
+<property>
+  <name>ha.zookeeper.parent-znode</name>
+  <value>/hadoop-storm-ha-hdfs</value>
+  <description>
+    The ZooKeeper znode under which the ZK failover controller stores
+    its information. Note that the nameservice ID is automatically
+    appended to this znode, so it is not normally necessary to
+    configure this, even in a federated environment.
+  </description>
+</property>
+
+
+</configuration>
