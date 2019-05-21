@@ -1,5 +1,6 @@
 package cn.lite.flow.executor.kernel.service.rpc.impl;
 
+import cn.lite.flow.common.model.consts.CommonConstants;
 import cn.lite.flow.common.model.query.Page;
 import cn.lite.flow.common.utils.JSONUtils;
 import cn.lite.flow.executor.client.ExecutorJobRpcService;
@@ -11,12 +12,15 @@ import cn.lite.flow.executor.common.utils.ContainerMetadata;
 import cn.lite.flow.executor.common.utils.ExecutorLoggerFactory;
 import cn.lite.flow.executor.kernel.conf.ExecutorMetadata;
 import cn.lite.flow.executor.kernel.container.ContainerFactory;
+import cn.lite.flow.executor.model.basic.ExecutorContainer;
 import cn.lite.flow.executor.model.basic.ExecutorJob;
 import cn.lite.flow.executor.model.basic.ExecutorPlugin;
+import cn.lite.flow.executor.model.consts.ContainerLogType;
 import cn.lite.flow.executor.model.consts.ExecutorJobStatus;
 import cn.lite.flow.executor.model.kernel.Container;
 import cn.lite.flow.executor.model.query.ExecutorJobQM;
 import cn.lite.flow.executor.model.query.ExecutorServerQM;
+import cn.lite.flow.executor.service.ExecutorContainerService;
 import cn.lite.flow.executor.service.ExecutorJobService;
 import cn.lite.flow.executor.service.ExecutorPluginService;
 import cn.lite.flow.executor.service.utils.ExecutorServiceUtils;
@@ -48,6 +52,9 @@ public class ExecutorJobRpcServiceImpl implements ExecutorJobRpcService {
 
     @Autowired
     private ExecutorPluginService pluginService;
+
+    @Autowired
+    private ExecutorContainerService containerService;
 
     @Override
     public Long submitJob(SubmitExecuteJob submitExecuteJob) {
@@ -165,17 +172,32 @@ public class ExecutorJobRpcServiceImpl implements ExecutorJobRpcService {
 
     @Override
     public String getLog(long id) {
-        String jobWorkspace = ExecutorMetadata.getJobWorkspace(id);
-         String logFile = ExecutorLoggerFactory.getLogFile(jobWorkspace, id);
-        File file = new File(logFile);
-        if(file.exists()){
-            try {
-                String result = FileUtils.readFileToString(file, "utf-8");
-                return result;
-            } catch (IOException e) {
-                LOG.error("read log error, jobId:{}", id, e);
+
+        ExecutorJob executorJob = executorJobService.getById(id);
+        Long containerId = executorJob.getContainerId();
+        if(containerId != null){
+            ExecutorContainer container = containerService.getById(executorJob.getContainerId());
+            Integer logType = container.getLogType();
+            ContainerLogType containerLogType = ContainerLogType.getType(logType);
+            switch (containerLogType){
+                case LOCAL:
+                    String jobWorkspace = ExecutorMetadata.getJobWorkspace(id);
+                    String logFile = ExecutorLoggerFactory.getLogFile(jobWorkspace, id);
+                    File file = new File(logFile);
+                    if(file.exists()){
+                        try {
+                            String result = FileUtils.readFileToString(file, CommonConstants.UTF8);
+                            return result;
+                        } catch (IOException e) {
+                            LOG.error("read log error, jobId:{}", id, e);
+                        }
+                    }
+                    break;
             }
         }
+
+
+
         return Constants.LOG_EMPTY;
     }
 }

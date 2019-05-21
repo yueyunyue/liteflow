@@ -88,6 +88,7 @@ public class ContainerController extends BaseController {
             @RequestParam(value = "id") Long id,
             @RequestParam(value = "name") String name,
             @RequestParam(value = "className") String className,
+            @RequestParam(value = "logType") Integer logType,
             @RequestParam(value = "description") String description,
             @RequestParam(value = "fieldConfig", required = false) String fieldConfig,
             @RequestParam(value = "envFieldConfig", required = false) String envFieldConfig
@@ -95,6 +96,7 @@ public class ContainerController extends BaseController {
         ExecutorContainer container = new ExecutorContainer();
         container.setId(id);
         container.setName(name);
+        container.setLogType(logType);
         container.setClassName(className);
 
         if(StringUtils.isNotEmpty(fieldConfig)){

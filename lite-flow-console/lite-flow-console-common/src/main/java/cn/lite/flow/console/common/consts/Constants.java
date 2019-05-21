@@ -8,13 +8,6 @@ import cn.lite.flow.common.model.consts.CommonConstants;
 public class Constants {
 
     /**
-     * 普通
-     */
-    public final static int ZERO = 0;
-
-    public final static int FIFTY_NINE = 59;
-
-    /**
      * 参数
      */
     public final static String PARAM_VARIABLE_SPLIT = ",";                           //参数分隔符,

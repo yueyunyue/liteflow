@@ -291,10 +291,8 @@ public class Props {
   public String getString(final String key) {
     if (containsKey(key)) {
       return get(key);
-    } else {
-      throw new UndefinedPropertyException("Missing required property '" + key
-          + "'");
     }
+    return null;
   }
 
   /**

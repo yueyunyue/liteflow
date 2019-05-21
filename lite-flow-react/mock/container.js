@@ -9,6 +9,7 @@ let containersData = Mock.mock({
             description: '@cname',
             className: 'cn.lite.flow.executor.kernel.container.impl.NoopContainer',
             status: 1,
+            logType: 1,
             user: {
                 id: 1,
                 name: "lite"

@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.ToString;
 
 @Data
-@ToString
+@ToString(callSuper = true)
 public class ExecutorAttachmentQM extends BaseQM {
 
     private Long id;                    //id

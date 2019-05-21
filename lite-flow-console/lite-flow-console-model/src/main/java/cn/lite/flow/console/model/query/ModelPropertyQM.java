@@ -8,7 +8,7 @@ import lombok.ToString;
  * 任务流查询模型
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class ModelPropertyQM extends BaseQM {
 
     private Long modelId;              //实体id

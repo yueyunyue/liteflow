@@ -6,6 +6,7 @@ import cn.lite.flow.executor.common.utils.ExecutorLoggerFactory;
 import cn.lite.flow.executor.common.utils.Props;
 import cn.lite.flow.executor.kernel.conf.ExecutorMetadata;
 import cn.lite.flow.executor.kernel.job.JavaProcessJob;
+import cn.lite.flow.executor.kernel.utils.JobUtils;
 import cn.lite.flow.executor.model.consts.ContainerStatus;
 import cn.lite.flow.executor.model.kernel.SyncContainer;
 import cn.lite.flow.executor.model.basic.ExecutorJob;
@@ -38,13 +39,13 @@ public class JavaProcessContainer extends SyncContainer {
                 Props sysProps = new Props();
                 Props props = new Props(config);
 
-                this.workDirPath = ExecutorMetadata.getJobWorkspace(executorJob.getId());
+                this.workDirPath = JobUtils.getWorkspace(executorJob);
 
-                Logger logger = ExecutorLoggerFactory.getLogger(executorJob.getId(), workDirPath);
+                Logger logger = JobUtils.getLogger(executorJob);
 
                 String configFilePath = this.workDirPath + CommonConstants.FILE_SPLIT + executorJob.getId() + Constants.CONFIG_FILE_SUFFIX;
                 FileUtils.write(new File(configFilePath), config);
-                props.put(Constants.JAVA_MAIN_ARGS, executorJob.getId() + CommonConstants.BLANK_SPACE + configFilePath);
+                props.put(Constants.JAVA_MAIN_ARGS, configFilePath);
 
                 this.javaProcessJob = new JavaProcessJob(executorJob.getId(),sysProps, props, logger);
                 javaProcessJob.run();

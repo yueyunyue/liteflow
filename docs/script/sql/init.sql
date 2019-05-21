@@ -49,7 +49,7 @@ VALUES
 ('Noop', 'cn.lite.flow.executor.kernel.container.impl.NoopContainer', '', '无操作容器', 1),
 
 ('SimpleShell',
-'cn.lite.flow.executor.kernel.container.impl.ShellContainer',
+'cn.lite.flow.executor.kernel.container.impl.DirectShellContainer',
 '[
   {
     "label": "脚本内容",
@@ -64,7 +64,7 @@ VALUES
   }
 ]', '简单的shell脚本', 1),
 ('Shell',
-'cn.lite.flow.executor.kernel.container.impl.FileShellContainer',
+'cn.lite.flow.executor.kernel.container.impl.ShellContainer',
 '[
   {
     "label": "脚本",
@@ -119,7 +119,7 @@ VALUES
 'cn.lite.flow.executor.kernel.container.impl.SparkOnYarnContainer', '[
   {
     "label": "yarn队列",
-    "name": "yarnQueue",
+    "name": "queue",
     "type": "Input",
     "editable": false,
     "defaultValue": "default",
@@ -200,6 +200,145 @@ VALUES
   }
 ]',
 'sparkOnYarn',
+1),
+('SQL_ON_YARN',
+'cn.lite.flow.executor.kernel.container.impl.SQLOnYarnContainer', '[
+  {
+    "label": "地址",
+    "name": "ip",
+    "type": "Input",
+    "editable": false,
+    "defaultValue": "default",
+    "required": true,
+    "help": ""
+  },
+  {
+    "label": "端口",
+    "name": "port",
+    "type": "Input",
+    "editable": false,
+    "defaultValue": "default",
+    "required": true,
+    "help": ""
+  },
+  {
+    "label": "用户名",
+    "name": "user",
+    "type": "Input",
+    "editable": false,
+    "defaultValue": "default",
+    "required": true,
+    "help": ""
+  },
+  {
+    "label": "密码",
+    "name": "password",
+    "type": "Input",
+    "editable": false,
+    "defaultValue": "default",
+    "required": true,
+    "help": ""
+  },
+  {
+    "label": "库名",
+    "name": "database",
+    "type": "Input",
+    "editable": false,
+    "defaultValue": "default",
+    "required": true,
+    "help": ""
+  },{
+    "label": "SQL",
+    "name": "file",
+    "type": "Input",
+    "editable": false,
+    "defaultValue": "",
+    "required": true,
+    "help": "sql"
+  },
+  {
+    "label": "yarn队列",
+    "name": "queue",
+    "type": "Input",
+    "editable": false,
+    "defaultValue": "default",
+    "required": true,
+    "help": ""
+  },
+  {
+    "label": "主类",
+    "name": "mainClass",
+    "type": "Input",
+    "editable": false,
+    "defaultValue": "",
+    "required": true,
+    "help": "main函数所在类名"
+  },
+  {
+    "label": "jar包",
+    "name": "mainJar",
+    "type": "Input",
+    "editable": false,
+    "defaultValue": "",
+    "required": true,
+    "help": "主类所在jar包"
+  },
+  {
+    "label": "依赖jar包",
+    "name": "dependencyJars",
+    "type": "Input",
+    "editable": false,
+    "defaultValue": "",
+    "required": false,
+    "help": "运行依赖的jar包，多个以,隔开"
+  },
+  {
+    "label": "instanceNum",
+    "name": "instanceNum",
+    "type": "InputNumber",
+    "editable": false,
+    "defaultValue": "1",
+    "required": true,
+    "help": ""
+  },
+  {
+    "label": "driver核数",
+    "name": "driverCore",
+    "type": "InputNumber",
+    "editable": false,
+    "defaultValue": "1",
+    "required": true,
+    "help": ""
+  },
+  {
+    "label": "driver内存",
+    "name": "driverMemory",
+    "type": "InputNumber",
+    "editable": false,
+    "defaultValue": "100",
+    "required": true,
+    "help": ""
+  },
+  {
+    "label": "executor核数",
+    "name": "executorCore",
+    "type": "InputNumber",
+    "editable": false,
+    "defaultValue": "1",
+    "required": true,
+    "help": ""
+  },
+  {
+    "label": "executor内存",
+    "name": "executorMemory",
+    "type": "InputNumber",
+    "editable": false,
+    "defaultValue": "100",
+    "required": true,
+    "help": ""
+  }
+]',
+'SQLOnYarn',
 1);
 
 

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+
+
+  <property>
+
+   <name>dfs.replication</name>
+
+   <value>3</value>
+
+  </property>
+
+  <property>
+
+   <name>dfs.webhdfs.enabled</name>
+
+   <value>true</value>
+
+  </property>
+
+
+<property>
+ <name>dfs.namenode.datanode.registration.ip-hostname-check</name>
+ <value>false</value>
+</property>
+
+
+<property>
+  <name>dfs.datanode.handler.count</name>
+  <value>10</value>
+  <description>The number of server threads for the datanode.</description>
+</property>
+
+<property>
+  <name>dfs.nameservices</name>
+  <value>hadoop2yarn</value>
+</property>
+
+<!-- <property>
+  <name>dfs.ha.namenodes.hadoop2yarn</name>
+  <value>nn1</value>
+</property>
+
+<property>
+  <name>dfs.namenode.rpc-address.hadoop2yarn.nn1</name>
+  <value>hadoop01:8020</value>
+</property>
+
+
+<property>
+  <name>dfs.namenode.http-address.hadoop2yarn.nn1</name>
+  <value>hadoop01:50070</value>
+</property>
+
+<property>
+  <name>dfs.namenode.shared.edits.dir</name>
+  <value>qjournal://hadoop01:8485/hadoop2yarn</value>
+</property> -->
+
+<!-- <property>
+  <name>dfs.client.failover.proxy.provider.hadoop2yarn</name>
+  <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+</property> -->
+
+<!-- <property>
+  <name>dfs.ha.fencing.methods</name>
+  <value>sshfence</value>
+</property>
+
+<property>
+  <name>dfs.ha.fencing.ssh.private-key-files</name>
+  <value>/home/hadoop/.ssh/id_rsa</value>
+</property> -->
+
+<property>
+  <name>dfs.journalnode.edits.dir</name>
+  <value>/usr/local/hadoop-2.6.3/data</value>
+</property>
+
+<property>
+<name>dfs.ha.automatic-failover.enabled</name>
+  <value>true</value>
+</property>
+
+
+<property>
+  <name>dfs.namenode.num.extra.edits.retained</name>
+  <value>10</value>
+</property>
+
+
+<property>
+  <name>dfs.namenode.num.checkpoints.retained</name>
+  <value>10</value>
+</property>
+
+</configuration>

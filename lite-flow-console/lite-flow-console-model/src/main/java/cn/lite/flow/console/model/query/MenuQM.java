@@ -8,7 +8,7 @@ import lombok.ToString;
  * Created by ly on 2018/12/24.
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class MenuQM extends BaseQM {
 
     private String name;        //按名称精确匹配

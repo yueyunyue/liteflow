@@ -10,7 +10,7 @@ import java.util.List;
  * Created by ly on 2018/10/31.
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class RoleAuthMidQM extends BaseQM {
 
     private Long roleId;            //角色id

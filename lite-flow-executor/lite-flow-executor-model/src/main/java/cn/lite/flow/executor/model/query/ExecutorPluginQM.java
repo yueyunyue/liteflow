@@ -10,7 +10,7 @@ import java.util.List;
  * 插件查询模型
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class ExecutorPluginQM extends BaseQM {
 
     private String nameLike;            //按名称模糊查询

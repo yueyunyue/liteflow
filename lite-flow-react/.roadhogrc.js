@@ -36,7 +36,7 @@ export default {
     },
     proxy: {
         '/': {
-            'target': 'http://localhost:8080',
+            'target': 'http://10.26.15.168:8080',
             'changeOrigin': true,
             'pathRewrite': {'^/': ''}
         }

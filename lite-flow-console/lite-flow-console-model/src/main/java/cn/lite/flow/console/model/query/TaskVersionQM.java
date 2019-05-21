@@ -10,7 +10,7 @@ import java.util.Date;
  * 任务流查询模型
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class TaskVersionQM extends BaseQM {
 
     private Long taskId;                          //任务id

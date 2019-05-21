@@ -4,7 +4,7 @@ import cn.lite.flow.common.model.Tuple;
 import cn.lite.flow.common.model.query.Page;
 import cn.lite.flow.common.utils.DateUtils;
 import cn.lite.flow.console.common.consts.Constants;
-import cn.lite.flow.console.common.consts.TimeUnit;
+import cn.lite.flow.common.model.consts.TimeUnit;
 import cn.lite.flow.console.common.enums.AuthCheckTypeEnum;
 import cn.lite.flow.console.common.model.vo.DependencyVo;
 import cn.lite.flow.console.common.utils.QuartzUtils;
