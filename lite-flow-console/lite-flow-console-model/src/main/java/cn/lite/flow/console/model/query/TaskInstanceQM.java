@@ -11,7 +11,7 @@ import java.util.List;
  * 任务流查询模型
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class TaskInstanceQM extends BaseQM {
 
     private List<Long> ids;                   //id列表

@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 /**
  * Created by yueyunyue on 2019/05/06.
  */
-@RestController("consoleHdfsCommonController")
+@RestController("executorAttachmentCommonController")
 @RequestMapping("executor/common/attachment")
 @AuthCheckIgnore
 public class AttachmentCommonController extends BaseController {

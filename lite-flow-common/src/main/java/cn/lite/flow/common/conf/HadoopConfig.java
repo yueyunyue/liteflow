@@ -123,14 +123,15 @@ public class HadoopConfig implements InitializingBean {
 
         System.setProperty("SPARK_YARN_MODE", "true");
         System.setProperty("SPARK_SUBMIT", "true");
-        System.setProperty("spark.master", "yarn");
+        System.setProperty("spark.master", "yarn-cluster");
         System.setProperty("spark.submit.deployMode", "cluster");
         /**
          * 指定spark相关的jar包
          */
         if(StringUtils.isNotBlank(sparkJarPath)){
-            System.setProperty("spark.yarn.jars", getSparkJars());
-            System.setProperty("spark.jars",getSparkJars());
+            String sparkJarPath = getSparkJars();
+            System.setProperty("spark.yarn.jars", sparkJarPath);
+            System.setProperty("spark.jars", sparkJarPath);
         }
     }
 
@@ -141,6 +142,7 @@ public class HadoopConfig implements InitializingBean {
             return;
         }
         initHadoopProperties();
+        
         initSparkProperties();
         isInit.set(true);
     }

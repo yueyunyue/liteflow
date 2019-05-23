@@ -8,7 +8,7 @@ import lombok.ToString;
  * 任务实例查询模型
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class TaskInstanceDependencyQM extends BaseQM {
 
     private Long taskId;                        //任务id

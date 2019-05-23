@@ -299,6 +299,7 @@ CREATE TABLE lf_executor_container (
   name varchar(32) NOT NULL DEFAULT '' COMMENT '容器名称',
   field_config text COMMENT '插件需要实现的参数',
   status tinyint NOT NULL DEFAULT '1' COMMENT '状态',
+  log_type tinyint NOT NULL DEFAULT '1' COMMENT '日志类型',
   description varchar(64) NOT NULL DEFAULT '' COMMENT '说明',
   class_name varchar(128) NOT NULL DEFAULT '' COMMENT '类名',
   user_id int NOT NULL DEFAULT '0' COMMENT '创建者id',

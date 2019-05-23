@@ -10,7 +10,7 @@ import java.util.List;
  * 任务流查询模型
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class FlowQM extends BaseQM {
 
     private String name;            //名称精确查询

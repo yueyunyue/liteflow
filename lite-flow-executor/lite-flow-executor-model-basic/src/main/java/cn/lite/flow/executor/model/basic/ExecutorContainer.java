@@ -27,6 +27,8 @@ public class ExecutorContainer implements Serializable {
 
     private Integer status;             //容器状态
 
+    private Integer logType;            //容器状态
+
     private Date createTime;            //创建时间
 
     private Date updateTime;            //更新时间

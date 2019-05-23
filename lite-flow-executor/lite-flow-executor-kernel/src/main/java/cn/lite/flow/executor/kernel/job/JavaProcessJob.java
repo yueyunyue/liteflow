@@ -3,6 +3,7 @@ package cn.lite.flow.executor.kernel.job;
 import cn.lite.flow.common.model.consts.CommonConstants;
 import cn.lite.flow.executor.common.consts.Constants;
 import cn.lite.flow.executor.common.utils.Props;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import java.io.File;
 import java.util.ArrayList;
@@ -58,18 +59,25 @@ public class JavaProcessJob extends ProcessJob {
         if (classPaths == null) {
             String mainJarPath = getPath();
             final File path = new File(mainJarPath);
-            // File parent = path.getParentFile();
-            logger.info(
-                    "no classpath specified. Trying to load classes from " + path);
+            logger.info("load jar path {}" ,path);
 
+            /**
+             * 1.文件夹，把所有jar都添加进来
+             * 2.如果是文件，并且是jar，直接添加
+             */
             if (path != null) {
-                for (final File file : path.listFiles()) {
-                    if (file.getName().endsWith(Constants.JAVA_JAR_SUFFIX)) {
-                        String jarAbsolutePath = mainJarPath + CommonConstants.FILE_SPLIT + file.getName();
-                        logger.info("add to classpath:" + jarAbsolutePath);
-                        classpathList.add(jarAbsolutePath);
+                if(path.isDirectory()){
+                    for (final File file : path.listFiles()) {
+                        if (StringUtils.endsWith(file.getName(), Constants.JAVA_JAR_SUFFIX)) {
+                            String jarAbsolutePath = file.getAbsolutePath();
+                            logger.info("add to classpath:" + jarAbsolutePath);
+                            classpathList.add(jarAbsolutePath);
+                        }
                     }
+                }else if(StringUtils.endsWith(path.getName(), Constants.JAVA_JAR_SUFFIX)) {
+                    classpathList.add(path.getAbsolutePath());
                 }
+
             }
         } else {
             classpathList.addAll(classPaths);

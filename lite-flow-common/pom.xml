@@ -11,7 +11,7 @@
 
     <groupId>cn.lite.flow</groupId>
     <artifactId>lite-flow-common</artifactId>
-    <version>${lite-flow.version}</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>lite-flow-common</name>
     <packaging>jar</packaging>
 
@@ -60,10 +60,6 @@
             <artifactId>commons-collections4</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.axet</groupId>
-            <artifactId>kaptcha</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
@@ -90,10 +86,6 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
         </dependency>
         <dependency>
             <groupId>org.bouncycastle</groupId>
@@ -157,16 +149,16 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>copy-resources</id>
-                        <phase>compile</phase>
+                        <id>lite-common-copy-resources</id>
+                        <phase>validate</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/classes</outputDirectory>
+                            <outputDirectory>${basedir}/src/main/resources</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>src/main/resources/${env}</directory>
+                                    <directory>${basedir}/src/main/resources/${env}</directory>
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>

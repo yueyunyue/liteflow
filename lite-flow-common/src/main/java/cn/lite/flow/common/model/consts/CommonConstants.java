@@ -12,9 +12,23 @@ import java.util.Set;
 @Component
 public class CommonConstants {
 
-    public static final String UTF8 = "UTF-8";                                                //UTF-8
+    /**
+     * 普通
+     */
+    public final static int ZERO = 0;
+
+    public final static int FIFTY_NINE = 59;
+
+    public static final String UTF8 = "UTF-8";                                               //UTF-8
 
     public static final Charset UTF8_CHARSET =  Charset.forName(CommonConstants.UTF8);       //UTF-8
+
+    /**
+     * java 进程退出
+     */
+    public static final int SYSTEM_EXIT_SUCCESS = 0;
+
+    public static final int SYSTEM_EXIT_ERROR = -1;
     /**
      * 常见字符
      */
@@ -67,14 +81,34 @@ public class CommonConstants {
 
     public final static String PARAM_EXECUTOR_JOB_NAME = "executorJobName";                  //执行者任务名
 
+    public final static String PARAM_CONSOLE_TASK_VERSION = "consoleTaskVersionNo";         //任务对应的版本号
+
     public final static String PARAM_FILE = "file";                                          //文件
 
     public final static String PARAM = "param";                                              //参数
 
+    public final static String PARAM_CONTENT = "content";                                    //内容
+
+    public final static String PARAM_SQL = "sql";                                            //sql
+
+    public final static String PARAM_TYPE = "type";                                          //类型
+
+    public final static String PARAM_USER = "user";                                          //用户
+
+    public final static String PARAM_PASSWORD = "password";                                  //类型
+
+    public final static String PARAM_DB = "database";                                        //数据库
+
+    public final static String PARAM_IP = "ip";                                              //ip
+
+    public final static String PARAM_PORT = "port";                                          //端口号
+
+    public final static String PARAM_QUEUE = "queue";                                        //队列
+
     /**
      * spark相关参数
      */
-    public final static String SPARK_PARAM_YARN_QUEUE = "yarnQueue";                         //yarn队列
+    public final static String SPARK_PARAM_YARN_QUEUE = PARAM_QUEUE;                         //yarn队列
 
     public final static String SPARK_PARAM_YARN_MAIN_CLASS = "mainClass";                    //main方法所在类
 

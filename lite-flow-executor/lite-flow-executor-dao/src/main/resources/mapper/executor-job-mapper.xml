@@ -12,6 +12,7 @@
 		container_id AS containerId,
 		executor_server_id AS executorServerId,
 		config AS config,
+		msg AS msg,
 		start_time AS startTime,
 		end_time AS endTime,
 		create_time AS createTime,
@@ -121,11 +122,6 @@
 		update
 			<include refid="table"/>
 		set application_id=#{applicationId} where id=#{jobId}
-	</update>
-	<update id="bindApplicationIdWithStatus">
-		update
-			<include refid="table"/>
-		set application_id=#{applicationId},status=#{status} where id=#{jobId}
 	</update>
 
 	<select id="getBySourceId" resultType="ExecutorJob">

@@ -140,7 +140,7 @@ export class TaskVersionList extends Component<TaskVersionListProps, {showLogMod
                 key: 'info',
                 render: (info, record, index) => {
                     const {retryNum, status, finalStatus, msg} = record;
-                    return  <Row className={"list-content-row"}>
+                    return  <Row className={"list-content-row"} style={{width: 200}}>
                         <Row><Col className={"list-content-col-title"} span={12}>状态:</Col><Col className={"list-content-col-content"} span={12}>{EnumUtils.getTaskVersionStatusName(status)}</Col></Row>
                         <Row><Col className={"list-content-col-title"} span={12}>最终状态:</Col><Col className={"list-content-col-content"} span={12}>{EnumUtils.getTaskVersionFinalStatusName(finalStatus)}</Col></Row>
                         <Row><Col className={"list-content-col-title"} span={12}>重试次数:</Col><Col className={"list-content-col-content"} span={12}>{retryNum}</Col></Row>

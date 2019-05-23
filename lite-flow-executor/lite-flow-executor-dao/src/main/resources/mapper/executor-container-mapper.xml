@@ -11,6 +11,7 @@
 		description AS description,
 		user_id AS userId,
 		status AS status,
+		log_type AS logType,
 		create_time AS createTime,
 		update_time AS updateTime
 	</sql>
@@ -42,13 +43,15 @@
 		field_config,
 		class_name,
 		user_id,
-		status)
+		status,
+		log_type)
 		value(
 		#{name},
 		#{fieldConfig},
 		#{className},
 		#{userId},
-		#{status})
+		#{status},
+		#{logType})
 	</insert>
 	<select id="findList" resultType="ExecutorContainer">
 		select 
@@ -89,6 +92,9 @@
 			</if>
 			<if test="status != null">
 			  	status = #{status},
+			</if>
+			<if test="logType != null">
+				log_type = #{logType},
 			</if>
 			<if test="description != null">
 				description = #{description}

@@ -8,7 +8,7 @@ import lombok.ToString;
  * 系统用户和用户组对应关系查询模型
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class UserGroupMidQM extends BaseQM {
 
     private Long userId;        //用户id

@@ -8,7 +8,7 @@ import lombok.ToString;
  * 任务流快照查询模型
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class FlowDependencySnapshotQM extends BaseQM {
 
     private Long flowId;                 //任务流id

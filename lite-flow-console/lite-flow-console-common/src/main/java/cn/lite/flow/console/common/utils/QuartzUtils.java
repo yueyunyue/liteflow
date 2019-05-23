@@ -1,7 +1,8 @@
 package cn.lite.flow.console.common.utils;
 
+import cn.lite.flow.common.model.consts.CommonConstants;
 import cn.lite.flow.console.common.consts.Constants;
-import cn.lite.flow.console.common.consts.TimeUnit;
+import cn.lite.flow.common.model.consts.TimeUnit;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
@@ -36,7 +37,7 @@ public class QuartzUtils {
      * @return
      */
     public static String completeCrontab(String cron){
-        return Constants.ZERO + " " + cron;
+        return CommonConstants.ZERO + " " + cron;
     }
 
     /**

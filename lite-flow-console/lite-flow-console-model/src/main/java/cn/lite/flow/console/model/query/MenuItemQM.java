@@ -8,7 +8,7 @@ import lombok.ToString;
  * Created by ly on 2018/12/24.
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class MenuItemQM extends BaseQM {
 
     private Long menuId;            //菜单id

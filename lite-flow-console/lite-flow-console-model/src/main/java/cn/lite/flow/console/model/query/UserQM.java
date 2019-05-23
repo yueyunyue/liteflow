@@ -10,7 +10,7 @@ import java.util.List;
  * 系统用户查询模型
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class UserQM extends BaseQM {
 
     private String userName;            //用户名精确匹配

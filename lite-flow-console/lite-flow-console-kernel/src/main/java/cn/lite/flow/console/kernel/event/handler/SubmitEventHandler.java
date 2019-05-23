@@ -70,6 +70,7 @@ public class SubmitEventHandler implements EventHandler{
         Long taskId = taskInstance.getTaskId();
         Task task = taskService.getById(taskId);
         pluginObj.put(CommonConstants.PARAM_EXECUTOR_JOB_NAME, task.getName());
+        pluginObj.put(CommonConstants.PARAM_CONSOLE_TASK_VERSION, taskInstance.getTaskVersionNo());
         submitExecuteJob.setPluginConf(JSONUtils.toJSONStringWithoutCircleDetect(pluginObj));
 
         Long executorId = jobRpcService.submitJob(submitExecuteJob);

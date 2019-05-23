@@ -10,7 +10,7 @@ import java.util.List;
  * 任务流与依赖之间的查询模型
  */
 @Data
-@ToString
+@ToString(callSuper = true)
 public class FlowDependencyQM extends BaseQM {
 
     private Long flowId;                 //任务流id

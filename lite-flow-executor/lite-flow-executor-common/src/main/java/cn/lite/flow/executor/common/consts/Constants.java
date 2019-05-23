@@ -60,7 +60,7 @@ public class Constants {
      */
     public static final String SHELL_COMMAND = "sh";
 
-    public static final String SHELL_COINTENT = "shellContent";
+    public static final String SHELL_CONTENT = "shellContent";
 
     public static final String SHELL_SCRIPT_PATH = "shellPath";
 
@@ -71,6 +71,8 @@ public class Constants {
      * 任务文件地址
      */
     public static final String CONFIG_FILE_SUFFIX = "_config.json";
+
+    public static final String CONFIG_FILE_NAME = "configFileName";
 
     public static final String JOB_CONFIG_PATH = "jobConfigPath";
 
