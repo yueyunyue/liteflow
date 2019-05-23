@@ -1,6 +1,8 @@
 package cn.lite.flow.executor.common.utils;
 
 import cn.lite.flow.common.model.consts.CommonConstants;
+import cn.lite.flow.common.utils.ReflectUtils;
+import org.apache.log4j.Category;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Filter;
@@ -12,8 +14,15 @@ import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.config.Property;
 import org.apache.logging.log4j.core.layout.PatternLayout;
+import org.apache.logging.log4j.spi.AbstractLogger;
+import org.apache.logging.log4j.spi.LoggerRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.impl.Log4jLoggerFactory;
+
+import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @description: 任务logger工厂
@@ -124,10 +133,33 @@ public class ExecutorLoggerFactory {
         try {
             synchronized (config){
                 if (config!= null && config.getLoggers().containsKey(loggerName)) {
-                    config.getAppender(loggerName).stop();
-                    config.removeLogger(loggerName);
+                    //config.getAppender(loggerName).stop();
+                    FileAppender fileAppender = (FileAppender) config.getLoggerConfig(loggerName).getAppenders().get(loggerName);
+                    fileAppender.stop();
+                    config.getLoggerConfig(loggerName).stop();
                     config.getLoggerConfig(loggerName).removeAppender(loggerName);
+                    config.removeLogger(loggerName);
+
+                    try {
+                        LoggerRegistry<org.apache.logging.log4j.core.Logger> loggerRegistry = (LoggerRegistry<org.apache.logging.log4j.core.Logger>) ReflectUtils.getValue(ctx, "loggerRegistry");
+                        Map map = (Map) ReflectUtils.getValue(loggerRegistry, "map");
+                        Map loggerNameMap = (Map) map.get(AbstractLogger.DEFAULT_MESSAGE_FACTORY_CLASS.getName());
+                        loggerNameMap.remove(loggerName);
+
+                        Log4jLoggerFactory log4jLoggerFactory = (Log4jLoggerFactory) LoggerFactory.getILoggerFactory();
+                        Map loggerMap = (Map) ReflectUtils.getValue(log4jLoggerFactory, "loggerMap");
+                        loggerMap.remove(loggerName);
+
+                        Map contextMap = (Map) ReflectUtils.getStaticValue(Category.class, "CONTEXT_MAP");
+                        Map categoryLoggerMap = (Map) contextMap.get(ctx);
+                        categoryLoggerMap.remove(loggerName);
+
+                    } catch (Exception e) {
+                        LOG.error("remove logger {} error", loggerName, e);
+                    }
+
                     ctx.updateLoggers();
+
                     LOG.info("remove logger {}", loggerName);
                 }
             }
@@ -170,4 +202,6 @@ public class ExecutorLoggerFactory {
         Logger logger = LoggerFactory.getLogger(loggerName);
         return logger;
     }
+
+
 }
