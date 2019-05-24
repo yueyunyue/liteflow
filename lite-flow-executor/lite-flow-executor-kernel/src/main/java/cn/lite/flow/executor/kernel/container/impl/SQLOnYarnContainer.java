@@ -6,6 +6,7 @@ import cn.lite.flow.common.utils.ParamExpressionUtils;
 import cn.lite.flow.common.utils.ParamUtils;
 import cn.lite.flow.executor.common.utils.Props;
 import cn.lite.flow.executor.model.basic.ExecutorJob;
+import cn.lite.flow.executor.model.consts.ExecutorJobStatus;
 import cn.lite.flow.executor.service.utils.ExecutorFileUtils;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
@@ -21,34 +22,39 @@ public class SQLOnYarnContainer extends SparkOnYarnContainer {
 
     public SQLOnYarnContainer(ExecutorJob executorJob) throws Throwable{
         super(executorJob);
-        String config = executorJob.getConfig();
-        Props props = new Props(config);
         /**
-         * 可以直接写sql
+         * 会有重启时重新补偿的情况，所以非新建状态不再处理
          */
-        String sqlContent = props.getString(CommonConstants.PARAM_SQL);
-        if(StringUtils.isBlank(sqlContent)){
-            String filePath = props.getString(CommonConstants.PARAM_FILE);
-            sqlContent = ExecutorFileUtils.getFileContent(filePath);
-        }
+        if(executorJob.getStatus() == ExecutorJobStatus.NEW.getValue()){
+            String config = executorJob.getConfig();
+            Props props = new Props(config);
+            /**
+             * 可以直接写sql
+             */
+            String sqlContent = props.getString(CommonConstants.PARAM_SQL);
+            if(StringUtils.isBlank(sqlContent)){
+                String filePath = props.getString(CommonConstants.PARAM_FILE);
+                sqlContent = ExecutorFileUtils.getFileContent(filePath);
+            }
 
-        String param = props.getString(CommonConstants.PARAM);
-        logger.info("job:{} original sql:{}", executorJob.getId(), param, sqlContent);
+            String param = props.getString(CommonConstants.PARAM);
+            logger.info("job:{} original sql:{}", executorJob.getId(), param, sqlContent);
 
-        Map<String, String> jobParamMap = props.getParamMap();
-        Map<String, String> paramMap = Maps.newHashMap();
-        paramMap.putAll(jobParamMap);
-        /**
-         * 参数不为空，替换关键字
-         */
-        if(StringUtils.isNotBlank(param)){
-            paramMap.putAll(ParamUtils.param2Map(param));
+            Map<String, String> jobParamMap = props.getParamMap();
+            Map<String, String> paramMap = Maps.newHashMap();
+            paramMap.putAll(jobParamMap);
+            /**
+             * 参数不为空，替换关键字
+             */
+            if(StringUtils.isNotBlank(param)){
+                paramMap.putAll(ParamUtils.param2Map(param));
+            }
+            sqlContent = ParamExpressionUtils.handleParam(sqlContent, paramMap);
+            logger.info("job:{} handle shell param:{} sql:{}", executorJob.getId(), paramMap.toString(), sqlContent);
+            props.put(CommonConstants.PARAM_SQL, sqlContent);
+            //配置重新放回config
+            config = JSONUtils.toJSONStringWithoutCircleDetect(props.getParamMap());
+            executorJob.setConfig(config);
         }
-        sqlContent = ParamExpressionUtils.handleParam(sqlContent, paramMap);
-        logger.info("job:{} handle shell param:{} sql:{}", executorJob.getId(), paramMap.toString(), sqlContent);
-        props.put(CommonConstants.PARAM_SQL, sqlContent);
-        //配置重新放回config
-        config = JSONUtils.toJSONStringWithoutCircleDetect(props.getParamMap());
-        executorJob.setConfig(config);
     }
 }
