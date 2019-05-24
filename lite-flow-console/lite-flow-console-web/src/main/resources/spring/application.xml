@@ -6,6 +6,7 @@
         http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
     <bean id="springUtils" class="cn.lite.flow.common.utils.SpringUtils"/>
+    <bean id="hadoopConfig" class="cn.lite.flow.common.conf.HadoopConfig"/>
 
 
     <import resource="application-dubbo.xml"/>

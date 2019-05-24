@@ -24,11 +24,11 @@ public class HadoopConfig implements InitializingBean {
 
     private final static Logger LOG = LoggerFactory.getLogger(HadoopConfig.class);
 
-    @Value("${hadoop.userName}")
+    @Value("${hadoop.userName:}")
     private String hadoopUserName;                       //调用hadoop的用户名
 
-    @Value("${hadoop.lite.hdfs.workspace:}")
-    private String hdfsWorkspace;                         //上传文件在hdfs路径
+    @Value("${hadoop.lite.hdfs.workspace:/user/lite/file}")
+    private String hdfsWorkspace;                         //上传文件在hdfs的路径
 
     @Value("${spark.distFiles:}")
     private String disFiles;                             //hadoop，hive，yarn文件所在文件夹
@@ -40,7 +40,7 @@ public class HadoopConfig implements InitializingBean {
     private String sparkYarnStagingDir;                  //spark staging的文件夹
 
     @Value("${spark.isDynamicAllocation:}")
-    private boolean isDynamicAllocation;                 //spark是否可以动态获取资源
+    private Boolean isDynamicAllocation;                 //spark是否可以动态获取资源
 
     @Value("${spark.executor.memoryOverhead:}")
     private String executorMemoryOverhead;                //spark memoryOverhead内存配置
@@ -48,8 +48,8 @@ public class HadoopConfig implements InitializingBean {
     @Value("${spark.executor.dynamicAllocation.minExecutors:}")
     private String dynamicAllocationMinExecutors;         //spark memoryOverhead内存配置
 
-    @Value("${console.localTmpDirPath:}")
-    private String localTmpDirPath = "/tmp";              //项目的临时目录，用来存放一下临时文件；默认为：/tmp
+    @Value("${console.localTmpDirPath:/tmp}")
+    private String localTmpDirPath;              //项目的临时目录，用来存放一下临时文件；默认为：/tmp
 
     private AtomicBoolean isInit = new AtomicBoolean(false);
 
@@ -115,7 +115,7 @@ public class HadoopConfig implements InitializingBean {
         System.setProperty("spark.serializer", "org.apache.spark.serializer.KryoSerializer");
         System.setProperty("spark.yarn.executor.memoryOverhead", executorMemoryOverhead);
 
-        if(isDynamicAllocation){
+        if(isDynamicAllocation!= null && isDynamicAllocation){
             System.setProperty("spark.shuffle.service.enabled", "true");
             System.setProperty("spark.dynamicAllocation.enabled", "true");
             System.setProperty("spark.dynamicAllocation.minExecutors", dynamicAllocationMinExecutors);

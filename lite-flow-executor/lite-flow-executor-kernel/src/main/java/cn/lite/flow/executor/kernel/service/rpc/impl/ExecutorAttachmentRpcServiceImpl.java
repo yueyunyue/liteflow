@@ -1,6 +1,7 @@
 package cn.lite.flow.executor.kernel.service.rpc.impl;
 
 import cn.lite.flow.common.model.consts.FileType;
+import cn.lite.flow.common.model.consts.StatusType;
 import cn.lite.flow.common.model.query.Page;
 import cn.lite.flow.executor.client.ExecutorAttachmentRpcService;
 import cn.lite.flow.executor.client.model.AttachmentParam;
@@ -31,6 +32,7 @@ public class ExecutorAttachmentRpcServiceImpl implements ExecutorAttachmentRpcSe
 
     @Override
     public String add(ExecutorAttachment attachment) {
+        attachment.setStatus(StatusType.ON.getValue());
         attachmentService.add(attachment);
         String url = ExecutorFileUtils.generateAttachmentToUrl(attachment);
         return url;

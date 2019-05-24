@@ -113,5 +113,4 @@ module.exports = {
         return result;
 
     }
-
 }

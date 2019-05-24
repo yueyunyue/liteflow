@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Form, Input, Modal, Select, Tabs, Radio, InputNumber, Upload, Button, Icon} from 'antd'
 import CommonUtils from './CommonUtils'
+import CommonConfig from '../config/CommonConfig'
+import LiteFileUpload from "../compoment/fileUploader/LiteFileUpload";
 
 const defaultLabelCol = 6;
 const defaultWrapperCol = 14;
@@ -114,6 +116,32 @@ export class CommonDynamicFormUtils {
                             }
                         ]
                     })(<Input.TextArea {...componentConfig} disabled={disabled} />)}
+                </Form.Item>)
+                break;
+            case "TextUpload":
+                dom = (<Form.Item {...formLayout} >
+                    {formParent.props.form.getFieldDecorator(property.name, {
+                        initialValue: CommonUtils.getValueFromModel(property.name, model, property.defaultValue),
+                        rules: [
+                            {
+                                required: property.required,
+                                message: property.message ? property.message : ''
+                            }
+                        ]
+                    })(<LiteFileUpload  {...componentConfig} url={CommonConfig.liteUploadUrl} showTextContentUrl={CommonConfig.getFileContentUrl} downloadUrl={CommonConfig.downloadFileUrl} disabled={disabled} />)}
+                </Form.Item>)
+                break;
+            case "HDFSUpload":
+                dom = (<Form.Item {...formLayout} >
+                    {formParent.props.form.getFieldDecorator(property.name, {
+                        initialValue: CommonUtils.getValueFromModel(property.name, model, property.defaultValue),
+                        rules: [
+                            {
+                                required: property.required,
+                                message: property.message ? property.message : ''
+                            }
+                        ]
+                    })(<LiteFileUpload  {...componentConfig} url={CommonConfig.hdfsUploadUrl} showTextContentUrl={CommonConfig.getFileContentUrl} downloadUrl={CommonConfig.downloadFileUrl} disabled={disabled} />)}
                 </Form.Item>)
                 break;
         }

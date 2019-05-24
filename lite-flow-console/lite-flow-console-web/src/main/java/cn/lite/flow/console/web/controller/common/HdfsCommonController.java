@@ -2,6 +2,7 @@ package cn.lite.flow.console.web.controller.common;
 
 import cn.lite.flow.common.conf.HadoopConfig;
 import cn.lite.flow.common.model.consts.CommonConstants;
+import cn.lite.flow.common.utils.DateUtils;
 import cn.lite.flow.common.utils.ExceptionUtils;
 import cn.lite.flow.common.utils.HadoopUtils;
 import cn.lite.flow.console.common.exception.ConsoleRuntimeException;
@@ -65,10 +66,13 @@ public class HdfsCommonController extends BaseController {
                  * 先保存本地
                  */
                 file.transferTo(localFile);
-                String hdfsFilePath = hdfsWorkSpace + CommonConstants.FILE_SPLIT + fileName;
-                String hdfsPath = HadoopUtils.uploadLocalFile2Hdfs(localFile, hdfsFilePath);
-
-                return hdfsPath;
+                String hdfsDir = hdfsWorkSpace + CommonConstants.FILE_SPLIT + DateUtils.dateToLong(DateUtils.getNow());
+                if(!HadoopUtils.isDirExist(hdfsDir)){
+                    LOG.info("mkdir of path {}" + hdfsDir);
+                    HadoopUtils.mkdir(hdfsDir);
+                }
+                String hdfsFilePath = hdfsDir + CommonConstants.FILE_SPLIT + fileName;
+                return HadoopUtils.uploadLocalFile2Hdfs(localFile, hdfsFilePath);
             } catch (Throwable e) {
                 LOG.error("uploadLocalFile2Hdfs hdfs file", e);
                 throw new ConsoleRuntimeException(e.getMessage());

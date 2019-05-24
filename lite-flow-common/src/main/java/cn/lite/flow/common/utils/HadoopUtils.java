@@ -52,6 +52,33 @@ public class HadoopUtils {
     }
 
     /**
+     * 目录是否存在
+     * @param dirPath
+     * @return
+     * @throws IOException
+     */
+    public static boolean isDirExist(String dirPath) throws IOException {
+        FileSystem fileSystem = getFileSystem();
+        if(fileSystem.exists(new Path(dirPath))){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 创建目录
+     * @param dirPath
+     * @return
+     * @throws IOException
+     */
+    public static boolean mkdir(String dirPath) throws IOException {
+        FileSystem fileSystem = getFileSystem();
+        boolean mkdirs = fileSystem.mkdirs(new Path(dirPath));
+        return mkdirs;
+
+    }
+
+    /**
      * 上传至hdfs
      *
      * @param fileItem

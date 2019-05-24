@@ -6,11 +6,14 @@ import cn.lite.flow.common.model.consts.FileType;
 import cn.lite.flow.common.utils.ExceptionUtils;
 import cn.lite.flow.common.utils.HadoopUtils;
 import cn.lite.flow.console.common.exception.ConsoleRuntimeException;
+import cn.lite.flow.console.common.model.vo.SessionUser;
 import cn.lite.flow.console.common.utils.ResponseUtils;
+import cn.lite.flow.console.common.utils.SessionContext;
 import cn.lite.flow.console.web.annotation.AuthCheckIgnore;
 import cn.lite.flow.console.web.controller.BaseController;
 import cn.lite.flow.executor.client.ExecutorAttachmentRpcService;
 import cn.lite.flow.executor.model.basic.ExecutorAttachment;
+import cn.lite.flow.executor.model.consts.ExecutorAttachmentType;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -67,13 +70,19 @@ public class AttachmentCommonController extends BaseController {
             File localFile = null;
             try {
                 String fileName = System.currentTimeMillis() + CommonConstants.LINE + file.getOriginalFilename();
-                localFile = new File(hadoopConf.getLocalTmpDirPath() + CommonConstants.FILE_SPLIT + fileName);
+                String tmpFile = hadoopConf.getLocalTmpDirPath() + CommonConstants.FILE_SPLIT + fileName;
+                localFile = new File(tmpFile);
                 /**
                  * 先保存本地
                  */
+                if(!localFile.exists()){
+                    localFile.createNewFile();
+                }
                 file.transferTo(localFile);
 
                 ExecutorAttachment attachment = new ExecutorAttachment();
+                attachment.setUserId(SessionContext.getUser().getId());
+                attachment.setType(ExecutorAttachmentType.TXT.getValue());
                 attachment.setName(file.getOriginalFilename());
                 attachment.setContent(FileUtils.readFileToString(localFile, CommonConstants.UTF8));
                 String url = attachmentRpcService.add(attachment);
@@ -88,50 +97,6 @@ public class AttachmentCommonController extends BaseController {
             }
         }).collect(Collectors.toList());
         return ResponseUtils.success(uploadHdfsFiles);
-    }
-    /**
-     * 下载
-     * @param url
-     * @param response
-     */
-    @RequestMapping(value = "download")
-    public void download(@RequestParam("url")String url, HttpServletResponse response){
-        OutputStream outputStream = null;
-        FileType fileType = FileType.getTypeByFileUrl(url);
-        if(fileType == FileType.LITE_ATTACHMENT){
-            try {
-                String fileName = StringUtils.substringAfterLast(url, CommonConstants.FILE_SPLIT);
-                response.setHeader("Content-Disposition", "attachment;filename="
-                        + new String(fileName.getBytes("utf-8")));
-                ExecutorAttachment attachment = attachmentRpcService.getByUrl(url);
-
-                outputStream = response.getOutputStream();
-                outputStream.write(attachment.getContent().getBytes(CommonConstants.UTF8_CHARSET));
-
-            } catch (Throwable e) {
-                LOG.error("download file error:{}", url, e);
-            } finally {
-                IOUtils.closeQuietly(outputStream);
-            }
-
-        }else if(fileType == FileType.HDFS){
-            FSDataInputStream fsDataInputStream = null;
-            try {
-                String fileName = StringUtils.substringAfterLast(url, CommonConstants.FILE_SPLIT);
-                response.setHeader("Content-Disposition", "attachment;filename="
-                        + new String(fileName.getBytes("utf-8")));
-                outputStream = response.getOutputStream();
-                FileSystem fileSystem = HadoopUtils.getFileSystem();
-                fsDataInputStream = fileSystem.open(new Path(url));
-                IOUtils.copy(fsDataInputStream, outputStream);
-            } catch (Throwable e) {
-                LOG.error("download file error:{}", url, e);
-            } finally {
-                IOUtils.closeQuietly(fsDataInputStream);
-                IOUtils.closeQuietly(outputStream);
-            }
-        }
-
     }
     /**
      * 获取文件内容

@@ -111,8 +111,6 @@ public class SparkOnYarnContainer extends AsyncContainer {
         String yarnQueue = configObj.getString(CommonConstants.SPARK_PARAM_YARN_QUEUE);
         String instanceNum = configObj.getString(CommonConstants.SPARK_PARAM_INSTANCE_NUM);
 
-        HadoopConfig.getHadoopConf().initSparkProperties();
-
         SparkConf sparkConf = new SparkConf();
         sparkConf.setAppName(jobName);
 
@@ -125,7 +123,8 @@ public class SparkOnYarnContainer extends AsyncContainer {
         sparkConf.set("spark.executor.cores", configObj.getString(CommonConstants.SPARK_PARAM_EXECUTOR_CORES));
         sparkConf.set("spark.executor.memory", configObj.getString(CommonConstants.SPARK_PARAM_EXECUTOR_MEMORY) + CommonConstants.SPARK_PARAM_MEMORY_UNIT);
         // 设置并发实例数
-        if (HadoopConfig.getHadoopConf().isDynamicAllocation()) {
+        Boolean isDynamicAllocation = HadoopConfig.getHadoopConf().getIsDynamicAllocation();
+        if (isDynamicAllocation != null && isDynamicAllocation) {
             sparkConf.set("spark.shuffle.service.enabled", "true");
             sparkConf.set("spark.dynamicAllocation.enabled", "true");
             sparkConf.set("spark.dynamicAllocation.minExecutors", "1");
