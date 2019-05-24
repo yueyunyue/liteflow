@@ -69,3 +69,5 @@ form参数| 作用 | 说明
   InputNumber|文字输入框| 
   Select|选择器| 
   TextArea|文本区| 
+  TextUpload|文本上传 |  
+  HDFSUpload|将附件上传到hdfs上| componentConfig中设置{"multiply": true}可以添加多个附件；TextUpload相同
