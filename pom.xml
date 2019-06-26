@@ -50,7 +50,7 @@
         <dubbo.version>2.5.10</dubbo.version>
         <bcprov-jdk15on.version>1.59</bcprov-jdk15on.version>
         <curator.version>4.1.0</curator.version>
-        <zookeeper.version>3.4.9</zookeeper.version>
+        <zookeeper.version>3.4.14</zookeeper.version>
         <zkclient.version>0.11</zkclient.version>
         <log4j-1.2-api.version>2.10.0</log4j-1.2-api.version>
 

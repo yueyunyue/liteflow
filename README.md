@@ -47,10 +47,6 @@ liteflow是一个基于任务版本来实现的分布式任务流调度系统
  
  5.[项目部署相关](docs/md/deploy.md)
 
-> 静态页面:[http://101.200.43.196:8000/#/login](http://101.200.43.196:8000/#/login)
-> 用户名:lite 密码：123456  
-> 注：网络带宽比较小，首次加载会比较慢！
-
 # 相关项目
 - [dubbo](https://github.com/apache/incubator-dubbo)
 - [azkaban](https://github.com/azkaban/azkaban)
