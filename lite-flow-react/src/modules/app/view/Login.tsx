@@ -26,7 +26,7 @@ class Login extends Component<RouterI, any> {
         };
 
         return <div style={{
-            background: "linear-gradient(135deg, rgb(96, 108, 136) 0%, rgb(63, 76, 107) 100%)",
+            background: "#019BF0",
             position: "relative",
             width: "100%",
             height: height + "px"
