@@ -37,6 +37,7 @@
     "reflect-metadata": "^0.1.10",
     "react-json-view": "^1.16.1",
     "react-particles-js": "^2.4.2",
+    "react-codemirror2": "^6.0.0",
     "typescript": "2.9.2"
   },
   "devDependencies": {
