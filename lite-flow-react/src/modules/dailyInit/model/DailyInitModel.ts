@@ -55,7 +55,7 @@ export class DailyInitModel extends BaseListModel{
     // * add(dailyInit: DailyInit) {
     //     this.loading = true;
     //     const result = yield create(dailyInit);
-    //     if (result.status == 0) {
+    //     if (ResultUtils.isSuccess(result)) {
     //         notification["success"]({
     //             message: '成功',
     //             description: '操作成功',
@@ -70,7 +70,7 @@ export class DailyInitModel extends BaseListModel{
     // * edit(dailyInit: DailyInit) {
     //     this.loading = true;
     //     const result = yield update(dailyInit);
-    //     if (result.status == 0) {
+    //     if (ResultUtils.isSuccess(result)) {
     //         notification["success"]({
     //             message: '成功',
     //             description: '操作成功',
@@ -84,7 +84,7 @@ export class DailyInitModel extends BaseListModel{
     // * off(id: number) {
     //     this.loading = true;
     //     const result = yield offJob(id);
-    //     if (result.status == 0) {
+    //     if (ResultUtils.isSuccess(result)) {
     //         notification["success"]({
     //             message: '成功',
     //             description: '操作成功',
@@ -98,7 +98,7 @@ export class DailyInitModel extends BaseListModel{
     // * callback(id: number) {
     //     this.loading = true;
     //     const result = yield callbackJob(id);
-    //     if (result.status == 0) {
+    //     if (ResultUtils.isSuccess(result)) {
     //         notification["success"]({
     //             message: '成功',
     //             description: '操作成功',

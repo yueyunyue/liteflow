@@ -5,7 +5,7 @@ import {asyncAction} from "mobx-utils";
 import BaseListModel from "../../../common/model/BaseListModel";
 import executorConfig from "../config/ExecutorConfig";
 import {notification} from 'antd';
-
+import ResultUtils from "../../../common/utils/ResultUtils";
 
 export class ExecutorSearchParam {
     id?: number;
@@ -52,7 +52,7 @@ export class ExecutorModel extends BaseListModel{
     * add(executor: Executor) {
         this.loading = true;
         const result = yield create(executor);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -67,7 +67,7 @@ export class ExecutorModel extends BaseListModel{
     * edit(executor: Executor) {
         this.loading = true;
         const result = yield update(executor);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -81,7 +81,7 @@ export class ExecutorModel extends BaseListModel{
     * off(id: number) {
         this.loading = true;
         const result = yield offExecutor(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -95,7 +95,7 @@ export class ExecutorModel extends BaseListModel{
     * on(id: number) {
         this.loading = true;
         const result = yield onExecutor(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',

@@ -18,6 +18,7 @@ import {
     fixFlowByVersion,
     fixFlowFromNode
 } from "../service/FlowService"
+import ResultUtils from "../../../common/utils/ResultUtils";
 
 
 export class Flow {
@@ -58,7 +59,7 @@ export class FlowModel extends BaseListModel{
     * add(flow: Flow) {
         this.loading = true;
         const result = yield create(flow);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -73,7 +74,7 @@ export class FlowModel extends BaseListModel{
     * edit(flow: Flow) {
         this.loading = true;
         const result = yield update(flow);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -87,7 +88,7 @@ export class FlowModel extends BaseListModel{
     * delete(id: number) {
         this.loading = true;
         const result = yield remove(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -100,10 +101,10 @@ export class FlowModel extends BaseListModel{
     * on(id: number) {
         this.loading = true;
         const result = yield onFlow(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
-                description: result.data,
+                description: ResultUtils.getData(result)
             });
             this.refresh();
         }
@@ -113,10 +114,10 @@ export class FlowModel extends BaseListModel{
     * off(id: number) {
         this.loading = true;
         const result = yield offFlow(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
-                description: result.data,
+                description: ResultUtils.getData(result)
             });
             this.refresh();
         }

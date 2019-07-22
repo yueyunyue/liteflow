@@ -5,6 +5,7 @@ import {asyncAction} from "mobx-utils";
 import BaseListModel from "../../../common/model/BaseListModel";
 import TaskInstanceConfig from "../config/TaskInstanceConfig";
 import {notification} from "antd";
+import ResultUtils from "../../../common/utils/ResultUtils";
 
 export class Dependency {
     id: number;
@@ -47,7 +48,7 @@ export class InstanceDependencyModel extends BaseListModel{
     * on(id: number) {
         this.loading = true;
         const result = yield onDependency(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -61,7 +62,7 @@ export class InstanceDependencyModel extends BaseListModel{
     * off(id: number) {
         this.loading = true;
         const result = yield offDependency(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',

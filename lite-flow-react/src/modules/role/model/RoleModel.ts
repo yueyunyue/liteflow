@@ -5,6 +5,7 @@ import {asyncAction} from "mobx-utils";
 import BaseListModel from "../../../common/model/BaseListModel";
 import roleConfig from "../config/RoleConfig";
 import {notification} from 'antd';
+import ResultUtils from "../../../common/utils/ResultUtils";
 
 /**
  * 角色的model
@@ -58,14 +59,14 @@ export class RoleModel extends BaseListModel{
     @asyncAction
     * listAuths():any {
         const result = yield listAllAuths();
-        return result.data;
+        return ResultUtils.getData(result);
     }
 
     @asyncAction
     * add(role: Role) {
         this.loading = true;
         const result = yield create(role);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -80,7 +81,7 @@ export class RoleModel extends BaseListModel{
     * edit(role: Role) {
         this.loading = true;
         const result = yield update(role);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -94,7 +95,7 @@ export class RoleModel extends BaseListModel{
     * delete(id: number) {
         this.loading = true;
         const result = yield remove(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',

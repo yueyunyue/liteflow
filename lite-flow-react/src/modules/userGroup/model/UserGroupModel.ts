@@ -6,6 +6,7 @@ import BaseListModel from "../../../common/model/BaseListModel";
 import userGroupConfig from "../config/UserGroupConfig";
 import {notification} from 'antd';
 import {User} from "../../user/model/UserModel";
+import ResultUtils from "../../../common/utils/ResultUtils";
 
 
 export class UserGroup {
@@ -47,7 +48,7 @@ export class UserGroupModel extends BaseListModel{
     * add(userGroup: UserGroup) {
         this.loading = true;
         const result = yield create(userGroup);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -62,7 +63,7 @@ export class UserGroupModel extends BaseListModel{
     * edit(userGroup: UserGroup) {
         this.loading = true;
         const result = yield update(userGroup);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -76,7 +77,7 @@ export class UserGroupModel extends BaseListModel{
     * delete(id: number) {
         this.loading = true;
         const result = yield remove(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -93,6 +94,6 @@ export class UserGroupModel extends BaseListModel{
     @asyncAction
     * listAllGroups(): any{
         const result = yield listAllGroups();
-        return result.data;
+        return ResultUtils.getData(result);
     }
 }

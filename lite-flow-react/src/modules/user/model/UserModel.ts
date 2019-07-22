@@ -6,8 +6,7 @@ import BaseListModel from "../../../common/model/BaseListModel";
 import userConfig from "../config/UserConfig";
 import {Role} from "../../role/model/RoleModel";
 import {notification} from 'antd';
-
-
+import ResultUtils from "../../../common/utils/ResultUtils";
 
 /**
  * 用户搜索实体
@@ -62,14 +61,14 @@ export class UserModel extends BaseListModel{
     @asyncAction
     * listAllRoles(): any{
         const result = yield listRoles();
-        return result.data;
+        return ResultUtils.getData(result);
     }
 
     @asyncAction
     * add(user: User) {
         this.loading = true;
         const result = yield create(user);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -83,7 +82,7 @@ export class UserModel extends BaseListModel{
     * edit(user: User) {
         this.loading = true;
         const result = yield update(user);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -101,7 +100,7 @@ export class UserModel extends BaseListModel{
     * on(id: number) {
         this.loading = true;
         const result = yield on(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -119,7 +118,7 @@ export class UserModel extends BaseListModel{
     * off(id: number) {
         this.loading = true;
         const result = yield off(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -135,6 +134,6 @@ export class UserModel extends BaseListModel{
     @asyncAction
     * listAllUsers(): any{
         const result = yield listAllUsers();
-        return result.data;
+        return ResultUtils.getData(result);
     }
 }

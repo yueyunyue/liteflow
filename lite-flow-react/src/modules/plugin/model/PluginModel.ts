@@ -5,6 +5,7 @@ import {asyncAction} from "mobx-utils";
 import BaseListModel from "../../../common/model/BaseListModel";
 import pluginConfig from "../config/PluginConfig";
 import {notification} from 'antd';
+import ResultUtils from "../../../common/utils/ResultUtils";
 
 
 export class Plugin {
@@ -53,7 +54,7 @@ export class PluginModel extends BaseListModel{
     * add(plugin: Plugin) {
         this.loading = true;
         const result = yield create(plugin);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -68,7 +69,7 @@ export class PluginModel extends BaseListModel{
     * edit(plugin: Plugin) {
         this.loading = true;
         const result = yield update(plugin);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -82,7 +83,7 @@ export class PluginModel extends BaseListModel{
     * off(id: number) {
         this.loading = true;
         const result = yield offPlugin(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -96,7 +97,7 @@ export class PluginModel extends BaseListModel{
     * on(id: number) {
         this.loading = true;
         const result = yield onPlugin(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -109,6 +110,6 @@ export class PluginModel extends BaseListModel{
     * listAllValid() : any{
         this.loading = true;
         const result = yield listAllValidPlugin();
-        return result.data;
+        return ResultUtils.getData(result);
     }
 }

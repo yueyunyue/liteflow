@@ -5,6 +5,7 @@ import {asyncAction} from "mobx-utils";
 import BaseListModel from "../../../common/model/BaseListModel";
 import authConfig from "../config/AuthConfig";
 import {notification} from 'antd';
+import ResultUtils from "../../../common/utils/ResultUtils";
 
 export class Auth {
     id: number;
@@ -52,7 +53,7 @@ export class AuthModel extends BaseListModel{
     * add(auth: Auth) {
         this.loading = true;
         const result = yield create(auth);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -67,7 +68,7 @@ export class AuthModel extends BaseListModel{
     * edit(auth: Auth) {
         this.loading = true;
         const result = yield update(auth);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -81,7 +82,7 @@ export class AuthModel extends BaseListModel{
     * delete(id: number) {
         this.loading = true;
         const result = yield deleteAuth(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',

@@ -14,6 +14,7 @@ import {
     runTask,
     getAllAuthTask} from "../service/TaskService"
 import {notification} from 'antd';
+import ResultUtils from "../../../common/utils/ResultUtils";
 
 
 export class Task {
@@ -68,7 +69,7 @@ export class TaskModel extends BaseListModel{
     * add(task: Task) {
         this.loading = true;
         const result = yield create(task);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -83,7 +84,7 @@ export class TaskModel extends BaseListModel{
     * edit(task: Task) {
         this.loading = true;
         const result = yield update(task);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -97,7 +98,7 @@ export class TaskModel extends BaseListModel{
     * delete(id: number) {
         this.loading = true;
         const result = yield remove(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -110,7 +111,7 @@ export class TaskModel extends BaseListModel{
     * on(id: number) {
         this.loading = true;
         const result = yield onTask(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -123,7 +124,7 @@ export class TaskModel extends BaseListModel{
     * off(id: number) {
         this.loading = true;
         const result = yield offTask(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -141,7 +142,7 @@ export class TaskModel extends BaseListModel{
     @asyncAction
     * getRelation(taskId): any {
         const result = yield getTaskRelation(taskId);
-        return result.data;
+        return ResultUtils.getData(result);
     }
     /**
      * 展示任务的上下游
@@ -151,7 +152,7 @@ export class TaskModel extends BaseListModel{
     @asyncAction
     * getRelatedFlow(taskId): any {
         const result = yield getTaskRelatedFlow(taskId);
-        return result.data;
+        return ResultUtils.getData(result);
     }
 
     /**
@@ -161,7 +162,7 @@ export class TaskModel extends BaseListModel{
     @asyncAction
     * getAllAuth(): any {
         const result = yield getAllAuthTask();
-        return result.data;
+        return ResultUtils.getData(result);
     }
 
     /**
@@ -171,7 +172,7 @@ export class TaskModel extends BaseListModel{
     @asyncAction
     * run(id): any {
         const result = yield runTask(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',

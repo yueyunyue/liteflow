@@ -4,6 +4,8 @@ import Login from "./modules/app/view/Login";
 import {Router} from "react-router";
 import {requestGetNoShowMsg} from "./common/utils/Request";
 import appConfig from "./modules/app/config/AppConfig";
+import ResultUtils from "./common/utils/ResultUtils";
+
 
 export default function ({history, sysUserModel}) {
 
@@ -14,8 +16,8 @@ export default function ({history, sysUserModel}) {
     //用来判断用户是否登录
     const isUserLogined = (nextState, replace, callback) => {
         userInfo().then(result => {
-            if (result.status == 0 && result.data.name != 'null') {
-                sysUserModel.loginSuccess(result.data)
+            if (ResultUtils.isSuccess(result)) {
+                sysUserModel.loginSuccess(ResultUtils.getData(result))
             } else {
                 replace('/login');
             }
@@ -128,6 +130,13 @@ export default function ({history, sysUserModel}) {
                 getComponent(nextState, cb) {
                     require.ensure([], require => {
                         cb(null, require('./modules/role/view/RoleView'))
+                    })
+                }
+            }, {
+                path: 'test/test-view',
+                getComponent(nextState, cb) {
+                    require.ensure([], require => {
+                        cb(null, require('./modules/test/view/TestView'))
                     })
                 }
             }

@@ -5,6 +5,7 @@ import {asyncAction} from "mobx-utils";
 import BaseListModel from "../../../common/model/BaseListModel";
 import executeJobConfig from "../config/ExecuteJobConfig";
 import {notification} from 'antd';
+import ResultUtils from "../../../common/utils/ResultUtils";
 
 
 export class ExecuteJob {
@@ -55,7 +56,7 @@ export class ExecuteJobModel extends BaseListModel{
     * add(executeJob: ExecuteJob) {
         this.loading = true;
         const result = yield create(executeJob);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -70,7 +71,7 @@ export class ExecuteJobModel extends BaseListModel{
     * edit(executeJob: ExecuteJob) {
         this.loading = true;
         const result = yield update(executeJob);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -84,7 +85,7 @@ export class ExecuteJobModel extends BaseListModel{
     * off(id: number) {
         this.loading = true;
         const result = yield offJob(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -98,7 +99,7 @@ export class ExecuteJobModel extends BaseListModel{
     * callback(id: number) {
         this.loading = true;
         const result = yield callbackJob(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',

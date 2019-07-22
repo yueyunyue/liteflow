@@ -2,6 +2,7 @@ import {action, computed, observable} from 'mobx';
 import {asyncAction} from "mobx-utils";
 import {requestGet} from "../utils/Request";
 import {provideInstance} from "../utils/IOC";
+import ResultUtils from "../../common/utils/ResultUtils";
 
 class Page {
     pageSize: number = 10;
@@ -43,10 +44,11 @@ class BaseListModel {
         if(saveParam){
             this.searchParam = searchParam;
         }
-        const result = yield this.queryList({...searchParam,...this.page});
-        if (result.status == 0) {
+        const result = yield this.queryList({...searchParam, ...this.page});
+        if (ResultUtils.isSuccess(result)) {
             this.page.total = result.total;
-            this.queryCallBack(true, result.data as Array<any>);
+            const resultData = ResultUtils.getData(result);
+            this.queryCallBack(true, resultData as Array<any>);
             return;
         }
 

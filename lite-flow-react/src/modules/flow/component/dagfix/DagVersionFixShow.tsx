@@ -9,7 +9,7 @@ import CommonUtils from "../../../../common/utils/CommonUtils";
 import {Flow, FlowModel} from "../../model/FlowModel";
 import {kernel} from "../../../../common/utils/IOC";
 import {TaskVersionModel} from "../../../taskVersion/model/TaskVersionModel";
-
+import ResultUtils from "../../../../common/utils/ResultUtils";
 
 /**
  * 获取鼠标位置
@@ -99,10 +99,11 @@ class DagVersionFixShow extends Component<DagFixProps, any> {
         let id = this.props.flow.id;
         const {flow, firstTaskVersionNo} = this.props;
         this.flowModel.fixViewDag(flow.id, firstTaskVersionNo).then((result) => {
-            if (result.status == 0) {
+            if (ResultUtils.isSuccess(result)) {
                 that.hideAllWindow();
-                that.dagData = result.data;
-                that.renderDag(result.data);
+                const resultData = ResultUtils.getData(result);
+                that.dagData = resultData;
+                that.renderDag(resultData);
             }
         });
     }
@@ -280,7 +281,7 @@ class DagVersionFixShow extends Component<DagFixProps, any> {
         const {flow, firstTaskVersionNo} = this.props;
         this.flowModel.fixFlow(flow.id, firstTaskVersionNo)
             .then((result) => {
-                if (result.status == 0) {
+                if (ResultUtils.isSuccess(result)) {
                     notification["success"]({
                         message: '成功',
                         description: '操作成功',
@@ -300,7 +301,7 @@ class DagVersionFixShow extends Component<DagFixProps, any> {
         const versionId = this.nodeId;
         const that = this;
         this.taskVersionModel.fixById(versionId).then(result => {
-            if (result.status == 0) {
+            if (ResultUtils.isSuccess(result)) {
                 notification["success"]({
                     message: '成功',
                     description: '操作成功',
@@ -319,7 +320,7 @@ class DagVersionFixShow extends Component<DagFixProps, any> {
         const versionId = this.nodeId;
         const that = this;
         this.taskVersionModel.fixById(versionId).then(result => {
-            if (result.status == 0) {
+            if (ResultUtils.isSuccess(result)) {
                 notification["success"]({
                     message: '成功',
                     description: '操作成功',
@@ -339,7 +340,7 @@ class DagVersionFixShow extends Component<DagFixProps, any> {
         const {flow, firstTaskVersionNo} = this.props;
         const that = this;
         this.flowModel.fixFromNode(flow.id, firstTaskVersionNo, versionId).then(result => {
-            if (result.status == 0) {
+            if (ResultUtils.isSuccess(result)) {
                 notification["success"]({
                     message: '成功',
                     description: '操作成功',
@@ -358,7 +359,7 @@ class DagVersionFixShow extends Component<DagFixProps, any> {
         const versionId = this.nodeId;
         const that = this;
         this.taskVersionModel.ignoreById(versionId).then(result => {
-            if (result.status == 0) {
+            if (ResultUtils.isSuccess(result)) {
                 notification["success"]({
                     message: '成功',
                     description: '操作成功',

@@ -4,6 +4,7 @@ import {asyncAction} from "mobx-utils";
 import {Message, SysInfoModel} from "./SysInfoModel";
 import {User} from "../../user/model/UserModel";
 import {loginSubmit,logoutSubmit} from "../service/AppService";
+import ResultUtils from "../../../common/utils/ResultUtils";
 
 export class SysUser {
     name: string;
@@ -33,8 +34,8 @@ export class SysUserModel {
         this.loading = true;
         const result = yield loginSubmit({ username, password});
         this.loading = false;
-        if (result.status == 0) {
-            this.loginSuccess(result.data);
+        if (ResultUtils.isSuccess(result)) {
+            this.loginSuccess(ResultUtils.getData(result));
             router.push("/console/dashboard")
         }
     }
@@ -44,7 +45,7 @@ export class SysUserModel {
         this.loading = true;
         const result = yield logoutSubmit();
         this.loading = false;
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             router.push("/login")
         }
     }

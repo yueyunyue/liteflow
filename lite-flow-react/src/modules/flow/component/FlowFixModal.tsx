@@ -5,6 +5,7 @@ import DagVersionFixShow from "./dagfix/DagVersionFixShow";
 import {kernel} from "../../../common/utils/IOC";
 import {FormComponentProps} from "antd/lib/form/Form";
 import Moment from "moment/moment";
+import ResultUtils from "../../../common/utils/ResultUtils";
 
 const {RangePicker} = DatePicker;
 
@@ -54,8 +55,8 @@ class FlowFixModal extends Component<ModalProps, ModalState> {
         this.flowModel = kernel.get(FlowModel);
         const that = this;
         this.flowModel.fixGetLatestVersionNos(this.props.flow.id).then(result => {
-            if (result.status == 0) {
-                const versionNos = result.data;
+            if (ResultUtils.isSuccess(result)) {
+                const versionNos = ResultUtils.getData(result);
                 if (versionNos && versionNos.length > 0) {
                     const selectedVersionNo = versionNos[versionNos.length - 1];
                     that.setState({
@@ -78,8 +79,8 @@ class FlowFixModal extends Component<ModalProps, ModalState> {
 
         const {flow} = this.props;
         this.flowModel.fixGetVersionNos(flow.id, startTime.format(COMMON_TIME_FORMAT), endTime.format(COMMON_TIME_FORMAT)).then(result =>{
-            if(result.status == 0){
-                const versionNos = result.data;
+            if(ResultUtils.isSuccess(result)){
+                const versionNos = ResultUtils.getData(result);
                 that.setState({
                     versionNos: versionNos,
                     selectedVersionNo: null

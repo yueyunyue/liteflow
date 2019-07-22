@@ -1,6 +1,7 @@
 import fetch from "isomorphic-fetch";
 import Config from "../config/Config";
 import qs from "qs";
+import ResultUtils from "../../common/utils/ResultUtils";
 
 function checkStatus(response) {
     if (response.status >= 200 && response.status < 300) {
@@ -43,24 +44,24 @@ export async function requestMain(url, reqParams?: any, isShowMsg ?: boolean) {
     let newUrl = generateUrl(url);
     const response = await fetch(newUrl, reqParams);
 
-    let result = {status: -1};
+    let result = {};
 
     try {
         checkStatus(response);
 
-        const data = await response.json();
+        const responseResult = await response.json();
 
-        if (data) {
-            if (data.status != 0) {
-                if (data.data == 'NOT_LOGIN') {
+        if (responseResult) {
+            if (ResultUtils.isSuccess(result)) {
+                if (ResultUtils.getData(responseResult) == 'NOT_LOGIN') {
                     if(isShowMsg){
                         sendNotLogin();
                     }
                 } else {
-                    sendMessage({type: 'error', title: '操作失败', msg: `${data.data}`, duration: 0})
+                    sendMessage({type: 'error', title: '操作失败', msg: `${responseResult.data}`, duration: 0})
                 }
             } else {
-                result = data;
+                result = responseResult;
             }
         } else {
             const error = new Error("json解析错误");

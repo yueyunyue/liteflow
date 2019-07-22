@@ -6,6 +6,7 @@ import BaseListModel from "../../../common/model/BaseListModel";
 import containerConfig from "../config/ContainerConfig";
 import {notification} from 'antd';
 import {listAllValidPlugin} from "../../plugin/service/PluginService";
+import ResultUtils from "../../../common/utils/ResultUtils";
 
 export class Container {
     id: number;
@@ -51,7 +52,7 @@ export class ContainerModel extends BaseListModel{
     * add(container: Container) {
         this.loading = true;
         const result = yield create(container);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -66,7 +67,7 @@ export class ContainerModel extends BaseListModel{
     * edit(container: Container) {
         this.loading = true;
         const result = yield update(container);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -80,7 +81,7 @@ export class ContainerModel extends BaseListModel{
     * off(id: number) {
         this.loading = true;
         const result = yield offContainer(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -94,7 +95,7 @@ export class ContainerModel extends BaseListModel{
     * on(id: number) {
         this.loading = true;
         const result = yield onContainer(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -108,12 +109,12 @@ export class ContainerModel extends BaseListModel{
     * listAllValid() : any{
         this.loading = true;
         const result = yield listAllValidPlugin();
-        return result.data;
+        return ResultUtils.getData(result);
     }
 
     @asyncAction
     * listAllContainers() : any{
         const result = yield listAllValidContainer();
-        return result.data;
+        return ResultUtils.getData(result);
     }
 }

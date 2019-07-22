@@ -4,6 +4,7 @@ import {logVersion, logInstance} from "../service/TaskInstanceService"
 import {asyncAction} from "mobx-utils";
 import BaseListModel from "../../../common/model/BaseListModel";
 import TaskInstanceConfig from "../config/TaskInstanceConfig";
+import ResultUtils from "../../../common/utils/ResultUtils";
 
 export class TaskInstance {
     id: number;
@@ -50,12 +51,12 @@ export class TaskInstanceModel extends BaseListModel{
     @asyncAction
     * logVersion(id: number): any {
         const result = yield logVersion(id);
-        return result.data;
+        return ResultUtils.getData(result);
     }
 
     @asyncAction
     * log(id: number): any {
         const result = yield logInstance(id);
-        return result.data;
+        return ResultUtils.getData(result);
     }
 }

@@ -5,7 +5,7 @@ import {asyncAction} from "mobx-utils";
 import BaseListModel from "../../../common/model/BaseListModel";
 import TaskVersionConfig from "../config/TaskVersionConfig";
 import {notification} from 'antd';
-
+import ResultUtils from "../../../common/utils/ResultUtils";
 
 export class TaskVersion {
     id: number;
@@ -52,7 +52,7 @@ export class TaskVersionModel extends BaseListModel{
     * fix(id: number) {
         this.loading = true;
         const result = yield fixVersion(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -72,7 +72,7 @@ export class TaskVersionModel extends BaseListModel{
     * deepFix(id: number) {
         this.loading = true;
         const result = yield deepFixVersion(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -87,7 +87,7 @@ export class TaskVersionModel extends BaseListModel{
     * ignore(id: number) {
         this.loading = true;
         const result = yield ignoreVersion(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -106,7 +106,7 @@ export class TaskVersionModel extends BaseListModel{
     * kill(id: number) {
         this.loading = true;
         const result = yield killVersion(id);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',
@@ -126,7 +126,7 @@ export class TaskVersionModel extends BaseListModel{
     * fixRange(data) {
         this.loading = true;
         const result = yield fixRangeVersion(data);
-        if (result.status == 0) {
+        if (ResultUtils.isSuccess(result)) {
             notification["success"]({
                 message: '成功',
                 description: '操作成功',

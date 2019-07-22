@@ -4,6 +4,7 @@ import {requestGetNoShowMsg} from "../../utils/Request";
 import fetch from "isomorphic-fetch";
 import {array, instanceOf} from "prop-types";
 const { TextArea } = Input;
+import ResultUtils from "../../../common/utils/ResultUtils";
 
 export interface FileUploadProps {
     multiply : boolean;
@@ -137,7 +138,7 @@ class LiteFileUpload extends Component<FileUploadProps, FileUploadState> {
         if(file && checkIsTextFile(url)){
             showText = true;
             getFileContent(showTextContentUrl, url).then(result => {
-                if(result && result.status == 0){
+                if(ResultUtils.isSuccess(result)){
                     that.setState({
                         clickedFile: file,
                         showText: true,
@@ -179,8 +180,8 @@ class LiteFileUpload extends Component<FileUploadProps, FileUploadState> {
             body: formData
         }).then(response => {
             response.json().then(result => {
-                if(result.status == 0){
-                    let fileUrls = result["data"];
+                if(ResultUtils.isSuccess(result)){
+                    let fileUrls = ResultUtils.getData(result);
                     if(fileUrls instanceof Array && fileUrls.length > 0){
                         that.updateFiles(getFileObjs(fileUrls.join(",")));
                         return;

@@ -9,7 +9,7 @@ import TaskFirstModal from "./TaskFirstModal";
 import LinkConfModal from "./LinkConfModal";
 import EnumUtils from "../../../../common/utils/EnumUtils";
 import CommonUtils from "../../../../common/utils/CommonUtils";
-
+import ResultUtils from "../../../../common/utils/ResultUtils";
 
 /**
  * 获取鼠标位置
@@ -111,7 +111,7 @@ class DagShow extends Component<DagProps, any> {
         let that = this;
         let id = this.props.data.id;
         this.props.getViewData(id).then((result) => {
-            let dagDataNew = that.shuffleAndArrange(result.data);
+            let dagDataNew = that.shuffleAndArrange(ResultUtils.getData(result));
             that.renderDag(dagDataNew);
         });
     }
@@ -123,7 +123,7 @@ class DagShow extends Component<DagProps, any> {
         let that = this;
         let id = this.props.data.id;
         this.props.getViewData(id).then((result) => {
-            that.dagData = result.data;
+            that.dagData = ResultUtils.getData(result);
             that.renderDag(that.dagData);
         });
     }
@@ -720,7 +720,7 @@ class DagShow extends Component<DagProps, any> {
 
         this.props.updateLinks(this.props.data.id, linkJson)
             .then((result) => {
-                if (result.status == 0) {
+                if (ResultUtils.isSuccess(result)) {
                     notification["success"]({
                         message: '成功',
                         description: '操作成功',
@@ -730,7 +730,7 @@ class DagShow extends Component<DagProps, any> {
                     notification["error"]({
                         message: "异常",
                         duration: 0,
-                        description: result.data
+                        description: ResultUtils.getData(result)
                     });
                 }
             });
