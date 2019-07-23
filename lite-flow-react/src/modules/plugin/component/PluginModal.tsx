@@ -265,7 +265,7 @@ class PluginModal extends Component<ModalProps, {allContainers, selectedContaine
 
                         {dynamicDoms}
 
-                        <Form.Item label='描述：' hasFeedback {...formItemLayout}>
+                        <Form.Item label='描述' hasFeedback {...formItemLayout}>
                             {this.props.form.getFieldDecorator('description', {
                                 initialValue: CommonUtils.getStringValueFromModel("description", pluginObj, ""),
                                 rules: [

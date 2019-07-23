@@ -6,11 +6,10 @@ import ResultUtils from "../../../common/utils/ResultUtils";
 
 export interface RemoteSelectProps {
     url: string;
-    showAll ?: boolean;
-    allValue ?: string;
+    showAllOption ?: boolean;
+    allOptionValue ?: string;
     optionKeyName? : string;
     optionValueName? : string;
-    mode? : any;
     config? : any;
     onChange ?: any;
     value ?: any;
@@ -28,6 +27,19 @@ const OPTION_VALUE_NAME = "value";
 
 const MODE_MULTIPLE = "multiple";
 
+const MODE = "mode";
+
+/**
+ * 获取默认值
+ * @param isMulitple
+ * @returns {any}
+ */
+const getDefaultValue = (isMulitple) => {
+    if(isMulitple && isMulitple == true){
+        return [];
+    }
+    return "";
+}
 /**
  * 通过url自动获取并生成 options
  *
@@ -56,16 +68,28 @@ class RemoteSelect extends Component<RemoteSelectProps, RemoteSelectState> {
 
     render() {
         const that = this;
-        const {value, mode,config, optionKeyName, optionValueName, showAll, allValue} = this.props;
+        const {value, config, optionKeyName, optionValueName, showAllOption, allOptionValue} = this.props;
         const {options} = this.state;
         const keyName = optionKeyName ? optionKeyName: OPTION_KEY_NAME;
         const valueName = optionValueName ? optionValueName: OPTION_VALUE_NAME;
 
         let configOption = {};
         let selectOptions= [];
+        /**
+         * 获取当前mode，用来判断是否为多选
+         * @type {null}
+         */
+        let mode = null;
+        if(config){
+            mode = config[MODE];
+        }
+        let isMulitple = false;
+        if(mode && mode == MODE_MULTIPLE){
+            isMulitple = true;
+        }
         if(options){
-            if(showAll){
-                const allValueStr = allValue ? allValue + "" : "";
+            if(showAllOption && !isMulitple){
+                const allValueStr = allOptionValue ? allOptionValue + "" : "";
                 selectOptions.push(<Select.Option key={"option-all"} value={allValueStr}>全部</Select.Option>);
             }
             for(let option of options){
@@ -80,15 +104,12 @@ class RemoteSelect extends Component<RemoteSelectProps, RemoteSelectState> {
          * 属性复制
          */
         Object.assign(configOption, config);
-        if(mode){
-            configOption["mode"] = mode;
-        }
 
         return (
             <Row>
                 <Select
                     {...configOption}
-                    value= {value ? value : ""}
+                    value= {value ? value : getDefaultValue(isMulitple)}
                     onChange={(value) => {
                         that.props.onChange(value);
                     }}
