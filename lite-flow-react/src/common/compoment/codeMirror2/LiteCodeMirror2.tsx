@@ -27,7 +27,7 @@ class LiteLiteCodeMirror2 extends Component<LiteCodeMirrorProps, {}> {
      * 是否初始化
      * @type {boolean}
      */
-    private initialized:boolean = false;
+    private initializedValue:any = null;
 
     constructor(pros){
         super(pros);
@@ -57,34 +57,23 @@ class LiteLiteCodeMirror2 extends Component<LiteCodeMirrorProps, {}> {
          * 属性复制
          */
         Object.assign(configOption, defaultOptions);
-        let codeMirror = null;
-
         /**
          * 由于onchange后会触发render，所以每次重新设置value会导致光标总是移动到末尾处
          * 所以通过标志位来处理，初始化完成后，不再设置value属性
          */
-        if(!this.initialized){
-            this.initialized = true;
-            codeMirror = (<CodeMirror
-                {...config}
-                value= {value ? value : ""}
-                options={configOption}
-                onChange={(editor, data, codeValue) => {
-                    that.props.onChange(codeValue);
-                }}
-            />)
-        }else{
-            codeMirror = (<CodeMirror
-                {...config}
-                options={configOption}
-                onChange={(editor, data, codeValue) => {
-                    that.props.onChange(codeValue);
-                }}
-            />)
+        if(!this.initializedValue){
+            this.initializedValue = value;
         }
         return (
             <Row>
-                {codeMirror}
+                <CodeMirror
+                    {...config}
+                    value= {this.initializedValue}
+                    options={configOption}
+                    onChange={(editor, data, codeValue) => {
+                        that.props.onChange(codeValue);
+                    }}
+                />
             </Row>
         );
 
