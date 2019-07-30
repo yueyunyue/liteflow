@@ -52,7 +52,7 @@ export async function requestMain(url, reqParams?: any, isShowMsg ?: boolean) {
         const responseResult = await response.json();
 
         if (responseResult) {
-            if (ResultUtils.isSuccess(result)) {
+            if (!ResultUtils.isSuccess(responseResult)) {
                 if (ResultUtils.getData(responseResult) == 'NOT_LOGIN') {
                     if(isShowMsg){
                         sendNotLogin();
