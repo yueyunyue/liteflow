@@ -91,7 +91,7 @@ public class ShellContainer extends SyncContainer {
             shellProcessJob.run();
 
         } finally {
-
+            ExecutorLoggerFactory.stop(executorJob.getId());
         }
     }
 

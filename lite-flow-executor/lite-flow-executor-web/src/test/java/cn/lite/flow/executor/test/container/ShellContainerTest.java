@@ -3,6 +3,7 @@ package cn.lite.flow.executor.test.container;
 import cn.lite.flow.common.model.consts.CommonConstants;
 import cn.lite.flow.executor.common.consts.Constants;
 import cn.lite.flow.executor.kernel.container.ContainerFactory;
+import cn.lite.flow.executor.kernel.container.impl.DirectShellContainer;
 import cn.lite.flow.executor.kernel.container.impl.ShellContainer;
 import cn.lite.flow.executor.model.basic.ExecutorJob;
 import cn.lite.flow.executor.model.consts.ExecutorJobStatus;
@@ -32,7 +33,7 @@ public class ShellContainerTest extends BaseTest {
     public void testShell() throws Exception {
 
         JSONObject param = new JSONObject();
-        param.put(Constants.SHELL_COINTENT, "touch /tmp/123.log");
+        param.put(Constants.SHELL_CONTENT, "touch /tmp/123.log");
         param.put(CommonConstants.PARAM_EXECUTOR_JOB_NAME, "shell");
 
         ExecutorJob job = new ExecutorJob();
@@ -40,7 +41,7 @@ public class ShellContainerTest extends BaseTest {
         job.setConfig(param.toJSONString());
         job.setStatus(ExecutorJobStatus.NEW.getValue());
 
-        ShellContainer shellContainer = new ShellContainer(job);
+        DirectShellContainer shellContainer = new DirectShellContainer(job);
         shellContainer.run();
 
 

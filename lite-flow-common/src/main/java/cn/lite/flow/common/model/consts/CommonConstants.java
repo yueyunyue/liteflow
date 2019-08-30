@@ -1,5 +1,6 @@
 package cn.lite.flow.common.model.consts;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import org.springframework.stereotype.Component;
 
@@ -129,8 +130,10 @@ public class CommonConstants {
     public final static String SPARK_PARAM_MEMORY_UNIT = "m";                                //spark内存单位
 
 
-
-    public final static Set<String> TEXT_FILE_SUFFIX = Sets.newHashSet(".txt", ".sh", ".sql", ".json");
+    /**
+     * 文本类型文件后缀
+     */
+    public final static Set<String> TEXT_FILE_SUFFIX = ImmutableSet.of(".txt", ".sh", ".sql", ".json");
 
     /**
      * 附件相关
@@ -140,5 +143,22 @@ public class CommonConstants {
     public static final String ATTACHMENT_PREFIX = "liteAttachment://";                       //附件前缀
 
     public static final String HDFS_PREFIX = "hdfs://";                                       //hdfs前缀
+    /**
+     * http相关参数
+     */
+    public static final String HTTP_URL = "url";                                              //url路径
+
+    public static final String HTTP_CHECK_URL = "checkUrl";                                   //异步http，校验
+
+    public static final String HTTP_METHOD = "method";                                        //executor
+
+    public static final String HTTP_PARAM = "param";                                          //参数
+
+    public static final String HTTP_HEADER = "header";                                        //header参数
+
+    public static final String HTTP_READ_TIMEOUT = "readTimeOut";                             //参数
+
+    public static final long DEFAULT_HTTP_READ_TIMEOUT =  5000;                                //默认读取超时时间
+
 
 }

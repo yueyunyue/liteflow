@@ -1,8 +1,6 @@
 package cn.lite.flow.executor.test.container;
 
 import cn.lite.flow.common.model.consts.CommonConstants;
-import cn.lite.flow.executor.common.consts.Constants;
-import cn.lite.flow.executor.kernel.container.impl.FileShellContainer;
 import cn.lite.flow.executor.kernel.container.impl.ShellContainer;
 import cn.lite.flow.executor.model.basic.ExecutorAttachment;
 import cn.lite.flow.executor.model.basic.ExecutorJob;
@@ -46,7 +44,7 @@ public class FileShellContainerTest extends BaseTest {
         job.setConfig(param.toJSONString());
         job.setStatus(ExecutorJobStatus.NEW.getValue());
 
-        FileShellContainer shellContainer = new FileShellContainer(job);
+        ShellContainer shellContainer = new ShellContainer(job);
         shellContainer.run();
 
 
