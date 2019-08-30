@@ -24,6 +24,6 @@ echo start lite-flow-console...
 
 cd lite-flow-console/lite-flow-console-web/target
 
-nohup java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8868,suspend=n -jar lite-flow-console-web-1.0.0-SNAPSHOT.jar > /dev/null 2>&1 &
+nohup java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8868,suspend=n -jar lite-flow-console-web-1.0.0.jar > /dev/null 2>&1 &
 
 echo lite-flow-console started

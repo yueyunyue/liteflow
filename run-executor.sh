@@ -24,6 +24,6 @@ echo start lite-flow-executor...
 
 cd lite-flow-executor/lite-flow-executor-web/target
 
-nohup java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8869,suspend=n -jar lite-flow-executor-web-1.0.0-SNAPSHOT.jar > /dev/null 2>&1 &
+nohup java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8869,suspend=n -jar lite-flow-executor-web-1.0.0.jar > /dev/null 2>&1 &
 
 echo lite-flow-executor started

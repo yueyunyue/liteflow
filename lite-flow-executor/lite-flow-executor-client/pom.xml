@@ -5,12 +5,12 @@
 
     <groupId>cn.lite.flow</groupId>
     <artifactId>lite-flow-executor-client</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>lite-flow-executor-client</name>
 
     <properties>
         <lombok.version>1.16.18</lombok.version>
-        <lite-flow-model-basic.version>1.0.0-SNAPSHOT</lite-flow-model-basic.version>
+        <lite-flow-model-basic.version>1.0.0</lite-flow-model-basic.version>
     </properties>
     <packaging>jar</packaging>
     <dependencies>

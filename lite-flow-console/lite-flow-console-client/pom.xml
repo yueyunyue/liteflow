@@ -5,13 +5,13 @@
 
     <groupId>cn.lite.flow</groupId>
     <artifactId>lite-flow-console-client</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>lite-flow-console-client</name>
 
     <packaging>jar</packaging>
     <properties>
         <lombok.version>1.16.18</lombok.version>
-        <lite-flow.version>1.0.0-SNAPSHOT</lite-flow.version>
+        <lite-flow.version>1.0.0</lite-flow.version>
     </properties>
     <dependencies>
         <!-- lombok -->

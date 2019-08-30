@@ -6,12 +6,12 @@
     <parent>
         <groupId>cn.lite.flow</groupId>
         <artifactId>lite-flow</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <groupId>cn.lite.flow</groupId>
     <artifactId>lite-flow-executor</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <name>lite-flow-executor</name>
 
@@ -67,14 +67,14 @@
             <dependency>
                 <groupId>cn.lite.flow</groupId>
                 <artifactId>lite-flow-console-client</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>1.0.0</version>
             </dependency>
 
             <!--插件-->
             <dependency>
                 <groupId>cn.lite.flow</groupId>
                 <artifactId>lite-flow-executor-plugin-sql</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>1.0.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -6,12 +6,12 @@
     <parent>
         <groupId>cn.lite.flow</groupId>
         <artifactId>lite-flow-executor</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <groupId>cn.lite.flow</groupId>
     <artifactId>lite-flow-executor-service</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>lite-flow-executor-service</name>
 
     <packaging>jar</packaging>

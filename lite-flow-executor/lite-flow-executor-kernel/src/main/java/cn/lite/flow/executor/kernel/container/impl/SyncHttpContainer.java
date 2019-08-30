@@ -61,7 +61,8 @@ public class SyncHttpContainer extends SyncContainer {
 
             long readTimeOut = props.getLong(CommonConstants.HTTP_READ_TIMEOUT, CommonConstants.DEFAULT_HTTP_READ_TIMEOUT);
 
-            OkHttpClient client = new OkHttpClient().newBuilder()
+            OkHttpClient client = new OkHttpClient()
+                    .newBuilder()
                     .readTimeout(readTimeOut, TimeUnit.MILLISECONDS)
                     .build();
             /**
@@ -80,7 +81,7 @@ public class SyncHttpContainer extends SyncContainer {
              */
             if(StringUtils.equals(method, HttpMethodType.GET.name())){
                 if(CollectionUtils.isNotEmpty(params)){
-                    HttpUrl.Builder urlBuilder =  HttpUrl.parse(url).newBuilder();
+                    HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
                     for (Tuple<String, String> paramTuple : params) {
                         urlBuilder.addQueryParameter(paramTuple.getA(), paramTuple.getB());
                     }
@@ -131,6 +132,9 @@ public class SyncHttpContainer extends SyncContainer {
     public void kill() {
         try {
             if(call != null){
+                if(call.isExecuted() || call.isCanceled()){
+                    return;
+                }
                 call.cancel();
             }
             LOG.info("kill remote shell container executorJobId:{} get applicationId:{}", executorJob.getId(), executorJob.getApplicationId());
