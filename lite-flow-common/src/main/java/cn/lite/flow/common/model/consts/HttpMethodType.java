@@ -18,14 +18,9 @@ public enum HttpMethodType {
         this.desc = desc;
     }
 
-    /**
-     * 根据id或者媒体类型
-     * @param id 媒体类型id
-     * @return
-     */
-    public static HttpMethodType getType(String id) {
+    public static HttpMethodType getType(String method) {
         for (HttpMethodType mediaType : HttpMethodType.values()) {
-            if (StringUtils.equals(mediaType.name(), id)) {
+            if (StringUtils.equals(mediaType.name(), method)) {
                 return mediaType;
             }
         }

@@ -148,8 +148,6 @@ public class CommonConstants {
      */
     public static final String HTTP_URL = "url";                                              //url路径
 
-    public static final String HTTP_CHECK_URL = "checkUrl";                                   //异步http，校验
-
     public static final String HTTP_METHOD = "method";                                        //executor
 
     public static final String HTTP_PARAM = "param";                                          //参数
@@ -158,7 +156,15 @@ public class CommonConstants {
 
     public static final String HTTP_READ_TIMEOUT = "readTimeOut";                             //参数
 
-    public static final long DEFAULT_HTTP_READ_TIMEOUT =  5000;                                //默认读取超时时间
+    public static final String HTTP_CHECK_URL = "checkUrl";                                   //异步http，校验
+
+    public static final String HTTP_CHECK_PARAM = "checkParam";                               //参数
+
+    public static final String HTTP_CHECK_METHOD = "checkMethod";                             //executor
+
+    public static final String HTTP_CHECK_HEADER = "checkHeader";                             //header参数
+
+    public static final long DEFAULT_HTTP_READ_TIMEOUT =  5000;                               //默认读取超时时间
 
 
 }

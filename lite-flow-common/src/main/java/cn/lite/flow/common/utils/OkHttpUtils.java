@@ -1,6 +1,7 @@
 package cn.lite.flow.common.utils;
 
 import cn.lite.flow.common.model.consts.CommonConstants;
+import cn.lite.flow.common.model.consts.HttpMethodType;
 import com.google.common.collect.Maps;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
@@ -46,6 +47,16 @@ public class OkHttpUtils {
 
     }
 
+    public static Request.Builder getBuilder(HttpMethodType methodType, String url, Map<String, String> headerMap, Map<String, String> paramMap){
+        if(methodType == HttpMethodType.GET){
+           return OkHttpUtils.getGetBuilder(url, headerMap, paramMap);
+        }else  if(methodType == HttpMethodType.POST){
+            return OkHttpUtils.getPostBuilder(url, headerMap, paramMap);
+        }
+        return null;
+    }
+
+
     /**
      * 获取post Request.Builder
      * @param url
@@ -68,6 +79,13 @@ public class OkHttpUtils {
 
         return requestBuilder;
     }
+//    public static Result<Integer, String> get(String url, Map<String, String> headerMap, Map<String, String> paramMap){
+//        OkHttpClient client = new OkHttpClient()
+//                .newBuilder()
+//                .build();
+//
+//        return ;
+//    }
 
     /**
      * 获取post Request.Builder

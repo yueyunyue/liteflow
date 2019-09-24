@@ -21,7 +21,7 @@ export interface RemoteSelectState {
      */
     options: Array<any>;
 }
-const OPTION_KEY_NAME = "key";
+const OPTION_KEY_NAME = "name";
 
 const OPTION_VALUE_NAME = "value";
 

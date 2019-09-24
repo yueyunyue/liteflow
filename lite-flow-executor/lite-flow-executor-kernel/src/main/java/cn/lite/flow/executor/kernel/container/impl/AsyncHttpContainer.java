@@ -3,12 +3,13 @@ package cn.lite.flow.executor.kernel.container.impl;
 import cn.lite.flow.common.model.consts.CommonConstants;
 import cn.lite.flow.common.model.consts.HttpCodeType;
 import cn.lite.flow.common.model.consts.HttpMethodType;
+import cn.lite.flow.common.utils.OkHttpUtils;
 import cn.lite.flow.executor.common.exception.ExecutorRuntimeException;
 import cn.lite.flow.executor.common.utils.ExecutorLoggerFactory;
 import cn.lite.flow.executor.common.utils.Props;
-import cn.lite.flow.common.utils.OkHttpUtils;
 import cn.lite.flow.executor.kernel.utils.JobUtils;
 import cn.lite.flow.executor.model.basic.ExecutorJob;
+import cn.lite.flow.executor.model.kernel.AsyncContainer;
 import cn.lite.flow.executor.model.kernel.SyncContainer;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -22,27 +23,32 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * @description: 同步http
+ * @description: 异步http
  * @author: yueyunyue
  * @create: 2019-08-30
  **/
-public class SyncHttpContainer extends SyncContainer {
+public class AsyncHttpContainer extends AsyncContainer {
 
     private Call call;
 
-    private final static Logger LOG = LoggerFactory.getLogger(SyncHttpContainer.class);
+    private Props props;
 
-    public SyncHttpContainer(ExecutorJob executorJob) {
+    private final static Logger LOG = LoggerFactory.getLogger(AsyncHttpContainer.class);
+
+    public AsyncHttpContainer(ExecutorJob executorJob) {
         super(executorJob);
+        this.props = new Props(executorJob.getConfig());
     }
 
     @Override
-    public void runInternal() throws Exception {
+    public void checkStatus() {
+
+    }
+
+    @Override
+    public void run() throws Exception {
         Logger logger = JobUtils.getLogger(executorJob);
         try {
-            String config = executorJob.getConfig();
-            Props props = new Props(config);
-
             long readTimeOut = props.getLong(CommonConstants.HTTP_READ_TIMEOUT, CommonConstants.DEFAULT_HTTP_READ_TIMEOUT);
 
             OkHttpClient client = new OkHttpClient()
