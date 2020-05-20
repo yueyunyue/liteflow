@@ -46,7 +46,7 @@
         <quartz.version>2.2.3</quartz.version>
 
         <lombok.version>1.16.18</lombok.version>
-        <dubbo.version>2.5.10</dubbo.version>
+        <dubbo.version>2.6.7</dubbo.version>
         <bcprov-jdk15on.version>1.59</bcprov-jdk15on.version>
         <curator.version>4.1.0</curator.version>
         <zookeeper.version>3.4.14</zookeeper.version>
