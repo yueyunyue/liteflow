@@ -43,7 +43,7 @@
         <jsoup.version>1.9.2</jsoup.version>
         <guava.version>20.0</guava.version>
         <commons-pool2.version>2.4.2</commons-pool2.version>
-        <quartz.version>2.2.3</quartz.version>
+        <quartz.version>2.3.2</quartz.version>
 
         <lombok.version>1.16.18</lombok.version>
         <dubbo.version>2.5.10</dubbo.version>
