@@ -170,7 +170,7 @@ CREATE TABLE lf_console_task_version_daily_init (
   task_id bigint NOT NULL DEFAULT '0' COMMENT '实例id',
   day int NOT NULL DEFAULT '0' COMMENT '日期yyyyMMdd格式',
   status tinyint NOT NULL DEFAULT '0' COMMENT '状态',
-  msg  DEFAULT NULL COMMENT '信息',
+  msg text DEFAULT NULL COMMENT '信息',
   create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (id),
