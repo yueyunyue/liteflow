@@ -52,10 +52,14 @@ public class CommonConstants {
 
     public static final String EQUAL = "=";                                                   //等号
 
+    public static final String QUESTION = "?";                                                //问号
+
+    public static final String ASTERISK = "*";                                                //星号
+
     /**
      * url相关
      */
-    public static final String URL_QUESTION = "?";                                            //问号
+    public static final String URL_QUESTION = QUESTION;                                       //问号
 
     public static final String URL_PARAM_SPLIT = "&";                                         //url参数间分隔符
 

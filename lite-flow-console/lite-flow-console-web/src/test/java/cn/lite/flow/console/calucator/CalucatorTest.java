@@ -111,6 +111,11 @@ public class CalucatorTest {
 
     }
 
-
+    @Test
+    public void testNextFireTime(){
+        Date date = new Date();
+        Date nextFireTimeWithDefaultTimeZone = QuartzUtils.getNextFireTimeWithDefaultTimeZone(date, "30/0 * * * ?");
+        System.out.println(DateUtils.formatToDateTimeStr(nextFireTimeWithDefaultTimeZone));
+    }
 
 }
