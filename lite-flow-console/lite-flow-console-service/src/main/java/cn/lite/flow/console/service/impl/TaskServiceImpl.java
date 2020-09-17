@@ -9,6 +9,7 @@ import cn.lite.flow.console.common.enums.SourceTypeEnum;
 import cn.lite.flow.console.common.exception.ConsoleRuntimeException;
 import cn.lite.flow.common.utils.DateUtils;
 import cn.lite.flow.common.utils.ParamExpressionUtils;
+import cn.lite.flow.console.common.utils.QuartzUtils;
 import cn.lite.flow.console.common.utils.TaskVersionUtils;
 import cn.lite.flow.console.dao.mapper.TaskMapper;
 import cn.lite.flow.console.model.basic.Task;
@@ -34,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -67,6 +69,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional("consoleTxManager")
     public void add(Task model) {
         model.setStatus(TaskStatus.NEW.getValue());
+        calTaskPeriod(model);
         taskMapper.insert(model);
 
         /**
@@ -84,6 +87,18 @@ public class TaskServiceImpl implements TaskService {
 
     }
 
+    /**
+     * 计算任务的周期
+     * @param task
+     */
+    private void calTaskPeriod(Task task){
+        if(Objects.nonNull(task.getCronExpression())){
+            TimeUnit period = QuartzUtils.getPeriodByCron(task.getCronExpression());
+            task.setPeriod(period.getValue());
+        }
+
+    }
+
     @Override
     public Task getById(long id) {
         return taskMapper.getById(id);
@@ -91,7 +106,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public int update(Task model) {
-       return taskMapper.update(model);
+        calTaskPeriod(model);
+        return taskMapper.update(model);
     }
 
     @Override

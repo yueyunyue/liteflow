@@ -1,12 +1,14 @@
 package cn.lite.flow.console.common.utils;
 
 import cn.lite.flow.common.model.consts.CommonConstants;
+import cn.lite.flow.common.utils.DateUtils;
 import cn.lite.flow.console.common.consts.Constants;
 import cn.lite.flow.common.model.consts.TimeUnit;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.Seconds;
 import org.quartz.CronExpression;
 
 import java.util.Date;
@@ -19,6 +21,21 @@ import java.util.TimeZone;
  * @create: 2018-07-15
  **/
 public class QuartzUtils {
+
+    /**
+     * 时间
+     */
+    public static final int SECONDS_OF_MINUTE = 60;
+
+    public static final int SECONDS_OF_HOUR = 60 * SECONDS_OF_MINUTE;
+
+    public static final int SECONDS_OF_DAY = 24 * SECONDS_OF_HOUR;
+
+    public static final int SECONDS_OF_WEEK = 7 * SECONDS_OF_DAY;
+
+    public static final int SECONDS_OF_MONTH = 28 * SECONDS_OF_DAY;
+
+    public static final int SECONDS_OF_YEAY = 365 * SECONDS_OF_DAY;
 
     /**
      * 判断crontab是否是个有效的表达式
@@ -160,6 +177,39 @@ public class QuartzUtils {
             return nextTime;
         }catch (Exception e){
             throw new IllegalStateException(e.getMessage());
+        }
+    }
+
+    /**
+     * 通过cron来判断它的运行周期
+     * 由于通过一次的比较可能会导致问题的出现，例如：0 0/5 0/2 * ?，通过一次计算可能获取到是小时级别
+     * @param cron
+     * @return
+     */
+    public static TimeUnit getPeriodByCron(String cron){
+
+        Date now = DateUtils.getNow();
+        Date fireTime1 = getNextFireTimeWithDefaultTimeZone(now, cron);
+        Date fireTime2 = getNextFireTimeWithDefaultTimeZone(fireTime1, cron);
+        Date fireTime3 = getNextFireTimeWithDefaultTimeZone(fireTime2, cron);
+        Seconds seconds1 = Seconds.secondsBetween(new DateTime(fireTime1), new DateTime(fireTime2));
+        Seconds seconds2 = Seconds.secondsBetween(new DateTime(fireTime2), new DateTime(fireTime3));
+
+        int betweenSeconds = Math.min(seconds1.getSeconds(), seconds2.getSeconds());
+        if(betweenSeconds < SECONDS_OF_MINUTE){
+            return TimeUnit.SECOND;
+        }else if(betweenSeconds >= SECONDS_OF_MINUTE && betweenSeconds < SECONDS_OF_HOUR){
+            return TimeUnit.MINUTE;
+        }else if(betweenSeconds >= SECONDS_OF_HOUR && betweenSeconds < SECONDS_OF_DAY){
+            return TimeUnit.HOUR;
+        }else if(betweenSeconds >= SECONDS_OF_DAY && betweenSeconds < SECONDS_OF_WEEK){
+            return TimeUnit.DAY;
+        }else if(betweenSeconds >= SECONDS_OF_WEEK && betweenSeconds < SECONDS_OF_MONTH){
+            return TimeUnit.WEEK;
+        }else if(betweenSeconds >= SECONDS_OF_MONTH && betweenSeconds < SECONDS_OF_YEAY){
+            return TimeUnit.MONTH;
+        }else {
+            return TimeUnit.YEAR;
         }
     }
 

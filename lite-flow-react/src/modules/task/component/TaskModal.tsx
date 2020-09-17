@@ -293,19 +293,19 @@ class TaskModal extends Component<ModalProps, { retry, concurrency, pluginId, pl
                                 ]
                             })(<Input disabled={isUpdate}/>)}
                         </Form.Item>
-                        <Form.Item label="周期" hasFeedback {...formItemLayout}>
-                            {this.props.form.getFieldDecorator("period", {
-                                initialValue: CommonUtils.getStringValueFromModel("period", taskObj, "4"),
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: '不能为空'
-                                    }
-                                ]
-                            })(<Select disabled={isDomDisable}>
-                                {periodOptions}
-                            </Select>)}
-                        </Form.Item>
+                        {/*<Form.Item label="周期" hasFeedback {...formItemLayout}>*/}
+                            {/*{this.props.form.getFieldDecorator("period", {*/}
+                                {/*initialValue: CommonUtils.getStringValueFromModel("period", taskObj, "4"),*/}
+                                {/*rules: [*/}
+                                    {/*{*/}
+                                        {/*required: true,*/}
+                                        {/*message: '不能为空'*/}
+                                    {/*}*/}
+                                {/*]*/}
+                            {/*})(<Select disabled={isDomDisable}>*/}
+                                {/*{periodOptions}*/}
+                            {/*</Select>)}*/}
+                        {/*</Form.Item>*/}
                         <Form.Item label='cron表达式' hasFeedback {...formItemLayout} help={'cron表达式,例如"0 1 * * ?",每天1点'}>
                             {this.props.form.getFieldDecorator('cronExpression', {
                                 initialValue: CommonUtils.getStringValueFromModel("cronExpression", taskObj, "0 1 * * ?"),

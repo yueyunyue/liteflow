@@ -145,4 +145,9 @@ public class CommonConstants {
 
     public static final String HDFS_PREFIX = "hdfs://";                                       //hdfs前缀
 
+
+
+
+
+
 }

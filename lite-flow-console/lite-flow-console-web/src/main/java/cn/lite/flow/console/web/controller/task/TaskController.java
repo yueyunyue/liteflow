@@ -1,6 +1,7 @@
 package cn.lite.flow.console.web.controller.task;
 
 import cn.lite.flow.common.model.consts.CommonConstants;
+import cn.lite.flow.common.model.consts.TimeUnit;
 import cn.lite.flow.console.common.enums.AuthCheckTypeEnum;
 import cn.lite.flow.console.common.enums.OperateTypeEnum;
 import cn.lite.flow.console.common.model.vo.SessionUser;
@@ -184,7 +185,6 @@ public class TaskController extends BaseController {
     public String add(
             @RequestParam(value = "name") String name,
             @RequestParam(value = "cronExpression") String cronExpression,
-            @RequestParam(value = "period") Integer period,
             @RequestParam(value = "version", required = false, defaultValue = "1") Integer version,
             @RequestParam(value = "concurrency", required = false, defaultValue = "0") Integer isConcurrency,
             @RequestParam(value = "concurrentStrategy", required = false, defaultValue = "1") Integer executeStrategy,
@@ -213,7 +213,6 @@ public class TaskController extends BaseController {
         Task task = new Task();
         task.setName(name);
         task.setCronExpression(cronExpression);
-        task.setPeriod(period);
         task.setVersion(version);
         task.setIsConcurrency(isConcurrency);
         task.setExecuteStrategy(executeStrategy);
@@ -260,7 +259,6 @@ public class TaskController extends BaseController {
      * @param id                任务id             如果为空，则是添加  否则是更新
      * @param name              名称
      * @param cronExpression    调度表达式
-     * @param period            周期
      * @param isConcurrency     是否可并发执行     1-可以  0-否
      * @param pluginId          插件id
      * @param pluginConf        插件需要的参数
@@ -275,7 +273,6 @@ public class TaskController extends BaseController {
             @RequestParam(value = "id") long id,
             @RequestParam(value = "name") String name,
             @RequestParam(value = "cronExpression") String cronExpression,
-            @RequestParam(value = "period") Integer period,
             @RequestParam(value = "concurrency") Integer isConcurrency,
             @RequestParam(value = "pluginId") Long pluginId,
             @RequestParam(value = "pluginConf", required = false) String pluginConf,
@@ -297,7 +294,6 @@ public class TaskController extends BaseController {
         task.setId(id);
         task.setName(name);
         task.setCronExpression(cronExpression);
-        task.setPeriod(period);
         task.setIsConcurrency(isConcurrency);
         task.setPluginId(pluginId);
         task.setPluginConf(pluginConf);

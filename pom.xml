@@ -45,6 +45,7 @@
         <commons-pool2.version>2.4.2</commons-pool2.version>
         <quartz.version>2.2.3</quartz.version>
 
+        <cron.utils.version>5.0.5</cron.utils.version>
         <lombok.version>1.16.18</lombok.version>
         <dubbo.version>2.6.7</dubbo.version>
         <bcprov-jdk15on.version>1.59</bcprov-jdk15on.version>
@@ -101,6 +102,11 @@
             </dependency>
 
             <!-- 工具类 -->
+            <dependency>
+                <groupId>com.cronutils</groupId>
+                <artifactId>cron-utils</artifactId>
+                <version>${cron.utils.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
