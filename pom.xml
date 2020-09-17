@@ -23,6 +23,13 @@
     </parent>
 
     <properties>
+        <!--环境-->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
         <lite-flow.version>1.0.0-SNAPSHOT</lite-flow.version>
         <mysql-connector>6.0.6</mysql-connector>
         <druid>1.1.7</druid>
